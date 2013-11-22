@@ -5,7 +5,7 @@ use 5.8.1;
 use base 'URI::_login';
 
 sub db_name {
-    my @segs = shift->path_segments or return;
+    my (undef, @segs) = shift->path_segments or return;
     join '/' => @segs;
 }
 
