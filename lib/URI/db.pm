@@ -4,6 +4,11 @@ use strict;
 use 5.8.1;
 use base 'URI::_login';
 
+sub db_name {
+    my @segs = shift->path_segments or return;
+    join '/' => @segs;
+}
+
 1;
 __END__
 
@@ -21,6 +26,30 @@ URI::db - Database URIs
 This class provides support for database URIs. They're modeled on
 L<JDBC URIs|http://docs.oracle.com/cd/B14117_01/java.101/b10979/urls.htm#BEIJFHHB> and
 L<PostgreSQL URIs|>http://www.postgresql.org/docs/9.3/static/libpq-connect.html#LIBPQ-CONNSTRING.
+
+=head2 Interface
+
+The following differences exist compared to the C<URI> class interface:
+
+=head3 C<db_name>
+
+Returns the name of the database.
+
+=head3 C<host>
+
+Returns the host to connect to.
+
+=head3 C<port>
+
+Returns the port to connect to.
+
+=head3 C<user>
+
+Returns the user name.
+
+=head3 C<password>
+
+Returns the password.
 
 =head1 Support
 
