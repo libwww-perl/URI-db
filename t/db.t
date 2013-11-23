@@ -23,7 +23,8 @@ for my $spec (
     [ interbase  => 3050  ],
     [ unify      => 27117 ], # ?
     [ mongodb    => 27017 ],
-    [ monetdb    => 50000 ],
+    [ monetdb    => 50000 ], # ?
+    [ maxdb      => 7673  ], # ?
 ) {
     my ($scheme, $port) = @{ $spec };
 
