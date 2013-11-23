@@ -8,8 +8,9 @@ use URI::QueryParam;
 BEGIN { use_ok 'URI::db' or die; }
 
 for my $spec (
-    [db         => undef ],
-    [postgresql => 5432  ],
+    [ db         => undef ],
+    [ postgresql => 5432  ],
+    [ mysql      => 3306  ],
 ) {
     my ($scheme, $port) = @{ $spec };
 

@@ -1,5 +1,7 @@
 package URI::db;
 
+# db://[user[:password]@][netloc][:port][/dbname][?param1=value1&...]
+
 use strict;
 use 5.8.1;
 use base 'URI::_login';
