@@ -5,6 +5,7 @@ package URI::db;
 use strict;
 use 5.8.1;
 use base 'URI::_login';
+our $VERSION = '0.10';
 
 sub db_name {
     my (undef, @segs) = shift->path_segments or return;
