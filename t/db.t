@@ -22,6 +22,7 @@ for my $spec (
     [ teradata   => 1025  ],
     [ interbase  => 3050  ],
     [ unify      => 27117 ],
+    [ mongodb    => 27017 ],
 ) {
     my ($scheme, $port) = @{ $spec };
 
