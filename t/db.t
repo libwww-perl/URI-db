@@ -11,6 +11,7 @@ for my $spec (
     [ db         => undef ],
     [ postgresql => 5432  ],
     [ mysql      => 3306  ],
+    [ sqlite     => undef ],
 ) {
     my ($scheme, $port) = @{ $spec };
 
