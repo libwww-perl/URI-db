@@ -16,6 +16,7 @@ for my $spec (
     [ cubrid     => 1523  ],
     [ firebird   => 3050  ],
     [ sqlserver  => 1433  ],
+    [ db2        => 50000 ],
 ) {
     my ($scheme, $port) = @{ $spec };
 
