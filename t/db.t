@@ -26,7 +26,8 @@ for my $spec (
     [ monetdb    => 50000 ], # ?
     [ maxdb      => 7673  ], # ?
     [ impala     => 21000 ],
-    [ couchdb    => 5984  ], # ?
+    [ couchdb    => 5984  ],
+    [ hive       => 10000 ],
 ) {
     my ($scheme, $port) = @{ $spec };
 
