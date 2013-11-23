@@ -18,6 +18,7 @@ for my $spec (
     [ sqlserver  => 1433  ],
     [ db2        => 50000 ],
     [ ingres     => undef ],
+    [ sybase     => 2638  ],
 ) {
     my ($scheme, $port) = @{ $spec };
 
