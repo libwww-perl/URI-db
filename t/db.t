@@ -13,7 +13,8 @@ for my $spec (
     [ mysql      => 3306  ],
     [ sqlite     => undef ],
     [ oracle     => 1521  ],
-    [ cubrid     => 1523 ],
+    [ cubrid     => 1523  ],
+    [ firebird   => 3050  ],
 ) {
     my ($scheme, $port) = @{ $spec };
 
