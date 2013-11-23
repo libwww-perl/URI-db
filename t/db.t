@@ -12,17 +12,18 @@ for my $spec (
     [ mysql      => 3306  ],
     [ sqlite     => undef ],
     [ oracle     => 1521  ],
-    [ cubrid     => 1523  ],
+    [ cubrid     => 1523  ], # ?
     [ firebird   => 3050  ],
     [ sqlserver  => 1433  ],
-    [ db2        => 50000 ],
-    [ ingres     => undef ],
+    [ db2        => 50000 ], # ?
+    [ ingres     => 1524  ],
     [ sybase     => 2638  ],
-    [ informix   => 1526  ],
+    [ informix   => 1526  ], # ?
     [ teradata   => 1025  ],
     [ interbase  => 3050  ],
-    [ unify      => 27117 ],
+    [ unify      => 27117 ], # ?
     [ mongodb    => 27017 ],
+    [ monetdb    => 50000 ],
 ) {
     my ($scheme, $port) = @{ $spec };
 
