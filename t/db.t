@@ -3,9 +3,8 @@
 use strict;
 use Test::More;
 use utf8;
+use URI;
 use URI::QueryParam;
-
-BEGIN { use_ok 'URI::db' or die; }
 
 for my $spec (
     [ db         => undef ],
