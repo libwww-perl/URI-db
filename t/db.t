@@ -29,6 +29,7 @@ for my $spec (
     [ couchdb    => 5984  ],
     [ hive       => 10000 ],
     [ cassandra  => 9160  ],
+    [ derby      => 1527  ],
 ) {
     my ($scheme, $port) = @{ $spec };
 
