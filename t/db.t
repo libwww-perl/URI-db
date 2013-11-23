@@ -30,6 +30,7 @@ for my $spec (
     [ hive       => 10000 ],
     [ cassandra  => 9160  ],
     [ derby      => 1527  ],
+    [ vertica    => 5433  ],
 ) {
     my ($scheme, $port) = @{ $spec };
 
