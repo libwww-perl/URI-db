@@ -20,6 +20,7 @@ for my $spec (
     [ sybase     => 2638  ],
     [ informix   => 1526  ],
     [ teradata   => 1025  ],
+    [ interbase  => 3050  ],
 ) {
     my ($scheme, $port) = @{ $spec };
 
