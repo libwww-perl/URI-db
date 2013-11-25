@@ -25,13 +25,6 @@ sub _init {
     my ($engine, $impclass);
     if ($str =~ /^($URI::scheme_re):/so) {
         $engine = $1;
-    } elsif (
-        eval { $scheme->can('engine') }
-        && (my $e = $scheme->engine)
-    ) {
-        $engine = $e;
-    } elsif ($scheme && $scheme =~ m/^$URI::scheme_re:($URI::scheme_re)(?::|$)/o) {
-        $engine = $1;
     } else {
         # No engine detected.
         return $class->_db_init($str);
@@ -66,6 +59,10 @@ sub scheme { 'db' }
 
 sub engine {
     shift->SUPER::scheme(@_);
+}
+
+sub has_recognized_engine {
+    ref $_[0] ne 'URI::db';
 }
 
 sub as_string {
@@ -207,6 +204,12 @@ Returns the user name.
 =head3 C<password>
 
 Returns the password.
+
+=head3 C<has_recognized_engine>
+
+Returns true if the engine is recognized by URI::db, and false if it is not. A
+recognized engine is simply one that has an implementation in the C<URI::db>
+namespace.
 
 =head1 Support
 

@@ -6,8 +6,14 @@ use utf8;
 use URI;
 use URI::QueryParam;
 
+isa_ok my $uri = URI->new('db:'), 'URI::db';
+is $uri->engine, undef, 'DB URI with no engine should have undef engine';
+is $uri->scheme, 'db', 'DB URI with no engine should have scheme "db"';
+ok !$uri->has_recognized_engine, 'Engineless should not have recognized engine';
+
 for my $spec (
     [ db         => undef ],
+    [ unknown    => undef ],
     [ pg         => 5432  ],
     [ mysql      => 3306  ],
     [ sqlite     => undef ],
@@ -36,7 +42,7 @@ for my $spec (
     my $prefix = "db:$engine";
     my $class  = "URI::db::$engine";
     my $label  = $engine;
-    if ($engine eq 'db') {
+    if ($engine eq 'db' || $engine eq 'unknown') {
         $prefix = 'db';
         $class  = 'URI::db';
         $engine = undef;
@@ -56,6 +62,12 @@ for my $spec (
         'Simple URI query params should be empty by default';
     is $uri->as_string, "$prefix:", 'Simple URI string should be correct';
     is "$uri", "$prefix:", 'Simple URI should correctly strigify';
+
+    if ($engine) {
+        ok $uri->has_recognized_engine, "$engine should be recognized engine";
+    } else {
+        ok !$uri->has_recognized_engine, "$prefix should not be recognized engine";
+    }
 
     isa_ok $uri = URI->new("$prefix:foo.db"), $class;
     isa_ok $uri, 'URI::db' unless $prefix eq 'db';
