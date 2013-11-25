@@ -1,4 +1,4 @@
-package URI::sybase;
+package URI::db::sybase;
 use base 'URI::db';
 our $VERSION = '0.10';
 

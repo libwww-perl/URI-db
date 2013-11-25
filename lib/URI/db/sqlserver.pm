@@ -1,4 +1,4 @@
-package URI::sqlserver;
+package URI::db::sqlserver;
 use base 'URI::db';
 our $VERSION = '0.10';
 

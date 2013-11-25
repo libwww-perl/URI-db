@@ -1,4 +1,4 @@
-package URI::unify;
+package URI::db::unify;
 use base 'URI::db';
 our $VERSION = '0.10';
 

@@ -1,4 +1,4 @@
-package URI::oracle;
+package URI::db::oracle;
 use base 'URI::db';
 our $VERSION = '0.10';
 

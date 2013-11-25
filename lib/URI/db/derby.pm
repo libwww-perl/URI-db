@@ -1,4 +1,4 @@
-package URI::derby;
+package URI::db::derby;
 use base 'URI::db';
 our $VERSION = '0.10';
 

@@ -1,4 +1,4 @@
-package URI::informix;
+package URI::db::informix;
 use base 'URI::db';
 our $VERSION = '0.10';
 

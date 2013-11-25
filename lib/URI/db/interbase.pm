@@ -1,4 +1,4 @@
-package URI::firebird;
+package URI::db::interbase;
 use base 'URI::db';
 our $VERSION = '0.10';
 

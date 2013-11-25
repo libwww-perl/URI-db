@@ -1,4 +1,4 @@
-package URI::cassandra;
+package URI::db::cassandra;
 use base 'URI::db';
 our $VERSION = '0.10';
 

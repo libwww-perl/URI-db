@@ -1,4 +1,4 @@
-package URI::impala;
+package URI::db::impala;
 use base 'URI::db';
 our $VERSION = '0.10';
 

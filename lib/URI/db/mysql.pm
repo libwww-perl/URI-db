@@ -1,4 +1,4 @@
-package URI::mysql;
+package URI::db::mysql;
 use base 'URI::db';
 our $VERSION = '0.10';
 

@@ -1,4 +1,4 @@
-package URI::vertica;
+package URI::db::vertica;
 use base 'URI::db';
 our $VERSION = '0.10';
 

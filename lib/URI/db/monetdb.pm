@@ -1,4 +1,4 @@
-package URI::db2;
+package URI::db::monetdb;
 use base 'URI::db';
 our $VERSION = '0.10';
 

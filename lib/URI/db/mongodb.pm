@@ -1,4 +1,4 @@
-package URI::mongodb;
+package URI::db::mongodb;
 use base 'URI::db';
 our $VERSION = '0.10';
 

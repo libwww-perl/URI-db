@@ -1,4 +1,4 @@
-package URI::teradata;
+package URI::db::teradata;
 use base 'URI::db';
 our $VERSION = '0.10';
 

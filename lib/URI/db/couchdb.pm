@@ -1,4 +1,4 @@
-package URI::couchdb;
+package URI::db::couchdb;
 use base 'URI::db';
 our $VERSION = '0.10';
 

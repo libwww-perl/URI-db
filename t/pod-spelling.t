@@ -11,3 +11,5 @@ all_pod_files_spelling_ok();
 __DATA__
 JDBC
 GitHub
+IP
+subprotocol

@@ -1,4 +1,4 @@
-package URI::maxdb;
+package URI::db::maxdb;
 use base 'URI::db';
 our $VERSION = '0.10';
 
