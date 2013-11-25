@@ -13,3 +13,4 @@ JDBC
 GitHub
 IP
 subprotocol
+namespace
