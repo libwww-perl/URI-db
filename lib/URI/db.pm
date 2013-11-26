@@ -229,30 +229,44 @@ The following differences exist compared to the C<URI> class interface:
 
 =head3 C<engine>
 
+  my $engine = $uri->engine;
+
 The name of the database engine. This is the "subprotocol", part of the
 URI, in the JDBC parlance.
 
 =head3 C<dbname>
 
+  my $dbname = $uri->dbname;
+
 Returns the name of the database.
 
 =head3 C<host>
+
+  my $host = $uri->host;
 
 Returns the host to connect to.
 
 =head3 C<port>
 
+  my $port = $uri->port;
+
 Returns the port to connect to.
 
 =head3 C<user>
+
+  my $user = $uri->user;
 
 Returns the user name.
 
 =head3 C<password>
 
+  my $password = $uri->password;
+
 Returns the password.
 
 =head3 C<has_recognized_engine>
+
+  my $has_recognized_engine = $uri->has_recognized_engine;
 
 Returns true if the engine is recognized by URI::db, and false if it is not. A
 recognized engine is simply one that has an implementation in the C<URI::db>
@@ -260,9 +274,22 @@ namespace.
 
 =head3 C<query_params>
 
+  my @params = $uri->query_params;
+
 Returns a list of key/value pairs representing all query parameters.
+Parameters specified more than once will be returned more than once, so avoid
+assigning to a hash. If you want a hash, use L<URI::QueryParam>'s
+C<query_from_hash()>, where duplicate keys lead to an array of values for that
+key:
+
+  use URI::QueryParam;
+  my $params = $uri->query_form_hash;
 
 =head3 C<dbi_driver>
+
+  if ( my $driver = $uri->dbi_driver ) {
+      eval "require DBD::$driver" or die;
+  }
 
 Returns a string representing the L<DBI> driver name for the database engine,
 if one is known. Returns C<undef> if no driver is known.
@@ -273,12 +300,16 @@ if one is known. Returns C<undef> if no driver is known.
 
 Returns a L<DBI> DSN appropriate for use in a call to C<< DBI->connect >>. If
 no driver is known for the URI, the C<dbi:$driver:> part of the DSN will be
-omitted, in which case you can use the C<$DBI_DRIVER> environment varaible to
+omitted, in which case you can use the C<$DBI_DRIVER> environment variable to
 identify an appropriate driver.
 
 =head3 C<dbi_params>
 
-Returns a list of key/value pairs used as parameters in the L<DBI> DSN.
+  my @params = $uri->dbi_params;
+
+Returns a list of key/value pairs used as parameters in the L<DBI> DSN,
+including query parameters. Parameters specified more than once will be
+returned more than once, so avoid assigning to a hash.
 
 =head1 Support
 
