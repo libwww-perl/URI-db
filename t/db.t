@@ -14,6 +14,9 @@ ok !$uri->has_recognized_engine, 'Engineless should not have recognized engine';
 for my $spec (
     [ db         => undef ],
     [ unknown    => undef ],
+    [ postgresql => 5432  ],
+    [ postgres   => 5432  ],
+    [ pgsql      => 5432  ],
     [ pg         => 5432  ],
     [ mysql      => 3306  ],
     [ sqlite     => undef ],
