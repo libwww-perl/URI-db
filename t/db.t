@@ -158,6 +158,22 @@ for my $spec (
     is "$uri", "$prefix://localhost//foo.db",
         'host+FullPath URI should correctly strigify';
 
+    isa_ok $uri = URI->new("$prefix://localhost/C:/tmp/foo.db"), $class;
+    is $uri->engine, $engine, qq{host+WinPath URI engine should be "label"};
+    is $uri->dbname, 'C:/tmp/foo.db', 'host+WinPath URI db name should be "C:/tmp/foo.db"';
+    is $uri->host, 'localhost', 'host+WinPath URI host should be "localhost"';
+    is $uri->port, $port, 'host+WinPath URI port should be undef';
+    is $uri->user, undef, 'host+WinPath URI user should be undef';
+    is $uri->password, undef, 'host+WinPath URI password should be undef';
+    is_deeply $uri->query_form_hash, {},
+        'host+WinPath URI query params should be empty by default';
+    is_deeply [ $uri->query_params ], [],
+        'host+WinPath URI query params should be empty';
+    is $uri->as_string, "$prefix://localhost/C:/tmp/foo.db",
+        'host+WinPath URI string should be correct';
+    is "$uri", "$prefix://localhost/C:/tmp/foo.db",
+        'host+WinPath URI should correctly strigify';
+
     isa_ok $uri = URI->new("$prefix:////foo.db"), $class;
     is $uri->engine, $engine, qq{Hostless+FullPath URI engine should be "label"};
     is $uri->dbname, '/foo.db', 'Hostless+FullPath URI db name should be "/foo.db"';
@@ -221,6 +237,21 @@ for my $spec (
     is "$uri", "$prefix://example.com/mydb",
         'DB URI should correctly strigify';
 
+    isa_ok $uri = URI->new("$prefix://example.com/"), $class;
+    is $uri->engine, $engine, qq{DBless URI engine should be "label"};
+    is $uri->dbname, '', 'DBless URI db name should be ""';
+    is $uri->host, 'example.com', 'DBless URI host should be "example.com"';
+    is $uri->port, $port, 'DBless URI port should be undef';
+    is $uri->user, undef, 'DBless URI user should be undef';
+    is $uri->password, undef, 'DBless URI password should be undef';
+    is_deeply $uri->query_form_hash, {}, 'DBless URI query params should be empty by default';
+    is_deeply [ $uri->query_params ], [],
+        'DBless URI query params should be empty';
+    is $uri->as_string, "$prefix://example.com/",
+        'DBless URI string should be correct';
+    is "$uri", "$prefix://example.com/",
+        'DBless URI should correctly strigify';
+
     isa_ok $uri = URI->new("$prefix://user\@localhost//fullpathdb"), $class;
     is $uri->engine, $engine, qq{User URI engine should be "label"};
     is $uri->dbname, '/fullpathdb', 'User URI db name should be "/fullpathdb"';
@@ -235,6 +266,21 @@ for my $spec (
         'User URI string should be correct';
     is "$uri", "$prefix://user\@localhost//fullpathdb",
         'User URI should correctly strigify';
+
+    isa_ok $uri = URI->new("$prefix://user\@//fullpathdb"), $class;
+    is $uri->engine, $engine, qq{User w/o host URI engine should be "label"};
+    is $uri->dbname, '/fullpathdb', 'User w/o host URI db name should be "/fullpathdb"';
+    is $uri->host, '', 'User w/o host URI host should be ""';
+    is $uri->port, $port, 'User w/o host URI port should be undef';
+    is $uri->user, 'user', 'User w/o host URI user should be "user"';
+    is $uri->password, undef, 'User w/o host URI password should be undef';
+    is_deeply $uri->query_form_hash, {}, 'User w/o host URI query params should be empty by default';
+    is_deeply [ $uri->query_params ], [],
+        'User w/o host URI query params should be empty';
+    is $uri->as_string, "$prefix://user\@//fullpathdb",
+        'User w/o host URI string should be correct';
+    is "$uri", "$prefix://user\@//fullpathdb",
+        'User w/o host URI should correctly strigify';
 
     isa_ok $uri = URI->new("$prefix://user:secret\@localhost"), $class;
     is $uri->engine, $engine, qq{Password URI engine should be "label"};
