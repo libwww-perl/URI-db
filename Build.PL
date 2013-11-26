@@ -8,7 +8,7 @@ Module::Build->new(
     configure_requires => { 'Module::Build' => '0.30', },
     build_requires     => {
         'Module::Build' => '0.30',
-        'Test::More'    => '0.70',
+        'Test::More'    => '0.88',
     },
     requires => {
         'perl'          => 5.008001,
@@ -19,9 +19,9 @@ Module::Build->new(
     },
     meta_merge => {
         resources => {
-            homepage   => 'http://search.cpan.org/dist/URI-db/',
-            bugtracker => 'http://github.com/theory/uri-db/issues/',
-            repository => 'http://github.com/theory/uri-db/tree/',
+            homepage   => 'https://search.cpan.org/dist/URI-db/',
+            bugtracker => 'https://github.com/theory/uri-db/issues/',
+            repository => 'https://github.com/theory/uri-db/',
         }
     },
 )->create_build_script;

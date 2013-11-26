@@ -14,3 +14,4 @@ GitHub
 IP
 subprotocol
 namespace
+DSN

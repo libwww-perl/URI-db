@@ -70,11 +70,58 @@ sub as_string {
     return $self->scheme . ':' . $self->SUPER::as_string(@_);
 }
 
-sub db_name {
+sub dbname {
     my $self = shift;
     my @segs = $self->path_segments or return;
-    shift @segs if $self->opaque =~ m{^//};
+    shift @segs if $self->opaque =~ m{^//(?!/)};
     join '/' => @segs;
+}
+
+sub query_params {
+    my $self = shift;
+    require URI::QueryParam;
+    return map {
+        my $f = $_;
+        map { $f => $_ } grep { defined } $self->query_param($f)
+    } $self->query_param;
+}
+
+sub _dbi_param_map {
+    my $self = shift;
+    return (
+        [ host   => scalar $self->host    ],
+        [ port   => scalar $self->_port   ],
+        [ dbname => scalar $self->dbname ],
+    );
+}
+
+sub dbi_params {
+    my $self = shift;
+    return (
+        (
+            map { @{ $_ } }
+            grep { defined $_->[1] && length $_->[1] } $self->_dbi_param_map
+        ),
+        $self->query_params,
+    );
+}
+
+sub dbi_driver { return undef }
+
+sub _dsn_params {
+    my $self = shift;
+    my @params = $self->dbi_params;
+    my @kvpairs;
+    while (@params) {
+        push @kvpairs => join '=', shift @params, shift @params;
+    }
+    return join ';' => @kvpairs;
+}
+
+sub dbi_dsn {
+    my $self = shift;
+    my $driver = $self->dbi_driver or return $self->_dsn_params;
+    return join ':' => 'dbi', $driver, $self->_dsn_params;
 }
 
 1;
@@ -185,7 +232,7 @@ The following differences exist compared to the C<URI> class interface:
 The name of the database engine. This is the "subprotocol", part of the
 URI, in the JDBC parlance.
 
-=head3 C<db_name>
+=head3 C<dbname>
 
 Returns the name of the database.
 
@@ -210,6 +257,28 @@ Returns the password.
 Returns true if the engine is recognized by URI::db, and false if it is not. A
 recognized engine is simply one that has an implementation in the C<URI::db>
 namespace.
+
+=head3 C<query_params>
+
+Returns a list of key/value pairs representing all query parameters.
+
+=head3 C<dbi_driver>
+
+Returns a string representing the L<DBI> driver name for the database engine,
+if one is known. Returns C<undef> if no driver is known.
+
+=head3 C<dbi_dsn>
+
+  DBI->connect( $uri->dbi_dsn, $uri->user, $uri->pass );
+
+Returns a L<DBI> DSN appropriate for use in a call to C<< DBI->connect >>. If
+no driver is known for the URI, the C<dbi:$driver:> part of the DSN will be
+omitted, in which case you can use the C<$DBI_DRIVER> environment varaible to
+identify an appropriate driver.
+
+=head3 C<dbi_params>
+
+Returns a list of key/value pairs used as parameters in the L<DBI> DSN.
 
 =head1 Support
 
