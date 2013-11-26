@@ -338,7 +338,7 @@ with the combination of the scheme and the engine, e.g., C<db:pg>.
 
 =head1 Author
 
-David E. Wheeler <david@kineticode.com>
+David E. Wheeler <david@justatheory.com>
 
 =head1 Copyright and License
 
