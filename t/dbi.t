@@ -25,9 +25,15 @@ for my $spec (
         qry => [],
     },
     {
-        uri => 'db:pg://localhost:33',
-        dsn => 'dbi:Pg:host=localhost;port=33',
-        dbi => [ [host => 'localhost'], [port => 33], [dbname => undef] ],
+        uri => 'db:pg://localhost',
+        dsn => 'dbi:Pg:host=localhost',
+        dbi => [ [host => 'localhost'], [port => undef], [dbname => undef] ],
+        qry => [],
+    },
+    {
+        uri => 'db:pg://me:secret@example.com/foodb',
+        dsn => 'dbi:Pg:host=example.com;dbname=foodb',
+        dbi => [ [host => 'example.com'], [port => undef], [dbname => 'foodb'] ],
         qry => [],
     },
     {
