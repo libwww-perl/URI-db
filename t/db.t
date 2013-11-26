@@ -25,6 +25,7 @@ for my $spec (
     [ cubrid     => 1523  ], # ?
     [ firebird   => 3050  ],
     [ sqlserver  => 1433  ],
+    [ mssql      => 1433  ],
     [ db2        => 50000 ], # ?
     [ ingres     => 1524  ],
     [ sybase     => 2638  ],
