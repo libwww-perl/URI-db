@@ -1,10 +1,10 @@
-URI/db version 0.10
-===================
+Database URIs
+=============
 
-This library implements a Perl interface for a proposed standard for database
-connection URIs. Here is the definition of their structure (illustration
-adapted from [RFC 3986](http://tools.ietf.org/html/rfc3986) --- STD 66,
-chapter 3):
+This project proposes a standard for database connection URIs and provides a
+simple Perl implementation. This figure summarizes the definition syntax and
+for database URIs (illustration adapted from
+[RFC 3986](http://tools.ietf.org/html/rfc3986) --- STD 66, chapter 3):
 
       db:engine://username:password@example.com:8042/over/there/widget.db?type=animal&name=narwhal
       \/ \____/   \_______________/ \________/ \__/ \__________________/  \__/ \___/  \__/ \_____/
@@ -118,34 +118,7 @@ The format here is inspired by a lot of prior art.
     * [Django database URLs](https://github.com/kennethreitz/dj-database-url)
     * [Rails database URLs](https://github.com/glenngillen/rails-database-url)
 
-Installation
-------------
+Author
+------
 
-To install this module, type the following:
-
-    perl Build.PL
-    ./Build
-    ./Build test
-    ./Build install
-
-Or, if you don't have Module::Build installed, type the following:
-
-    perl Makefile.PL
-    make
-    make test
-    make install
-
-Dependencies
-------------
-
-URI::db requires the following modules:
-
-* URI
-
-Copyright and Licence
----------------------
-
-Copyright (c) 2013 David E. Wheeler. Some Rights Reserved.
-
-This module is free software; you can redistribute it and/or modify it under
-the same terms as Perl itself.
+[David E. Wheeler](http://theory.so/)

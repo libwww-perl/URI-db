@@ -1,0 +1,44 @@
+URI/db version 0.10
+===================
+
+This library implements a Perl interface for a proposed standard for database
+connection URIs. The basic formats are:
+
+* `db:engine://username:password@example.com:8042/over/there/widget.db?type=animal&name=narwhal`
+* `db:engine:my_big_fat_database?subject=Topic`
+
+This library also includes an interface to convert database URIs to
+[DBI](https://metacpan.org/module/DBI) DSNs. For additional information on
+the format, see `README.md`.
+
+Installation
+------------
+
+To install this module, type the following:
+
+    perl Build.PL
+    ./Build
+    ./Build test
+    ./Build install
+
+Or, if you don't have Module::Build installed, type the following:
+
+    perl Makefile.PL
+    make
+    make test
+    make install
+
+Dependencies
+------------
+
+URI::db requires the following modules:
+
+* URI
+
+Copyright and Licence
+---------------------
+
+Copyright (c) 2013 David E. Wheeler. Some Rights Reserved.
+
+This module is free software; you can redistribute it and/or modify it under
+the same terms as Perl itself.
