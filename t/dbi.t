@@ -43,6 +43,24 @@ for my $spec (
         qry => [ foo => 1, foo => 2, lol => 'yes' ],
     },
     {
+        uri => 'db:postgresql://foo:123/try?foo=1&foo=2&lol=yes',
+        dsn => 'dbi:Pg:host=foo;port=123;dbname=try;foo=1;foo=2;lol=yes',
+        dbi => [ [host => 'foo'], [port => 123], [dbname => 'try'] ],
+        qry => [ foo => 1, foo => 2, lol => 'yes' ],
+    },
+    {
+        uri => 'db:postgres://foo:123/try?foo=1&foo=2&lol=yes',
+        dsn => 'dbi:Pg:host=foo;port=123;dbname=try;foo=1;foo=2;lol=yes',
+        dbi => [ [host => 'foo'], [port => 123], [dbname => 'try'] ],
+        qry => [ foo => 1, foo => 2, lol => 'yes' ],
+    },
+    {
+        uri => 'db:pgsql://foo:123/try?foo=1&foo=2&lol=yes',
+        dsn => 'dbi:Pg:host=foo;port=123;dbname=try;foo=1;foo=2;lol=yes',
+        dbi => [ [host => 'foo'], [port => 123], [dbname => 'try'] ],
+        qry => [ foo => 1, foo => 2, lol => 'yes' ],
+    },
+    {
         uri => 'db:sqlite:',
         dsn => 'dbi:SQLite:',
         dbi => [ [dbname => undef] ],
@@ -140,6 +158,12 @@ for my $spec (
     },
     {
         uri => 'db:mysql://localhost:33/foo',
+        dsn => 'dbi:mysql:host=localhost;port=33;database=foo',
+        dbi => [ [host => 'localhost'], [port => 33], [database => 'foo'] ],
+        qry => [],
+    },
+    {
+        uri => 'db:mariadb://localhost:33/foo',
         dsn => 'dbi:mysql:host=localhost;port=33;database=foo',
         dbi => [ [host => 'localhost'], [port => 33], [database => 'foo'] ],
         qry => [],
