@@ -267,21 +267,6 @@ for my $spec (
     is "$uri", "$prefix://user\@localhost//fullpathdb",
         'User URI should correctly strigify';
 
-    isa_ok $uri = URI->new("$prefix://user\@//fullpathdb"), $class;
-    is $uri->engine, $engine, qq{User w/o host URI engine should be "label"};
-    is $uri->dbname, '/fullpathdb', 'User w/o host URI db name should be "/fullpathdb"';
-    is $uri->host, '', 'User w/o host URI host should be ""';
-    is $uri->port, $port, 'User w/o host URI port should be undef';
-    is $uri->user, 'user', 'User w/o host URI user should be "user"';
-    is $uri->password, undef, 'User w/o host URI password should be undef';
-    is_deeply $uri->query_form_hash, {}, 'User w/o host URI query params should be empty by default';
-    is_deeply [ $uri->query_params ], [],
-        'User w/o host URI query params should be empty';
-    is $uri->as_string, "$prefix://user\@//fullpathdb",
-        'User w/o host URI string should be correct';
-    is "$uri", "$prefix://user\@//fullpathdb",
-        'User w/o host URI should correctly strigify';
-
     isa_ok $uri = URI->new("$prefix://user:secret\@localhost"), $class;
     is $uri->engine, $engine, qq{Password URI engine should be "label"};
     is $uri->dbname, undef, 'Password URI db name should be undef';

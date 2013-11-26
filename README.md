@@ -1,5 +1,5 @@
-Database URIs
-=============
+Database URI
+============
 
 This project proposes a standard for database connection URIs and provides a
 simple Perl implementation. This figure summarizes the definition syntax and
@@ -34,10 +34,11 @@ Notes on this syntax:
   There is no formal list of supported engines, though certain implementations
   may specify engine-specific semantics, such as a default port.
 
-* The *authority* part is separated from the engine by a double slsah, `//`.
-  It optionally holds an optional user-information part, terminated with `@`
-  (e.g., `username:password@`); a hostname (e.g., domain name or IP address);
-  and an optional port number, preceded by a colon, `:`.
+* The *authority* part is separated from the engine by a double slsah, `//`,
+  and is terminated by the next slash. It consistes of an optional
+  user-information part, terminated with `@` (e.g., `username:password@`); a
+  required host address (e.g., domain name or IP address); and an optional
+  port number, preceded by a colon, `:`.
 
 * The *path* part specifies the database name or path. It must be separated
   from the authority, if the authority is present, by a single slash, `/`. If
@@ -66,7 +67,7 @@ When a URI includes an authority part, it must be preceded by a double slash:
 
 * `db:pg://example.com`
 * `db:mysql://root@localhost`
-* `db:pg://postgres:secr3t@`
+* `db:pg://postgres:secr3t@example.net`
 
 To add the database name, separate it from the authority by a single slash:
 
@@ -111,7 +112,7 @@ The format here is inspired by a lot of prior art.
   set the precedent for an opaque URI with a second, embedded URI, as
   [discussed here](https://groups.google.com/forum/#!topic/comp.lang.java.programmer/twkIYNaDS64).
 
-* A number of database URL formats set the standard for `engine://authority/dbname`, including:
+* A number of database URI formats set the standard for `engine://authority/dbname`, including:
     * [PostgreSQL libpq URIs](http://www.postgresql.org/docs/9.3/static/libpq-connect.html#LIBPQ-CONNSTRING)
     * [SQLAlchemy URLs](http://docs.sqlalchemy.org/en/rel_0_9/core/engines.html#database-urls)
     * [Stackato database URLs](http://docs.stackato.com/3.0/user/services/data-services.html#database-url)
