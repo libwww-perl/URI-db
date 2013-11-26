@@ -199,13 +199,11 @@ Some examples:
 
 =item C<db:sqlite:/path/to/some.db>
 
-=item C<db:sqlite://dbname>
-
 =item C<db:sqlite:../relative.db>
 
-=item C<db::sqlite//../relative.db>
+=item C<db:firebird://localhost//path/to/some.db>
 
-=item C<db:firebird:///path/to/some.db>
+=item C<db:firebird://localhost/relative.db>
 
 =item C<db:pg://>
 
@@ -217,7 +215,7 @@ Some examples:
 
 =item C<db:pg://user@localhost>
 
-=item C<db:pg://user:secret@localhost>
+=item C<db:pg://user:secret@>
 
 =item C<db:pg://other@localhost/otherdb?connect_timeout=10&application_name=myapp>
 
