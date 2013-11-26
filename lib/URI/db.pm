@@ -73,7 +73,7 @@ sub as_string {
 sub dbname {
     my $self = shift;
     my @segs = $self->path_segments or return;
-    shift @segs if $self->opaque =~ m{^//(?!/)};
+    shift @segs if $self->opaque =~ m{^//(?://|(?!/))};
     join '/' => @segs;
 }
 

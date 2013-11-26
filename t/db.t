@@ -141,6 +141,38 @@ for my $spec (
     is $uri->as_string, "$prefix://", 'Hostless URI string should be correct';
     is "$uri", "$prefix://", 'Hostless URI should correctly strigify';
 
+    isa_ok $uri = URI->new("$prefix://localhost//foo.db"), $class;
+    is $uri->engine, $engine, qq{host+FullPath URI engine should be "label"};
+    is $uri->dbname, '/foo.db', 'host+FullPath URI db name should be "/foo.db"';
+    is $uri->host, 'localhost', 'host+FullPath URI host should be "localhost"';
+    is $uri->port, $port, 'host+FullPath URI port should be undef';
+    is $uri->user, undef, 'host+FullPath URI user should be undef';
+    is $uri->password, undef, 'host+FullPath URI password should be undef';
+    is_deeply $uri->query_form_hash, {},
+        'host+FullPath URI query params should be empty by default';
+    is_deeply [ $uri->query_params ], [],
+        'host+FullPath URI query params should be empty';
+    is $uri->as_string, "$prefix://localhost//foo.db",
+        'host+FullPath URI string should be correct';
+    is "$uri", "$prefix://localhost//foo.db",
+        'host+FullPath URI should correctly strigify';
+
+    isa_ok $uri = URI->new("$prefix:////foo.db"), $class;
+    is $uri->engine, $engine, qq{Hostless+FullPath URI engine should be "label"};
+    is $uri->dbname, '/foo.db', 'Hostless+FullPath URI db name should be "/foo.db"';
+    is $uri->host, '', 'Hostless+FullPath URI host should be ""';
+    is $uri->port, $port, 'Hostless+FullPath URI port should be undef';
+    is $uri->user, undef, 'Hostless+FullPath URI user should be undef';
+    is $uri->password, undef, 'Hostless+FullPath URI password should be undef';
+    is_deeply $uri->query_form_hash, {},
+        'Hostless+FullPath URI query params should be empty by default';
+    is_deeply [ $uri->query_params ], [],
+        'Hostless+FullPath URI query params should be empty';
+    is $uri->as_string, "$prefix:////foo.db",
+        'Hostless+FullPath URI string should be correct';
+    is "$uri", "$prefix:////foo.db",
+        'Hostless+FullPath URI should correctly strigify';
+
     isa_ok $uri = URI->new("$prefix://localhost"), $class;
     is $uri->engine, $engine, qq{Localhost URI engine should be "label"};
     is $uri->dbname, undef, 'Localhost URI db name should be undef';
