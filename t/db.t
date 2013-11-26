@@ -19,6 +19,7 @@ for my $spec (
     [ pgsql      => 5432  ],
     [ pg         => 5432  ],
     [ mysql      => 3306  ],
+    [ mariadb    => 3306  ],
     [ sqlite     => undef ],
     [ oracle     => 1521  ],
     [ cubrid     => 1523  ], # ?
