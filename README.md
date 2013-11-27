@@ -39,9 +39,9 @@ Notes on this syntax:
   `username:password@`); a required host address (e.g., domain name or IP
   address); and an optional port number, preceded by a colon, `:`.
 
-* The *path* part specifies the database name or path. For URIs that contain
-  an authority part, a path specifying a file name must be absolute. URIs
-  without an authority may use absolute or relative paths.
+* The *path* part specifies the database name or path. It must be separated
+  from the authority, if the authority is present, by a single slash, `/`. If
+  the database name is a full path, it must start with an additional slash.
 
 * The optional *query* part, separated by a question mark, `?`, contains
   `key=value` pairs separated by a semicolon, `;`, or ampersand, `&`. These
@@ -74,11 +74,13 @@ To add the database name, separate it from the authority by a single slash:
 * `db:mongodb://localhost:27017/myDatabase`
 * `db:oracle://scott:tiger@foo.com/scott`
 
-Some databases, such as Firebird, take both a host name and a file path.
-These paths must be absolute:
+Some databases, such as Firebird, take both a host name and a file path. Just
+put the relative or absolute path after that slash, as appropriate:
 
-* `db:firebird://localhost/tmp/test.gdb`
-* `db:firebird://localhost/C:/temp/test.gdb`
+* `db:firebird://localhost/test.gdb` - Relative
+* `db:firebird://localhost/../test.gdb` - Relative
+* `db:firebird://localhost//tmp/test.gdb` - Absolute
+* `db:firebird://localhost/C:/temp/test.gdb` - Absolute
 
 Any URI format may optionally have a query part containing key/value pairs:
 

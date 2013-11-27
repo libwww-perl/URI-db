@@ -70,14 +70,10 @@ sub as_string {
     return $self->scheme . ':' . $self->SUPER::as_string(@_);
 }
 
-sub is_file_based { 0 }
-
 sub dbname {
     my $self = shift;
     my @segs = $self->path_segments or return;
-    # Remove first segment if not file based or contains a Windows path.
-    shift @segs if (!$self->is_file_based && $self->opaque =~ m{^//(?!/)})
-                || ($segs[1] && $segs[1] =~ m{^[a-z]:(?:$|[\\])}i);
+    shift @segs if $self->opaque =~ m{^//(?://|(?!/))};
     join '/' => @segs;
 }
 
@@ -197,7 +193,7 @@ Some examples:
 
 =over
 
-=item C<db:sqlite:>
+=item C<db:sqlite>
 
 =item C<db:sqlite:dbname>
 
@@ -205,15 +201,21 @@ Some examples:
 
 =item C<db:sqlite:../relative.db>
 
-=item C<db:firebird://localhost/path/to/some.db>
+=item C<db:firebird://localhost//path/to/some.db>
+
+=item C<db:firebird://localhost/relative.db>
+
+=item C<db:pg://>
 
 =item C<db:pg://localhost>
 
-=item C<db:pg://localhost:5433/>
+=item C<db:pg://localhost:5433>
 
 =item C<db:pg://localhost/mydb>
 
 =item C<db:pg://user@localhost>
+
+=item C<db:pg://user:secret@>
 
 =item C<db:pg://other@localhost/otherdb?connect_timeout=10&application_name=myapp>
 

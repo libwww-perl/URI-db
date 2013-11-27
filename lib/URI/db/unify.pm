@@ -2,9 +2,8 @@ package URI::db::unify;
 use base 'URI::db';
 our $VERSION = '0.10';
 
-sub default_port  { 27117 }
-sub is_file_based { 1 }
-sub dbi_driver    { 'Unify' }
+sub default_port { 27117 }
+sub dbi_driver   { 'Unify' }
 
 sub _dbi_param_map { }
 
