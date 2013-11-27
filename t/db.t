@@ -12,30 +12,32 @@ is $uri->scheme, 'db', 'DB URI with no engine should have scheme "db"';
 ok !$uri->has_recognized_engine, 'Engineless should not have recognized engine';
 
 # Try changing the engine.
-$uri->engine('foo');
-pass('Assign engine');
+is $uri->engine('foo'), undef, 'Assign engine';
 is $uri->engine, 'foo', 'Engine should now be "foo"';
 is $uri->as_string, 'db:foo:', 'Engine should be included in stringified URI';
 isa_ok $uri, 'URI::db', 'Updated engine URI';
 
 # Try changing to a known engine.
-$uri->engine('pg');
-pass('Assign engine');
+is $uri->engine('pg'), 'foo', 'Assign engine';
 is $uri->engine, 'pg', 'Engine should now be "pg"';
 is $uri->as_string, 'db:pg:', 'Engine should be included in stringified URI';
 isa_ok $uri, 'URI::db::pg', 'Pg engine URI';
 
+# Try setting to an undefined engine.
+is $uri->engine(undef), 'pg', 'Assign undef engine';
+is $uri->engine, undef, 'DB URI with undef engine should have undef engine';
+is $uri->scheme, 'db', 'DB URI with undef engine should have scheme "db"';
+isa_ok $uri, 'URI::db', 'Undef engine URI';
+
 # Test dbname with opaque URI.
 isa_ok $uri = URI->new('db:'), 'URI::db', 'Another opaque DB URI';
 is $uri->dbname, undef, 'DB name should be undef';
-$uri->dbname('foo');
-pass 'Assign a database name';
+is $uri->dbname('foo'), "", 'Assign a database name';
 is $uri->dbname, 'foo', 'DB name should be "foo"';
 is $uri->path, 'foo', 'Path should be "foo"';
 
 # Pass a path.
-$uri->dbname('/tmp/foo');
-pass 'Assign a database name path';
+is $uri->dbname('/tmp/foo'), 'foo', 'Assign a database name path';
 is $uri->dbname, '/tmp/foo', 'DB name should be "/tmp/foo"';
 is $uri->path, '/tmp/foo', 'Path should be "/tmp/foo"';
 

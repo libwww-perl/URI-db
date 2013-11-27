@@ -236,51 +236,68 @@ Some examples:
 
 =back
 
-=head2 Interface
+=head1 Interface
 
 The following differences exist compared to the C<URI> class interface:
+
+=head2 Class Method
+
+=head3 C<default_port>
+
+Returns the default port for the engine. This is a class method value defined
+by each recognized URI engine.
+
+=head2 Accessors
 
 =head3 C<engine>
 
   my $engine = $uri->engine;
+  $uri->engine( $new_engine );
 
-The name of the database engine. May be any valid URI scheme value, though
-recognized engines provide additional context, such as the C<default_port()>
-and a driver-specific C<dbi_dsn()>.
+Gets or sets the engine part of the URI, which may be any valid URI scheme
+value, though recognized engines provide additional context, such as the
+C<default_port()> and a driver-specific C<dbi_dsn()>.
+
+If called with an argument, it updates the engine, possibly changing the
+class of the URI, and returns the old engine value.
 
 =head3 C<dbname>
 
   my $dbname = $uri->dbname;
+  $uri->dbname( $new_dbname );
 
-Returns the name of the database.
+Gets or sets the name of the database. If called with an argument, the path
+will also be updated.
 
 =head3 C<host>
 
   my $host = $uri->host;
+  $uri->host( $new_host );
 
-Returns the host to connect to.
+Gets or sets the host to connect to.
 
 =head3 C<port>
 
   my $port = $uri->port;
+  $uri->port( $new_port );
 
-Returns the port to connect to.
-
-=head3 C<default_port>
-
-The default port for the engine.
+Gets or sets the port to connect to.
 
 =head3 C<user>
 
   my $user = $uri->user;
+  $uri->user( $new_user );
 
-Returns the user name.
+Gets or sets the user name.
 
 =head3 C<password>
 
   my $password = $uri->password;
+  $uri->password( $new_password );
 
-Returns the password.
+Gets or sets the password.
+
+=head2 Instance Methods
 
 =head3 C<has_recognized_engine>
 
