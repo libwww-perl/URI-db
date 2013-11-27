@@ -26,19 +26,18 @@ for database URIs (illustration adapted from
 Notes on this syntax:
 
 * The Database URI *scheme* is `db`. Consequently, database URIs always start
-  with `db:`. This is the [URI scheme](http://en.wikipedia.org/wiki/URI_scheme)
-  that defines a database URI.
+  with `db:`. This is the [URI scheme] that defines a database URI.
 
 * Next comes the database *engine*. This part is a string naming the type of
   database engine for the database. It must always be followed by a colon, `:`.
   There is no formal list of supported engines, though certain implementations
   may specify engine-specific semantics, such as a default port.
 
-* The *authority* part is separated from the engine by a double slsah, `//`,
-  and is terminated by the next slash. It consistes of an optional
-  user-information part, terminated with `@` (e.g., `username:password@`); a
-  required host address (e.g., domain name or IP address); and an optional
-  port number, preceded by a colon, `:`.
+* The *authority* part is separated from the engine by a double slash, `//`,
+  and terminated by the next slash or end of the URI. It consists of an
+  optional user-information part, terminated by `@` (e.g.,
+  `username:password@`); a required host address (e.g., domain name or IP
+  address); and an optional port number, preceded by a colon, `:`.
 
 * The *path* part specifies the database name or path. For URIs that contain
   an authority part, a path specifying a file name must be absolute. URIs
@@ -46,7 +45,8 @@ Notes on this syntax:
 
 * The optional *query* part, separated by a question mark, `?`, contains
   `key=value` pairs separated by a semicolon, `;`, or ampersand, `&`. These
-  parameters may be used to configure a database connection.
+  parameters may be used to configure a database connection with parameters not
+  directly supported by the rest of the URI format.
 
 Here are some database URIs without an authority part, which is typical for
 non-server engines such as [SQLite](http://sqlite.org/), where the path part
@@ -57,16 +57,14 @@ is a relative or absolute file name:
 * `db:sqlite:../foo.db`
 * `db:sqlite:/var/db/foo.sqlite`
 
-Other engines may not require a host name, either, but use a database name,
-rather than a file name:
+Other engines may use a database name rather than a file name:
 
 * `db:ingres:mydb`
-* `db:pg:template1`
+* `db:postgresql:template1`
 
-When a URI includes an authority part, it must be preceded by a double slash
-and followed by a single slash:
+When a URI includes an authority part, it must be preceded by a double slash:
 
-* `db:pg://example.com/`
+* `db:postgresql://example.com/`
 * `db:mysql://root@localhost/`
 * `db:pg://postgres:secr3t@example.net`
 
@@ -82,7 +80,7 @@ These paths must be absolute:
 * `db:firebird://localhost/tmp/test.gdb`
 * `db:firebird://localhost/C:/temp/test.gdb`
 
-Any URI format may optinally have a query part conaining key/value pairs:
+Any URI format may optionally have a query part containing key/value pairs:
 
 * `db:sqlite:foo.db?foreign_keys=ON;journal_mode=WAL`
 * `db:pg://localhost:5433/postgres?client_encoding=utf8;connect_timeout=10`
@@ -107,7 +105,7 @@ with the combination of the scheme and the engine, e.g., `db:pg`.
 
 The format here is inspired by a lot of prior art.
 
-* [JDBC URIs](http://docs.oracle.com/cd/B14117_01/java.101/b10979/urls.htm#BEIJFHHB)
+* [JDBC URIs](http://docs.oracle.com/javase/6/docs/technotes/guides/jdbc/getstart/connection.html#997649)
   set the precedent for an opaque URI with a second, embedded URI, as
   [discussed here](https://groups.google.com/forum/#!topic/comp.lang.java.programmer/twkIYNaDS64).
 
