@@ -70,7 +70,7 @@ When a URI includes an authority part, it must be preceded by a double slash:
 
 Formally, the authority part requires a host name, but some implementations,
 inspired by the [File scheme](http://en.wikipedia.org/wiki/File_URI_scheme),
-might allow the host to be optional:
+might allow the host to imply localhost.
 
 * `db:mysql:/root@`
 * `db:postgres://postgres:secr3t@`
