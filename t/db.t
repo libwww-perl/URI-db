@@ -11,7 +11,22 @@ is $uri->engine, undef, 'DB URI with no engine should have undef engine';
 is $uri->scheme, 'db', 'DB URI with no engine should have scheme "db"';
 ok !$uri->has_recognized_engine, 'Engineless should not have recognized engine';
 
+# Try changing the engine.
+$uri->engine('foo');
+pass('Assign engine');
+is $uri->engine, 'foo', 'Engine should now be "foo"';
+is $uri->as_string, 'db:foo:', 'Engine should be included in stringified URI';
+isa_ok $uri, 'URI::db', 'Updated engine URI';
+
+# Try changing to a known engine.
+$uri->engine('pg');
+pass('Assign engine');
+is $uri->engine, 'pg', 'Engine should now be "pg"';
+is $uri->as_string, 'db:pg:', 'Engine should be included in stringified URI';
+isa_ok $uri, 'URI::db::pg', 'Pg engine URI';
+
 # Test dbname with opaque URI.
+isa_ok $uri = URI->new('db:'), 'URI::db', 'Another opaque DB URI';
 is $uri->dbname, undef, 'DB name should be undef';
 $uri->dbname('foo');
 pass 'Assign a database name';

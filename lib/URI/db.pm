@@ -58,7 +58,15 @@ sub _db_init {
 sub scheme { 'db' }
 
 sub engine {
-    shift->SUPER::scheme(@_);
+    my $self = shift;
+    return $self->SUPER::scheme unless @_;
+    # Changing the engine can change the class.
+    my $class = ref $self;
+    my $old = $self->SUPER::scheme(@_);
+    my $newself = $class->_init( $self->as_string );
+    $$self = $$newself;
+    bless $self, ref $newself;
+    return $old;
 }
 
 sub has_recognized_engine {
