@@ -141,13 +141,14 @@ URI::db - Database URIs
 This class provides support for database URIs. They're inspired by
 L<JDBC URIs|http://docs.oracle.com/cd/B14117_01/java.101/b10979/urls.htm#BEIJFHHB> and
 L<PostgreSQL URIs|http://www.postgresql.org/docs/9.3/static/libpq-connect.html#LIBPQ-CONNSTRING>,
-though they're a bit more formal.
+though they're a bit more formal. The specification for their format is
+documented in L<F<README.md>|https:/github.com/theory/db-uri/>.
 
 =head3 Format
 
 A database URI is made up of these parts:
 
-  db:engine:[//[user[:password]@][netloc][:port]/][dbname][?params]
+  db:engine:[//[user[:password]@][host][:port]/][dbname][?params]
 
 =over
 
@@ -167,9 +168,9 @@ The user name to use when connecting to the database.
 
 The password to use when connecting to the database.
 
-=item C<netloc>
+=item C<host>
 
-The network location to connect to, such as a host name or IP address.
+The host address to connect to.
 
 =item C<port>
 
@@ -201,6 +202,8 @@ Some examples:
 
 =item C<db:sqlite:../relative.db>
 
+=item C<db:firebird://localhost/%2Fpath/to/some.db>
+
 =item C<db:firebird://localhost//path/to/some.db>
 
 =item C<db:firebird://localhost/relative.db>
@@ -215,7 +218,9 @@ Some examples:
 
 =item C<db:pg://user@localhost>
 
-=item C<db:pg://user:secret@>
+=item C<db:pg://user:secret@/mydb>
+
+=item C<db:pg:///mydb>
 
 =item C<db:pg://other@localhost/otherdb?connect_timeout=10&application_name=myapp>
 
@@ -229,8 +234,9 @@ The following differences exist compared to the C<URI> class interface:
 
   my $engine = $uri->engine;
 
-The name of the database engine. This is the "subprotocol", part of the
-URI, in the JDBC parlance.
+The name of the database engine. May be any valid URI scheme value, though
+recognized engines provide additional context, such as the C<default_port()>
+and a driver-specific C<dbi_dsn()>.
 
 =head3 C<dbname>
 
@@ -249,6 +255,10 @@ Returns the host to connect to.
   my $port = $uri->port;
 
 Returns the port to connect to.
+
+=head3 C<default_port>
+
+The default port for the engine.
 
 =head3 C<user>
 
@@ -318,21 +328,6 @@ contribute!
 Please file bug reports via
 L<GitHub Issues|http://github.com/theory/uri-db/issues/> or by sending mail to
 L<bug-URI-db@rt.cpan.org|mailto:bug-URI-db@rt.cpan.org>.
-
-=head1 Compliance
-
-Formally, a database URI is an opaque URI starting with C<db:> followed by an
-embedded server-style URI. For example, this database URI:
-
-  db:pg://localhost/mydb
-
-Is formally the URI C<pg://localhost/mydb> embedded in an opaque C<db:> URI.
-It adheres to this formal definition because the scheme part of a URI is not
-allowed to contain a sub-scheme (or subprotocol, in the JDBC parlance). It
-is therefore a legal URI embedded in a second legal URI
-
-Informally, it's simpler to think of a database URI as a single URI starting
-with the combination of the scheme and the engine, e.g., C<db:pg>.
 
 =head1 Author
 

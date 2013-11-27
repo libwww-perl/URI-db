@@ -8,8 +8,8 @@ connection URIs. The basic formats are:
 * `db:engine:my_big_fat_database?subject=Topic`
 
 This library also includes an interface to convert database URIs to
-[DBI](https://metacpan.org/module/DBI) DSNs. For additional information on
-the format, see `README.md`.
+[DBI](https://metacpan.org/module/DBI) DSNs. For additional information on the
+format, see `README.md`.
 
 Installation
 ------------
