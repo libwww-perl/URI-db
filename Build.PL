@@ -11,8 +11,9 @@ Module::Build->new(
         'Test::More'    => '0.88',
     },
     requires => {
-        'perl'          => 5.008001,
-    },
+        'perl' => 5.008001,
+        'URI' => '1.40',
+   },
     recommends => {
         'Test::Pod'           => '1.41',
         'Test::Pod::Coverage' => '1.06',
