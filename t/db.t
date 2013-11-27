@@ -109,23 +109,10 @@ for my $spec (
     is "$uri", "$prefix:/path/to/foo.db",
         'Simple URI should correctly strigify';
 
-    isa_ok $uri = URI->new("$prefix://"), $class;
-    is $uri->engine, $engine, qq{Hostless URI engine should be "label"};
-    is $uri->dbname, undef, 'Hostless URI db name should be undef';
-    is $uri->host, '', 'Hostless URI host should be ""';
-    is $uri->port, $port, 'Hostless URI port should be undef';
-    is $uri->user, undef, 'Hostless URI user should be undef';
-    is $uri->password, undef, 'Hostless URI password should be undef';
-    is_deeply $uri->query_form_hash, {},
-        'Hostless URI query params should be empty by default';
-    is_deeply [ $uri->query_params ], [],
-        'Hostless URI query params should be empty';
-    is $uri->as_string, "$prefix://", 'Hostless URI string should be correct';
-    is "$uri", "$prefix://", 'Hostless URI should correctly strigify';
-
-    isa_ok $uri = URI->new("$prefix://localhost//foo.db"), $class;
+    isa_ok $uri = URI->new("$prefix://localhost/foo.db"), $class;
     is $uri->engine, $engine, qq{host+FullPath URI engine should be "label"};
-    is $uri->dbname, '/foo.db', 'host+FullPath URI db name should be "/foo.db"';
+    my $dbname = $uri->is_file_based ? '/foo.db' : 'foo.db';
+    is $uri->dbname, $dbname, qq{host+FullPath URI db name should be "$dbname"};
     is $uri->host, 'localhost', 'host+FullPath URI host should be "localhost"';
     is $uri->port, $port, 'host+FullPath URI port should be undef';
     is $uri->user, undef, 'host+FullPath URI user should be undef';
@@ -134,9 +121,9 @@ for my $spec (
         'host+FullPath URI query params should be empty by default';
     is_deeply [ $uri->query_params ], [],
         'host+FullPath URI query params should be empty';
-    is $uri->as_string, "$prefix://localhost//foo.db",
+    is $uri->as_string, "$prefix://localhost/foo.db",
         'host+FullPath URI string should be correct';
-    is "$uri", "$prefix://localhost//foo.db",
+    is "$uri", "$prefix://localhost/foo.db",
         'host+FullPath URI should correctly strigify';
 
     isa_ok $uri = URI->new("$prefix://localhost/C:/tmp/foo.db"), $class;
@@ -153,6 +140,22 @@ for my $spec (
     is $uri->as_string, "$prefix://localhost/C:/tmp/foo.db",
         'host+WinPath URI string should be correct';
     is "$uri", "$prefix://localhost/C:/tmp/foo.db",
+        'host+WinPath URI should correctly strigify';
+
+    isa_ok $uri = URI->new("$prefix://localhost/c:\\tmp\\foo.db"), $class;
+    is $uri->engine, $engine, qq{host+WinPath URI engine should be "label"};
+    is $uri->dbname, 'c:\\tmp\\foo.db', 'host+WinPath URI db name should be "c:\\tmp\\foo.db"';
+    is $uri->host, 'localhost', 'host+WinPath URI host should be "localhost"';
+    is $uri->port, $port, 'host+WinPath URI port should be undef';
+    is $uri->user, undef, 'host+WinPath URI user should be undef';
+    is $uri->password, undef, 'host+WinPath URI password should be undef';
+    is_deeply $uri->query_form_hash, {},
+        'host+WinPath URI query params should be empty by default';
+    is_deeply [ $uri->query_params ], [],
+        'host+WinPath URI query params should be empty';
+    is $uri->as_string, "$prefix://localhost/c:\\tmp\\foo.db",
+        'host+WinPath URI string should be correct';
+    is "$uri", "$prefix://localhost/c:\\tmp\\foo.db",
         'host+WinPath URI should correctly strigify';
 
     isa_ok $uri = URI->new("$prefix://localhost"), $class;
@@ -189,7 +192,8 @@ for my $spec (
 
     isa_ok $uri = URI->new("$prefix://example.com/mydb"), $class;
     is $uri->engine, $engine, qq{DB URI engine should be "label"};
-    is $uri->dbname, 'mydb', 'DB URI db name should be "mydb"';
+    $dbname = $uri->is_file_based ? '/mydb' : 'mydb';
+    is $uri->dbname, $dbname, qq{DB URI db name should be "$dbname"};
     is $uri->host, 'example.com', 'DB URI host should be "example.com"';
     is $uri->port, $port, 'DB URI port should be undef';
     is $uri->user, undef, 'DB URI user should be undef';
@@ -204,7 +208,8 @@ for my $spec (
 
     isa_ok $uri = URI->new("$prefix://example.com/"), $class;
     is $uri->engine, $engine, qq{DBless URI engine should be "label"};
-    is $uri->dbname, '', 'DBless URI db name should be ""';
+    $dbname = $uri->is_file_based ? '/' : '';
+    is $uri->dbname, $dbname, qq{DBless URI db name should be "$dbname"};
     is $uri->host, 'example.com', 'DBless URI host should be "example.com"';
     is $uri->port, $port, 'DBless URI port should be undef';
     is $uri->user, undef, 'DBless URI user should be undef';
@@ -217,9 +222,10 @@ for my $spec (
     is "$uri", "$prefix://example.com/",
         'DBless URI should correctly strigify';
 
-    isa_ok $uri = URI->new("$prefix://user\@localhost//fullpathdb"), $class;
+    isa_ok $uri = URI->new("$prefix://user\@localhost/fullpathdb"), $class;
     is $uri->engine, $engine, qq{User URI engine should be "label"};
-    is $uri->dbname, '/fullpathdb', 'User URI db name should be "/fullpathdb"';
+    $dbname = $uri->is_file_based ? '/fullpathdb' : 'fullpathdb';
+    is $uri->dbname, $dbname, qq{User URI db name should be "$dbname"};
     is $uri->host, 'localhost', 'User URI host should be "localhost"';
     is $uri->port, $port, 'User URI port should be undef';
     is $uri->user, 'user', 'User URI user should be "user"';
@@ -227,9 +233,9 @@ for my $spec (
     is_deeply $uri->query_form_hash, {}, 'User URI query params should be empty by default';
     is_deeply [ $uri->query_params ], [],
         'User URI query params should be empty';
-    is $uri->as_string, "$prefix://user\@localhost//fullpathdb",
+    is $uri->as_string, "$prefix://user\@localhost/fullpathdb",
         'User URI string should be correct';
-    is "$uri", "$prefix://user\@localhost//fullpathdb",
+    is "$uri", "$prefix://user\@localhost/fullpathdb",
         'User URI should correctly strigify';
 
     isa_ok $uri = URI->new("$prefix://user:secret\@localhost"), $class;
@@ -251,7 +257,8 @@ for my $spec (
     isa_ok $uri = URI->new("$prefix://other\@localhost/otherdb?foo=bar&foo=baz&baz=yow"),
         $class;
     is $uri->engine, $engine, qq{Query URI engine should be "label"};
-    is $uri->dbname, 'otherdb', 'Query URI db name should be "otherdb"';
+    $dbname = $uri->is_file_based ? '/otherdb' : 'otherdb';
+    is $uri->dbname, $dbname, qq{Query URI db name should be "$dbname"};
     is $uri->host, 'localhost', 'Query URI host should be "localhost"';
     is $uri->port, $port, 'Query URI port should be undef';
     is $uri->user, 'other', 'Query URI user should be "other"';

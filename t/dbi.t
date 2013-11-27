@@ -98,8 +98,8 @@ for my $spec (
     },
     {
         uri => 'db:firebird://localhost:33/foo',
-        dsn => 'dbi:Firebird:host=localhost;port=33;dbname=foo',
-        dbi => [ [host => 'localhost'], [port => 33], [dbname => 'foo'] ],
+        dsn => 'dbi:Firebird:host=localhost;port=33;dbname=/foo',
+        dbi => [ [host => 'localhost'], [port => 33], [dbname => '/foo'] ],
         qry => [],
     },
     {
@@ -128,8 +128,8 @@ for my $spec (
     },
     {
         uri => 'db:interbase://localhost:33/foo',
-        dsn => 'dbi:InterBase:host=localhost;port=33;dbname=foo',
-        dbi => [ [host => 'localhost'], [port => 33], [dbname => 'foo'] ],
+        dsn => 'dbi:InterBase:host=localhost;port=33;dbname=/foo',
+        dbi => [ [host => 'localhost'], [port => 33], [dbname => '/foo'] ],
         qry => [],
     },
     {
