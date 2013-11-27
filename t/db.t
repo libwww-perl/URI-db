@@ -139,6 +139,22 @@ for my $spec (
     is "$uri", "$prefix://localhost//foo.db",
         'host+FullPath URI should correctly strigify';
 
+    isa_ok $uri = URI->new("$prefix://localhost/%2Ftmp/test.gdb"), $class;
+    is $uri->engine, $engine, qq{host+PcntPath URI engine should be "label"};
+    is $uri->dbname, '/tmp/test.gdb', 'host+PcntPath URI db name should be "/tmp/test.gdb"';
+    is $uri->host, 'localhost', 'host+PcntPath URI host should be "localhost"';
+    is $uri->port, $port, 'host+PcntPath URI port should be undef';
+    is $uri->user, undef, 'host+PcntPath URI user should be undef';
+    is $uri->password, undef, 'host+PcntPath URI password should be undef';
+    is_deeply $uri->query_form_hash, {},
+        'host+PcntPath URI query params should be empty by default';
+    is_deeply [ $uri->query_params ], [],
+        'host+PcntPath URI query params should be empty';
+    is $uri->as_string, "$prefix://localhost/%2Ftmp/test.gdb",
+        'host+PcntPath URI string should be correct';
+    is "$uri", "$prefix://localhost/%2Ftmp/test.gdb",
+        'host+PcntPath URI should correctly strigify';
+
     isa_ok $uri = URI->new("$prefix://localhost/C:/tmp/foo.db"), $class;
     is $uri->engine, $engine, qq{host+WinPath URI engine should be "label"};
     is $uri->dbname, 'C:/tmp/foo.db', 'host+WinPath URI db name should be "C:/tmp/foo.db"';

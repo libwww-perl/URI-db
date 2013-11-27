@@ -79,8 +79,14 @@ put the relative or absolute path after that slash, as appropriate:
 
 * `db:firebird://localhost/test.gdb` - Relative
 * `db:firebird://localhost/../test.gdb` - Relative
-* `db:firebird://localhost//tmp/test.gdb` - Absolute
 * `db:firebird://localhost/C:/temp/test.gdb` - Absolute
+* `db:firebird://localhost/%2Ftmp/test.gdb` - Absolute
+
+Note the percent-encoded slash in the last example. Formally, an absolute path
+may not start with a slash, so we use its percent-encoded representation here.
+In practice, implementations may recognize a leading slash, anyway:
+
+* `db:firebird://localhost//tmp/test.gdb` - Absolute
 
 Any URI format may optionally have a query part containing key/value pairs:
 
