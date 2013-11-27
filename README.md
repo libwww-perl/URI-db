@@ -63,17 +63,18 @@ name, rather than a file name:
 * `db:ingres:mydb`
 * `db:pg:template1`
 
-When a URI includes an authority part, it must be preceded by a double slash:
+When a URI includes an authority part, it must be preceded by a double slash
+and followed by a single slash"
 
-* `db:pg://example.com`
-* `db:mysql://root@localhost`
+* `db:pg://example.com/`
+* `db:mysql://root@localhost/`
 * `db:pg://postgres:secr3t@example.net`
 
 To add the database name, separate it from the authority by a single slash:
 
 * `db:postgresql://example.com/template1`
 * `db:mongodb://localhost:27017/myDatabase`
-* `db:oracle:scott@tiger@/scott`
+* `db:oracle://scott:tiger@foo.com/scott`
 
 Some databases, such as Firebird, take both a host name and a file path. Just
 put the relative or absolute path after that slash, as appropriate:
