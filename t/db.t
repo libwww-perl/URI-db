@@ -109,25 +109,6 @@ for my $spec (
     is "$uri", "$prefix:/path/to/foo.db",
         'Simple URI should correctly strigify';
 
-    isa_ok $uri = URI->new("$prefix:///path/to/foo.db"), $class;
-    isa_ok $uri, 'URI::db' unless $prefix eq 'db';
-    is $uri->scheme, 'db', 'Scheme should be "db"';
-    is $uri->engine, $engine, qq{No host, full path URI engine should be "$label"};
-    is $uri->dbname, '/path/to/foo.db',
-        'No host, full path URI db name should be "/path/to/foo.db"';
-    is $uri->host, '', 'No host, full path URI host should be empty';
-    is $uri->port, $port, 'No host, full path URI port should be undef';
-    is $uri->user, undef, 'No host, full path URI user should be undef';
-    is $uri->password, undef, 'No host, full path URI password should be undef';
-    is_deeply $uri->query_form_hash, {},
-        'No host, full path URI query params should be empty by default';
-    is_deeply [ $uri->query_params ], [],
-        'No host, full path URI query params should be empty';
-    is $uri->as_string, "$prefix:///path/to/foo.db",
-        'No host, full path URI string should be correct';
-    is "$uri", "$prefix:///path/to/foo.db",
-        'Simple URI should correctly strigify';
-
     isa_ok $uri = URI->new("$prefix://"), $class;
     is $uri->engine, $engine, qq{Hostless URI engine should be "label"};
     is $uri->dbname, undef, 'Hostless URI db name should be undef';
@@ -173,22 +154,6 @@ for my $spec (
         'host+WinPath URI string should be correct';
     is "$uri", "$prefix://localhost/C:/tmp/foo.db",
         'host+WinPath URI should correctly strigify';
-
-    isa_ok $uri = URI->new("$prefix:////foo.db"), $class;
-    is $uri->engine, $engine, qq{Hostless+FullPath URI engine should be "label"};
-    is $uri->dbname, '/foo.db', 'Hostless+FullPath URI db name should be "/foo.db"';
-    is $uri->host, '', 'Hostless+FullPath URI host should be ""';
-    is $uri->port, $port, 'Hostless+FullPath URI port should be undef';
-    is $uri->user, undef, 'Hostless+FullPath URI user should be undef';
-    is $uri->password, undef, 'Hostless+FullPath URI password should be undef';
-    is_deeply $uri->query_form_hash, {},
-        'Hostless+FullPath URI query params should be empty by default';
-    is_deeply [ $uri->query_params ], [],
-        'Hostless+FullPath URI query params should be empty';
-    is $uri->as_string, "$prefix:////foo.db",
-        'Hostless+FullPath URI string should be correct';
-    is "$uri", "$prefix:////foo.db",
-        'Hostless+FullPath URI should correctly strigify';
 
     isa_ok $uri = URI->new("$prefix://localhost"), $class;
     is $uri->engine, $engine, qq{Localhost URI engine should be "label"};
