@@ -124,52 +124,52 @@ for my $spec (
     is "$uri", "$prefix://", 'Hostless URI should correctly strigify';
 
     isa_ok $uri = URI->new("$prefix://localhost//foo.db"), $class;
-    is $uri->engine, $engine, qq{host+FullPath URI engine should be "label"};
-    is $uri->dbname, '/foo.db', 'host+FullPath URI db name should be "/foo.db"';
-    is $uri->host, 'localhost', 'host+FullPath URI host should be "localhost"';
-    is $uri->port, $port, 'host+FullPath URI port should be undef';
-    is $uri->user, undef, 'host+FullPath URI user should be undef';
-    is $uri->password, undef, 'host+FullPath URI password should be undef';
+    is $uri->engine, $engine, qq{Host+FullPath URI engine should be "label"};
+    is $uri->dbname, '/foo.db', 'Host+FullPath URI db name should be "/foo.db"';
+    is $uri->host, 'localhost', 'Host+FullPath URI host should be "localhost"';
+    is $uri->port, $port, 'Host+FullPath URI port should be undef';
+    is $uri->user, undef, 'Host+FullPath URI user should be undef';
+    is $uri->password, undef, 'Host+FullPath URI password should be undef';
     is_deeply $uri->query_form_hash, {},
-        'host+FullPath URI query params should be empty by default';
+        'Host+FullPath URI query params should be empty by default';
     is_deeply [ $uri->query_params ], [],
-        'host+FullPath URI query params should be empty';
+        'Host+FullPath URI query params should be empty';
     is $uri->as_string, "$prefix://localhost//foo.db",
-        'host+FullPath URI string should be correct';
+        'Host+FullPath URI string should be correct';
     is "$uri", "$prefix://localhost//foo.db",
-        'host+FullPath URI should correctly strigify';
+        'Host+FullPath URI should correctly strigify';
 
     isa_ok $uri = URI->new("$prefix://localhost/%2Ftmp/test.gdb"), $class;
-    is $uri->engine, $engine, qq{host+PcntPath URI engine should be "label"};
-    is $uri->dbname, '/tmp/test.gdb', 'host+PcntPath URI db name should be "/tmp/test.gdb"';
-    is $uri->host, 'localhost', 'host+PcntPath URI host should be "localhost"';
-    is $uri->port, $port, 'host+PcntPath URI port should be undef';
-    is $uri->user, undef, 'host+PcntPath URI user should be undef';
-    is $uri->password, undef, 'host+PcntPath URI password should be undef';
+    is $uri->engine, $engine, qq{Host+PcntPath URI engine should be "label"};
+    is $uri->dbname, '/tmp/test.gdb', 'Host+PcntPath URI db name should be "/tmp/test.gdb"';
+    is $uri->host, 'localhost', 'Host+PcntPath URI host should be "localhost"';
+    is $uri->port, $port, 'Host+PcntPath URI port should be undef';
+    is $uri->user, undef, 'Host+PcntPath URI user should be undef';
+    is $uri->password, undef, 'Host+PcntPath URI password should be undef';
     is_deeply $uri->query_form_hash, {},
-        'host+PcntPath URI query params should be empty by default';
+        'Host+PcntPath URI query params should be empty by default';
     is_deeply [ $uri->query_params ], [],
-        'host+PcntPath URI query params should be empty';
+        'Host+PcntPath URI query params should be empty';
     is $uri->as_string, "$prefix://localhost/%2Ftmp/test.gdb",
-        'host+PcntPath URI string should be correct';
+        'Host+PcntPath URI string should be correct';
     is "$uri", "$prefix://localhost/%2Ftmp/test.gdb",
-        'host+PcntPath URI should correctly strigify';
+        'Host+PcntPath URI should correctly strigify';
 
     isa_ok $uri = URI->new("$prefix://localhost/C:/tmp/foo.db"), $class;
-    is $uri->engine, $engine, qq{host+WinPath URI engine should be "label"};
-    is $uri->dbname, 'C:/tmp/foo.db', 'host+WinPath URI db name should be "C:/tmp/foo.db"';
-    is $uri->host, 'localhost', 'host+WinPath URI host should be "localhost"';
-    is $uri->port, $port, 'host+WinPath URI port should be undef';
-    is $uri->user, undef, 'host+WinPath URI user should be undef';
-    is $uri->password, undef, 'host+WinPath URI password should be undef';
+    is $uri->engine, $engine, qq{Host+WinPath URI engine should be "label"};
+    is $uri->dbname, 'C:/tmp/foo.db', 'Host+WinPath URI db name should be "C:/tmp/foo.db"';
+    is $uri->host, 'localhost', 'Host+WinPath URI host should be "localhost"';
+    is $uri->port, $port, 'Host+WinPath URI port should be undef';
+    is $uri->user, undef, 'Host+WinPath URI user should be undef';
+    is $uri->password, undef, 'Host+WinPath URI password should be undef';
     is_deeply $uri->query_form_hash, {},
-        'host+WinPath URI query params should be empty by default';
+        'Host+WinPath URI query params should be empty by default';
     is_deeply [ $uri->query_params ], [],
-        'host+WinPath URI query params should be empty';
+        'Host+WinPath URI query params should be empty';
     is $uri->as_string, "$prefix://localhost/C:/tmp/foo.db",
-        'host+WinPath URI string should be correct';
+        'Host+WinPath URI string should be correct';
     is "$uri", "$prefix://localhost/C:/tmp/foo.db",
-        'host+WinPath URI should correctly strigify';
+        'Host+WinPath URI should correctly strigify';
 
     isa_ok $uri = URI->new("$prefix://localhost"), $class;
     is $uri->engine, $engine, qq{Localhost URI engine should be "label"};

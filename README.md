@@ -86,7 +86,7 @@ Note the percent-encoded slash in the last example. Formally, an absolute path
 may not start with a slash, so we use its percent-encoded representation here.
 In practice, implementations may recognize a leading slash, anyway:
 
-* `db:firebird://localhost//tmp/test.gdb` - Absolute
+* `db:firebird://localhost//tmp/test.gdb`
 
 Any URI format may optionally have a query part containing key/value pairs:
 
