@@ -72,8 +72,10 @@ sub as_string {
 
 sub dbname {
     my $self = shift;
+    my $is_full = $self->opaque =~ m{^//(?://|(?!/))};
+    return $self->path($is_full && defined $_[0] ? "/$_[0]" : shift) if @_;
     my @segs = $self->path_segments or return;
-    shift @segs if $self->opaque =~ m{^//(?://|(?!/))};
+    shift @segs if $is_full;
     join '/' => @segs;
 }
 

@@ -6,10 +6,53 @@ use utf8;
 use URI;
 use URI::QueryParam;
 
-isa_ok my $uri = URI->new('db:'), 'URI::db';
+isa_ok my $uri = URI->new('db:'), 'URI::db', 'Opaque DB URI';
 is $uri->engine, undef, 'DB URI with no engine should have undef engine';
 is $uri->scheme, 'db', 'DB URI with no engine should have scheme "db"';
 ok !$uri->has_recognized_engine, 'Engineless should not have recognized engine';
+
+# Test dbname with opaque URI.
+is $uri->dbname, undef, 'DB name should be undef';
+$uri->dbname('foo');
+pass 'Assign a database name';
+is $uri->dbname, 'foo', 'DB name should be "foo"';
+is $uri->path, 'foo', 'Path should be "foo"';
+
+# Pass a path.
+$uri->dbname('/tmp/foo');
+pass 'Assign a database name path';
+is $uri->dbname, '/tmp/foo', 'DB name should be "/tmp/foo"';
+is $uri->path, '/tmp/foo', 'Path should be "/tmp/foo"';
+
+# Try a Windows path.
+WARN: {
+    my $msg;
+    local $SIG{__WARN__} = sub { $msg = shift };
+    $uri->dbname('C:/temp/foo');
+    like $msg, qr{'[.]/' prepended}, 'Should warn about prepending ./ to path';
+}
+pass 'Assign a database Windows path';
+is $uri->dbname, './C:/temp/foo', 'DB name should be "./C:/temp/foo"';
+is $uri->path, './C:/temp/foo', 'Path should be "./C:/temp/foo"';
+
+# Create a full URI with authority section.
+isa_ok $uri = URI->new('db://localhost'), 'URI::db', 'Full DB URI';
+$uri->dbname('foo');
+pass 'Assign a database name';
+is $uri->dbname, 'foo', 'DB name should be "foo"';
+is $uri->path, '/foo', 'Path should be "/foo"';
+
+# Pass a path.
+$uri->dbname('/tmp/foo');
+pass 'Assign a database name path';
+is $uri->dbname, '/tmp/foo', 'DB name should be "/tmp/foo"';
+is $uri->path, '//tmp/foo', 'Path should be "//tmp/foo"';
+
+# Try a Windows path.
+$uri->dbname('C:/temp/foo');
+pass 'Assign a database Windows path';
+is $uri->dbname, 'C:/temp/foo', 'DB name should be "C:/temp/foo"';
+is $uri->path, '/C:/temp/foo', 'Path should be "/C:/temp/foo"';
 
 for my $spec (
     [ db         => undef ],
