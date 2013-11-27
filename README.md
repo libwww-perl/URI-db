@@ -7,14 +7,14 @@ for database URIs (illustration adapted from
 [RFC 3986](http://tools.ietf.org/html/rfc3986) --- STD 66, chapter 3):
 
       db:engine://username:password@example.com:8042/over/there/widget.db?type=animal&name=narwhal
-      \/ \____/   \_______________/ \________/ \__/ \__________________/  \__/ \___/  \__/ \_____/
-       |    |             |              |      |             |             |    |     |      |
-       |    |         userinfo       hostname  port           |            key   |    key     |
-       |    |      \________________________________/         |                  |            |
+      \/ \____/   \_______________/ \_________/ \__/ \__________________/ \__/ \___/  \__/ \_____/
+       |    |             |              |       |            |             |    |     |      |
+       |    |         userinfo        hostname  port          |            key   |    key     |
+       |    |     \________________________________/          |                  |            |
        |    |                      |                          |                value        value
        |  engine                   |                          |           \______________________/
-    scheme  |                  authority          database name or path              |
-     name   |      \____________________________________________________/          query
+    scheme  |                  authority           database name or path             |
+     name   |     \_____________________________________________________/          query
        |    |                           |
        |    |                   hierarchical part
        |    |
