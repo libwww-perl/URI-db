@@ -36,8 +36,8 @@ Notes on this syntax:
 * The *authority* part is separated from the engine by a double slash, `//`,
   and terminated by the next slash or end of the URI. It consists of an
   optional user-information part, terminated by `@` (e.g.,
-  `username:password@`); a required host address (e.g., domain name or IP
-  address); and an optional port number, preceded by a colon, `:`.
+  `username:password@`); a host address (e.g., domain name or IP address); and
+  an optional port number, preceded by a colon, `:`.
 
 * The *path* part specifies the database name or path. It must be separated
   from the authority, if the authority is present, by a single slash, `/`. If
@@ -68,7 +68,16 @@ When a URI includes an authority part, it must be preceded by a double slash:
 * `db:mysql://root@localhost/`
 * `db:pg://postgres:secr3t@example.net`
 
-To add the database name, separate it from the authority by a single slash:
+Formally, the authority part requires a host name, but some implementations,
+inspired by the [File scheme](http://en.wikipedia.org/wiki/File_URI_scheme),
+might allow the host to be optional:
+
+* `db:mysql:/root@`
+* `db:postgres://postgres:secr3t@`
+* `db:sqlite:///`
+
+The path part continas the database name, separated from the authority by a
+single slash:
 
 * `db:postgresql://example.com/template1`
 * `db:mongodb://localhost:27017/myDatabase`
