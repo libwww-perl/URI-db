@@ -76,7 +76,7 @@ might allow the host to imply localhost.
 * `db:postgres://postgres:secr3t@`
 * `db:sqlite:///`
 
-The path part continas the database name, separated from the authority by a
+The path part contians the database name, separated from the authority by a
 single slash:
 
 * `db:postgresql://example.com/template1`
