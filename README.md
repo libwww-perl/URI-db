@@ -26,7 +26,8 @@ for database URIs (illustration adapted from
 Notes on this syntax:
 
 * The Database URI *scheme* is `db`. Consequently, database URIs always start
-  with `db:`. This is the [URI scheme] that defines a database URI.
+  with `db:`. This is the [URI scheme](http://en.wikipedia.org/wiki/URI_scheme)
+  that defines a database URI.
 
 * Next comes the database *engine*. This part is a string naming the type of
   database engine for the database. It must always be followed by a colon, `:`.
