@@ -80,7 +80,9 @@ for my $spec (
     [ pg         => 5432  ],
     [ mysql      => 3306  ],
     [ mariadb    => 3306  ],
+    [ maria      => 3306  ],
     [ sqlite     => undef ],
+    [ sqlite3    => undef ],
     [ oracle     => 1521  ],
     [ cubrid     => 1523  ], # ?
     [ firebird   => 3050  ],
@@ -94,8 +96,11 @@ for my $spec (
     [ interbase  => 3050  ],
     [ unify      => 27117 ], # ?
     [ mongodb    => 27017 ],
+    [ mongo      => 27017 ],
     [ monetdb    => 50000 ], # ?
+    [ monet      => 50000 ], # ?
     [ maxdb      => 7673  ], # ?
+    [ max        => 7673  ], # ?
     [ impala     => 21000 ],
     [ couchdb    => 5984  ],
     [ couch      => 5984  ],
