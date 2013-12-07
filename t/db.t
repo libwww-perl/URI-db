@@ -98,6 +98,7 @@ for my $spec (
     [ maxdb      => 7673  ], # ?
     [ impala     => 21000 ],
     [ couchdb    => 5984  ],
+    [ couch      => 5984  ],
     [ hive       => 10000 ],
     [ cassandra  => 9160  ],
     [ derby      => 1527  ],
