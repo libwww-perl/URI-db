@@ -84,7 +84,7 @@ for my $spec (
     [ sqlite     => undef ],
     [ sqlite3    => undef ],
     [ oracle     => 1521  ],
-    [ cubrid     => 1523  ], # ?
+    [ cubrid     => 33000 ], # ?
     [ firebird   => 3050  ],
     [ sqlserver  => 1433  ],
     [ mssql      => 1433  ],
