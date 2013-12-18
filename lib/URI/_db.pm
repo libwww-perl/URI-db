@@ -5,7 +5,7 @@ use 5.8.1;
 use base 'URI::_login';
 our $VERSION = '0.10';
 
-sub engine { shift->scheme }
+sub engine { shift->scheme(@_) }
 sub uri    { shift }
 
 sub has_recognized_engine {

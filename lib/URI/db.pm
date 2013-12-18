@@ -101,7 +101,7 @@ for well-known engines.
 
 =item C<engine>
 
-fA string identifying the database engine.
+A string identifying the database engine.
 
 =item C<user>
 
@@ -195,12 +195,14 @@ by each recognized URI engine.
   my $engine = $uri->engine;
   $uri->engine( $new_engine );
 
-Gets or sets the engine part of the URI, which may be any valid URI scheme
-value, though recognized engines provide additional context, such as the
-C<default_port()> and a driver-specific C<dbi_dsn()>.
+Gets or sets the engine part of the URI. For C<db:> URIs, the new value may be
+any valid URI scheme value, though recognized engines provide additional
+context, such as the C<default_port()> and a driver-specific C<dbi_dsn()>. For
+engine URIs, if the new value is not a known engine, the URI will be changed
+in-place to a non-database URI.
 
-If called with an argument, it updates the engine, possibly changing the
-class of the URI, and returns the old engine value.
+If called with an argument, it updates the engine, possibly changing the class
+of the URI, and returns the old engine value.
 
 =head3 C<dbname>
 

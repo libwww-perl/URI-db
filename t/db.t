@@ -33,6 +33,24 @@ is $uri->scheme, 'db', 'DB URI with undef engine should have scheme "db"';
 isa_ok $uri, 'URI::db', 'Undef engine URI';
 isa_ok $uri->uri, 'URI::_db';
 
+# Now use a non-db-qalified URI.
+isa_ok $uri = URI->new('pg:'), 'URI::pg', 'Opaque Pg URI';
+is $uri->engine, 'pg', 'Pg URI engine should be "pg"';
+is $uri->scheme, 'pg', 'Pg URI scheme should be "pg"';
+ok $uri->has_recognized_engine, 'Pg URI should be a recognized engine';
+
+# Change it to another engine.
+is $uri->engine('vertica'), 'pg', 'Change the engine to "vertica"';
+isa_ok $uri, 'URI::vertica';
+is $uri->engine, 'vertica', 'Vertica URI engine should be "vertica"';
+is $uri->scheme, 'vertica', 'Vertica URI scheme should be "vertica"';
+ok $uri->has_recognized_engine, 'Vertica URI should be a recognized engine';
+
+# Try using an unknown engine.
+is $uri->engine('foo'), 'vertica', 'Change the engine to "foo"';
+isa_ok $uri, 'URI::_foreign';
+is $uri->scheme, 'foo', 'Foo URI scheme should be "foo"';
+
 # Test dbname with opaque URI.
 isa_ok $uri = URI->new('db:'), 'URI::db', 'Another opaque DB URI';
 is $uri->dbname, undef, 'DB name should be undef';
@@ -468,7 +486,6 @@ for my $spec (
     is_deeply [ $uri->query_params ], [], 'Fragment URI query params should be empty';
     is $uri->as_string, "$prefix:foo.db#foo.bar", 'Fragment URI string should be correct';
     is "$uri", "$prefix:foo.db#foo.bar", 'Simple URI should correctly strigify';
-
 }
 
 done_testing;
