@@ -74,7 +74,9 @@ URI::db - Database URIs
 =head1 Synopsis
 
   use URI;
-  my $uri = URI->new('db:pg://user@localhost');
+  my $db_uri = URI->new('db:pg://user@localhost');
+  my $pg_uri = URI->new('postgres://example.com/template1');
+  my $sl_uri = URI->new('sqlite:/var/db/widgets.db');
 
 =head1 Description
 
@@ -88,17 +90,18 @@ documented in L<F<README.md>|https:/github.com/theory/db-uri/>.
 
 A database URI is made up of these parts:
 
-  db:engine:[//[user[:password]@][host][:port]/][dbname][?params]
+  db:engine:[//[user[:password]@][host][:port]/][dbname][?params][#fragment]
 
 =over
 
 =item C<db>
 
-The literal string C<db> is the scheme that defines a database URI.
+The literal string C<db> is the scheme that defines a database URI. Optional
+for well-known engines.
 
 =item C<engine>
 
-A string identifying the database engine.
+fA string identifying the database engine.
 
 =item C<user>
 
@@ -126,6 +129,10 @@ case it may be a complete or local path, as appropriate.
 A URI-standard GET query string representing additional parameters to be
 passed to the engine.
 
+=item C<fragment>
+
+Identifies a database part, such as a table or view.
+
 =back
 
 =head3 Examples
@@ -140,13 +147,13 @@ Some examples:
 
 =item C<db:sqlite:/path/to/some.db>
 
-=item C<db:sqlite:../relative.db>
+=item C<sqlite:../relative.db>
 
 =item C<db:firebird://localhost/%2Fpath/to/some.db>
 
 =item C<db:firebird://localhost//path/to/some.db>
 
-=item C<db:firebird://localhost/relative.db>
+=item C<firebird://localhost/relative.db>
 
 =item C<db:pg://>
 
@@ -160,9 +167,13 @@ Some examples:
 
 =item C<db:pg://user:secret@/mydb>
 
-=item C<db:pg:///mydb>
+=item C<pg:///mydb>
 
-=item C<db:pg://other@localhost/otherdb?connect_timeout=10&application_name=myapp>
+=item C<pg://other@localhost/otherdb?connect_timeout=10&application_name=myapp>
+
+=item C<db://localhost/mydb>
+
+=item C<db:unknown://example.com/mydb>
 
 =back
 
@@ -227,6 +238,12 @@ Gets or sets the user name.
 
 Gets or sets the password.
 
+=head3 C<uri>
+
+Returns the underlying engine URI. For URIs starting with C<db:>, this will be
+the URI that follows. For database URIs without C<db:>, the URI itself will be
+returned.
+
 =head2 Instance Methods
 
 =head3 C<has_recognized_engine>
@@ -234,8 +251,7 @@ Gets or sets the password.
   my $has_recognized_engine = $uri->has_recognized_engine;
 
 Returns true if the engine is recognized by URI::db, and false if it is not. A
-recognized engine is simply one that has an implementation in the C<URI::db>
-namespace.
+recognized engine is simply one that inherits from C<URI::_db>.
 
 =head3 C<query_params>
 

@@ -452,6 +452,23 @@ for my $spec (
         'Query URI string should be correct';
     is "$uri", "$prefix://other\@localhost/otherdb?foo=bar&foo=baz&baz=yow",
         'Query URI should correctly strigify';
+
+    isa_ok $uri = URI->new("$prefix:foo.db#foo.bar"), 'URI::db', "Fragment URI with $class";
+    isa_ok $uri->uri, $class, "Fragment URI $class URI";
+    is $uri->scheme, 'db', 'Scheme should be "db"';
+    is $uri->engine, $engine, qq{Fragment URI engine should be "$label"};
+    is $uri->dbname, 'foo.db', 'Fragment URI db name should be "foo.db"';
+    is $uri->host, undef, 'Fragment URI host should be undef';
+    is $uri->port, $port, 'Fragment URI port should be undef';
+    is $uri->user, undef, 'Fragment URI user should be undef';
+    is $uri->password, undef, 'Fragment URI password should be undef';
+    is $uri->fragment, 'foo.bar', 'Fragement URI fragment should be "foo.bar"';
+    is_deeply $uri->query_form_hash, {},
+        'Fragment URI query params should be empty by default';
+    is_deeply [ $uri->query_params ], [], 'Fragment URI query params should be empty';
+    is $uri->as_string, "$prefix:foo.db#foo.bar", 'Fragment URI string should be correct';
+    is "$uri", "$prefix:foo.db#foo.bar", 'Simple URI should correctly strigify';
+
 }
 
 done_testing;
