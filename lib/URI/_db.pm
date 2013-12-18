@@ -5,8 +5,15 @@ use 5.8.1;
 use base 'URI::_login';
 our $VERSION = '0.10';
 
-sub engine { shift->scheme(@_) }
 sub uri    { shift }
+
+sub engine {
+    my $self = shift;
+    return $self->scheme unless @_;
+    my $old = $self->scheme(@_);
+    bless $self => 'URI::_db' unless $self->isa('URI::_db');
+    return $old;
+}
 
 sub has_recognized_engine {
     ref $_[0] ne __PACKAGE__;

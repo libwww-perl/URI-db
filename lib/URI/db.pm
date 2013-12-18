@@ -32,16 +32,20 @@ sub _db_init {
     bless [ $scheme, $uri ] => $class;
 }
 
-sub scheme { shift->[0] }
 sub uri    { shift->[1] }
-sub engine {
+
+sub scheme {
     my $self = shift;
-    my $uri = $self->[1];
-    return $uri->scheme unless @_;
-    my $old = $uri->scheme(@_);
-    bless $uri => 'URI::_db' unless $uri->isa('URI::_db');
+    return lc $self->[0] unless @_;
+    my $new = shift;
+    my $old = $self->[0];
+    # Cannot change $self from array ref to scalar ref, so reject other schemes.
+    Carp::croak('Cannot change ', ref $self, ' scheme' ) if lc $new ne 'db';
+    $self->[0] = $new;
     return $old;
 }
+
+sub engine { shift->[1]->engine(@_) }
 
 sub as_string {
     return join ':', @{ +shift };
@@ -190,16 +194,24 @@ by each recognized URI engine.
 
 =head2 Accessors
 
+=head3 C<scheme>
+
+  my $scheme = $uri->scheme;
+  $uri->scheme( $new_scheme );
+
+Gets or sets the scheme part of the URI. For C<db:> URIs, the scheme cannot be
+changed to any value other than "db" (or any case variation thereof). For
+non-C<db:> URIs, the scheme may be changed to any value, though the URI object
+may no longer be a database URI.
+
 =head3 C<engine>
 
   my $engine = $uri->engine;
   $uri->engine( $new_engine );
 
-Gets or sets the engine part of the URI. For C<db:> URIs, the new value may be
-any valid URI scheme value, though recognized engines provide additional
-context, such as the C<default_port()> and a driver-specific C<dbi_dsn()>. For
-engine URIs, if the new value is not a known engine, the URI will be changed
-in-place to a non-database URI.
+Gets or sets the engine part of the URI, which may be any valid URI scheme
+value, though recognized engines provide additional context, such as the
+C<default_port()> and a driver-specific C<dbi_dsn()>.
 
 If called with an argument, it updates the engine, possibly changing the class
 of the URI, and returns the old engine value.

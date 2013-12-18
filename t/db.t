@@ -33,6 +33,17 @@ is $uri->scheme, 'db', 'DB URI with undef engine should have scheme "db"';
 isa_ok $uri, 'URI::db', 'Undef engine URI';
 isa_ok $uri->uri, 'URI::_db';
 
+# Try changing the scheme.
+is $uri->scheme('Db'), 'db', 'Change scheme to "Db"';
+isa_ok $uri, 'URI::db';
+is $uri->scheme, 'db', 'New scheme should still be "db"';
+is $uri->as_string, 'Db:', 'Should stringify with the new scheme';
+
+# Change the scheme to something other than db.
+eval { $uri->scheme('foo') };
+ok my $err = $@, 'Should get error changing to non-DB scheme';
+like $err, qr/Cannot change URI::db scheme/, 'Should be the proper error';
+
 # Now use a non-db-qalified URI.
 isa_ok $uri = URI->new('pg:'), 'URI::pg', 'Opaque Pg URI';
 is $uri->engine, 'pg', 'Pg URI engine should be "pg"';
@@ -48,8 +59,18 @@ ok $uri->has_recognized_engine, 'Vertica URI should be a recognized engine';
 
 # Try using an unknown engine.
 is $uri->engine('foo'), 'vertica', 'Change the engine to "foo"';
-isa_ok $uri, 'URI::_foreign';
+isa_ok $uri, 'URI::_db';
 is $uri->scheme, 'foo', 'Foo URI scheme should be "foo"';
+is $uri->engine, 'foo', 'Foo URI engine should be "foo"';
+ok !$uri->has_recognized_engine, 'Foo URI should not be a recognized engine';
+
+# Try using an undefined engine.
+is $uri->engine(undef), 'foo', 'Change the engine to undef';
+isa_ok $uri, 'URI::_db';
+is $uri->scheme, undef, 'Foo URI scheme should be undef';
+is $uri->engine, undef, 'Foo URI engine should be undef';
+ok !$uri->has_recognized_engine, 'Foo URI should not be a recognized engine';
+is $uri->as_string, '', 'URI string should be empty';
 
 # Test dbname with opaque URI.
 isa_ok $uri = URI->new('db:'), 'URI::db', 'Another opaque DB URI';
