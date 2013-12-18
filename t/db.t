@@ -125,6 +125,24 @@ for my $spec (
         $class  = 'URI::_db';
         $engine = undef;
         $label  = '';
+    } else {
+        # Should work well as a direct URI.
+        my $string = "$engine://hi:there\@foo.com:1234/blah.db";
+        isa_ok my $uri = URI->new($string), $class;
+        isa_ok $uri, 'URI::_db';
+        is $uri->scheme, $engine, qq{Non-DB scheme should be "$engine"};
+        is $uri->engine, $engine, qq{Non-DB URI engine should be "$label"};
+        is $uri->dbname, 'blah.db', 'Simple URI db name should be "blah.db"';
+        is $uri->host, 'foo.com', 'Non-DB URI host should be "foo.com"';
+        is $uri->port, 1234, 'Non-DB URI port should be 1234';
+        is $uri->user, 'hi', 'Non-DB URI user should be "hi"';
+        is $uri->password, 'there', 'Non-DB URI password should be "there"';
+        is_deeply $uri->query_form_hash, {},
+            'Non-DB URI query params should be empty by default';
+        is_deeply [ $uri->query_params ], [], 'Non-DB URI query params should be empty';
+        is $uri->as_string, $string, 'Non-DB URI string should be correct';
+        is "$uri", $string, 'Non-DB URI should correctly strigify';
+        ok $uri->has_recognized_engine, "$engine should be recognized engine";
     }
 
     isa_ok my $uri = URI->new("$prefix:"), 'URI::db', "DB URI with $class";
