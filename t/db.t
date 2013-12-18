@@ -117,6 +117,33 @@ pass 'Assign a database Windows path';
 is $uri->dbname, 'C:/temp/foo', 'DB name should be "C:/temp/foo"';
 is $uri->path, '/C:/temp/foo', 'Path should be "/C:/temp/foo"';
 
+# Try new_abs.
+isa_ok $uri = URI::db->new_abs('foo', 'pg:'), 'URI::pg';
+is $uri->as_string, 'pg:/foo', 'Should have pg: URI';
+isa_ok $uri = URI::db->new_abs('foo', 'db:pg:'), 'URI::db';
+is $uri->as_string, 'db:pg:/foo', 'Should have db:pg: URI';
+isa_ok $uri = URI::db->new_abs('foo', 'db:'), 'URI::db';
+is $uri->as_string, 'db:foo', 'Should have db: URI';
+isa_ok $uri = URI::db->new_abs('foo', 'bar:'), 'URI::_generic';
+isa_ok $uri = URI::db->new_abs('foo', 'file::'), 'URI::file';
+isa_ok $uri = URI::db->new_abs('pg:foo', 'pg:'), 'URI::pg';
+is $uri->as_string, 'pg:foo', 'Should have pg:foo URI';
+isa_ok $uri = URI::db->new_abs('db:foo', 'db:'), 'URI::db';
+is $uri->as_string, 'db:foo', 'Should have db:foo URI';
+isa_ok $uri = URI::db->new_abs('db:pg:foo', 'db:pg:'), 'URI::db';
+is $uri->as_string, 'db:pg:foo', 'Should have db:pg:foo URI';
+
+# Test abs.
+isa_ok $uri = URI->new('db:pg:'), 'URI::db';
+is overload::StrVal( $uri->abs('file:/hi') ),
+   overload::StrVal($uri),
+    'abs should return URI object itself';
+
+# Test clone.
+is $uri->clone, $uri, 'Clone should return dupe URI';
+isnt overload::StrVal( $uri->clone ), overload::StrVal($uri),
+    'Clone should not return self';
+
 for my $spec (
     [ db         => undef ],
     [ unknown    => undef ],

@@ -15,6 +15,21 @@ use base 'URI::WithBase';
 use URI::_db;
 our $VERSION = '0.10';
 use overload '""' => 'as_string', fallback => 1;
+    BEGIN { use Carp; $SIG{__DIE__} = \&Carp::confess; }
+
+sub new_abs {
+    my ($class, $uri, $base) = @_;
+    $uri = URI->new($uri);
+    # No change if already have a scheme.
+    return $uri if $uri->scheme;
+    $base = URI->new($base);
+    # Return non-DB absolute.
+    return $uri->abs($base) unless $base->isa(__PACKAGE__);
+    # Return DB absolute.
+    $uri = $uri->abs( $base->[1] ) if $base->[1];
+    $base->[1] = $uri;
+    return $base;
+}
 
 sub _init {
     my ($class, $str, $scheme) = @_;
@@ -32,7 +47,7 @@ sub _db_init {
     bless [ $scheme, $uri ] => $class;
 }
 
-sub uri    { shift->[1] }
+sub uri { shift->[1] }
 
 sub scheme {
     my $self = shift;
@@ -45,11 +60,16 @@ sub scheme {
     return $old;
 }
 
-sub engine { shift->[1]->engine(@_) }
-
 sub as_string {
     return join ':', @{ +shift };
 }
+
+sub clone {
+    my $self = shift;
+    bless [$self->[0], $self->[1]->clone], ref $self;
+}
+
+sub abs { shift }
 
 sub _init_implementor {}
 
@@ -305,6 +325,13 @@ identify an appropriate driver.
 Returns a list of key/value pairs used as parameters in the L<DBI> DSN,
 including query parameters. Parameters specified more than once will be
 returned more than once, so avoid assigning to a hash.
+
+=head3 C<abs>
+
+  my $abs = $uri->abs( $base_uri );
+
+Simply returns the URI::db object itself. C<db:> URIs do not respect
+C<$URI::ABS_ALLOW_RELATIVE_SCHEME>, but non-C<db:> URIs do.
 
 =head1 Support
 
