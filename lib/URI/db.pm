@@ -11,71 +11,57 @@ package URI::db;
 
 use strict;
 use 5.8.1;
-use base 'URI::_db';
+use base 'URI::WithBase';
+use URI::_db;
 our $VERSION = '0.10';
 use overload '""' => 'as_string', fallback => 1;
-
-my %implementor;
 
 sub _init {
     my ($class, $str, $scheme) = @_;
 
-    $str =~ s/^db://;
-
-    my ($engine, $impclass);
-    if ($str =~ /^($URI::scheme_re):/so) {
-        $engine = $1;
-    } else {
-        # No engine detected.
-        return $class->_db_init($str);
+    if ($str =~ s/^(db)://i) {
+        $scheme = $1;
     }
-
-    $impclass = $implementor{$engine} ||= do {
-        # make it a legal perl identifier
-        (my $pkg = $engine) =~ s/-/_/g;
-        $engine = "_$engine" if $engine =~ /^\d/;
-
-        $pkg = "URI::db::$pkg";
-
-        no strict 'refs';
-        unless (@{"${pkg}::ISA"}) {
-            # Try to load it
-            eval "require $pkg";
-            die $@ if $@ && $@ !~ /Can\'t locate.*in \@INC/;
-            $pkg = "URI::db" unless @{"${pkg}::ISA"};
-        }
-        $pkg;
-    };
-
-    return $impclass->_db_init($str, $engine);
+    return $class->_db_init($scheme, $str);
 }
 
 sub _db_init {
-    my ($class, $self, $engine) = @_;
-    bless \$self => $class;
+    my ($class, $scheme, $str) = @_;
+    my $uri = URI->new($str);
+    bless $uri => 'URI::_db' unless $uri->isa('URI::_db');
+    bless [ $scheme, $uri ] => $class;
 }
 
-sub scheme { 'db' }
-
+sub scheme { shift->[0] }
+sub uri    { shift->[1] }
 sub engine {
     my $self = shift;
-    return $self->SUPER::scheme unless @_;
-    # Changing the engine can change the class.
-    my $class = ref $self;
-    my $old = $self->SUPER::scheme(@_);
-    my $newself = $class->_init( $self->as_string );
-    $$self = $$newself;
-    bless $self, ref $newself;
+    my $uri = $self->[1];
+    return $uri->scheme unless @_;
+    my $old = $uri->scheme(@_);
+    bless $uri => 'URI::_db' unless $uri->isa('URI::_db');
     return $old;
 }
 
-sub has_recognized_engine {
-    ref $_[0] ne __PACKAGE__;
+sub as_string {
+    return join ':', @{ +shift };
 }
 
-sub as_string {
+sub _init_implementor {}
+
+our $AUTOLOAD;
+sub AUTOLOAD {
     my $self = shift;
-    return $self->scheme . ':' . $self->SUPER::as_string(@_);
+    my $method = substr($AUTOLOAD, rindex($AUTOLOAD, '::')+2);
+    return if $method eq 'DESTROY';
+    $self->[1]->$method(@_);
+}
+
+sub can {                                  # override UNIVERSAL::can
+    my $self = shift;
+    $self->SUPER::can(@_) || (
+        ref($self) ? $self->[1]->can(@_) : undef
+    )
 }
 
 1;

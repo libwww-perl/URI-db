@@ -3,6 +3,7 @@
 use strict;
 use Test::More;
 use utf8;
+use lib '/Users/david/dev/cpan/uri';
 use URI;
 use URI::QueryParam;
 
@@ -16,18 +17,21 @@ is $uri->engine('foo'), undef, 'Assign engine';
 is $uri->engine, 'foo', 'Engine should now be "foo"';
 is $uri->as_string, 'db:foo:', 'Engine should be included in stringified URI';
 isa_ok $uri, 'URI::db', 'Updated engine URI';
+isa_ok $uri->uri, 'URI::_db';
 
 # Try changing to a known engine.
 is $uri->engine('pg'), 'foo', 'Assign engine';
 is $uri->engine, 'pg', 'Engine should now be "pg"';
 is $uri->as_string, 'db:pg:', 'Engine should be included in stringified URI';
-isa_ok $uri, 'URI::db::pg', 'Pg engine URI';
+isa_ok $uri, 'URI::db', 'Pg engine URI';
+isa_ok $uri->uri, 'URI::pg';
 
 # Try setting to an undefined engine.
 is $uri->engine(undef), 'pg', 'Assign undef engine';
 is $uri->engine, undef, 'DB URI with undef engine should have undef engine';
 is $uri->scheme, 'db', 'DB URI with undef engine should have scheme "db"';
 isa_ok $uri, 'URI::db', 'Undef engine URI';
+isa_ok $uri->uri, 'URI::_db';
 
 # Test dbname with opaque URI.
 isa_ok $uri = URI->new('db:'), 'URI::db', 'Another opaque DB URI';
@@ -35,6 +39,8 @@ is $uri->dbname, undef, 'DB name should be undef';
 is $uri->dbname('foo'), "", 'Assign a database name';
 is $uri->dbname, 'foo', 'DB name should be "foo"';
 is $uri->path, 'foo', 'Path should be "foo"';
+isa_ok $uri, 'URI::db', 'Unknown engine URI';
+isa_ok $uri->uri, 'URI::_db';
 
 # Pass a path.
 is $uri->dbname('/tmp/foo'), 'foo', 'Assign a database name path';
@@ -58,6 +64,7 @@ $uri->dbname('foo');
 pass 'Assign a database name';
 is $uri->dbname, 'foo', 'DB name should be "foo"';
 is $uri->path, '/foo', 'Path should be "/foo"';
+isa_ok $uri->uri, 'URI::_db';
 
 # Pass a path.
 $uri->dbname('/tmp/foo');
@@ -111,17 +118,20 @@ for my $spec (
 ) {
     my ($engine, $port) = @{ $spec };
     my $prefix = "db:$engine";
-    my $class  = "URI::db::$engine";
+    my $class  = "URI::$engine";
     my $label  = $engine;
     if ($engine eq 'db' || $engine eq 'unknown') {
         $prefix = 'db';
-        $class  = 'URI::db';
+        $class  = 'URI::_db';
         $engine = undef;
         $label  = '';
     }
 
-    isa_ok my $uri = URI->new("$prefix:"), $class;
-    isa_ok $uri, 'URI::db' unless $prefix eq 'db';
+    isa_ok my $uri = URI->new("$prefix:"), 'URI::db', "DB URI with $class";
+    if ($prefix ne 'db') {
+        isa_ok $uri->uri, 'URI::_db';
+        isa_ok $uri->uri, $class;
+    }
     is $uri->scheme, 'db', 'Scheme should be "db"';
     is $uri->engine, $engine, qq{Simple URI engine should be "$label"};
     is $uri->dbname, undef, 'Simple URI db name should be undef';
@@ -141,8 +151,8 @@ for my $spec (
         ok !$uri->has_recognized_engine, "$prefix should not be recognized engine";
     }
 
-    isa_ok $uri = URI->new("$prefix:foo.db"), $class;
-    isa_ok $uri, 'URI::db' unless $prefix eq 'db';
+    isa_ok $uri = URI->new("$prefix:foo.db"), 'URI::db', "Path URI with $class";
+    isa_ok $uri->uri, $class, "Path URI $class URI";
     is $uri->scheme, 'db', 'Scheme should be "db"';
     is $uri->engine, $engine, qq{Path URI engine should be "$label"};
     is $uri->dbname, 'foo.db', 'Path URI db name should be "foo.db"';
@@ -156,7 +166,9 @@ for my $spec (
     is $uri->as_string, "$prefix:foo.db", 'Path URI string should be correct';
     is "$uri", "$prefix:foo.db", 'Simple URI should correctly strigify';
 
-    isa_ok $uri = URI->new("$prefix:/path/to/foo.db"), $class;
+    isa_ok $uri = URI->new("$prefix:/path/to/foo.db"), 'URI::db',
+        "Absolute Path URI with class";
+    isa_ok $uri->uri, $class, "Absolute Path URI $class URI";
     isa_ok $uri, 'URI::db' unless $prefix eq 'db';
     is $uri->scheme, 'db', 'Scheme should be "db"';
     is $uri->engine, $engine, qq{Absolute Path URI engine should be "$label"};
@@ -175,7 +187,9 @@ for my $spec (
     is "$uri", "$prefix:/path/to/foo.db",
         'Simple URI should correctly strigify';
 
-    isa_ok $uri = URI->new("$prefix:///path/to/foo.db"), $class;
+    isa_ok $uri = URI->new("$prefix:///path/to/foo.db"), 'URI::db',
+        "No host, full path URI with $class";
+    isa_ok $uri->uri, $class, "No host, full path URI $class URI";
     isa_ok $uri, 'URI::db' unless $prefix eq 'db';
     is $uri->scheme, 'db', 'Scheme should be "db"';
     is $uri->engine, $engine, qq{No host, full path URI engine should be "$label"};
@@ -194,7 +208,8 @@ for my $spec (
     is "$uri", "$prefix:///path/to/foo.db",
         'Simple URI should correctly strigify';
 
-    isa_ok $uri = URI->new("$prefix://"), $class;
+    isa_ok $uri = URI->new("$prefix://"), 'URI::db', "Hostless URI with $class";
+    isa_ok $uri->uri, $class, "Hostless URI $class URI";
     is $uri->engine, $engine, qq{Hostless URI engine should be "label"};
     is $uri->dbname, undef, 'Hostless URI db name should be undef';
     is $uri->host, '', 'Hostless URI host should be ""';
@@ -208,7 +223,9 @@ for my $spec (
     is $uri->as_string, "$prefix://", 'Hostless URI string should be correct';
     is "$uri", "$prefix://", 'Hostless URI should correctly strigify';
 
-    isa_ok $uri = URI->new("$prefix://localhost//foo.db"), $class;
+    isa_ok $uri = URI->new("$prefix://localhost//foo.db"), 'URI::db',
+        "Host+FullPath URI with $class";
+    isa_ok $uri->uri, $class, "Host+FullPath URI $class URI";
     is $uri->engine, $engine, qq{Host+FullPath URI engine should be "label"};
     is $uri->dbname, '/foo.db', 'Host+FullPath URI db name should be "/foo.db"';
     is $uri->host, 'localhost', 'Host+FullPath URI host should be "localhost"';
@@ -224,7 +241,9 @@ for my $spec (
     is "$uri", "$prefix://localhost//foo.db",
         'Host+FullPath URI should correctly strigify';
 
-    isa_ok $uri = URI->new("$prefix://localhost/%2Ftmp/test.gdb"), $class;
+    isa_ok $uri = URI->new("$prefix://localhost/%2Ftmp/test.gdb"), 'URI::db',
+        "Host+PcntPath URI with $class";
+    isa_ok $uri->uri, $class, "Host+PcntPath URI $class URI";
     is $uri->engine, $engine, qq{Host+PcntPath URI engine should be "label"};
     is $uri->dbname, '/tmp/test.gdb', 'Host+PcntPath URI db name should be "/tmp/test.gdb"';
     is $uri->host, 'localhost', 'Host+PcntPath URI host should be "localhost"';
@@ -240,7 +259,9 @@ for my $spec (
     is "$uri", "$prefix://localhost/%2Ftmp/test.gdb",
         'Host+PcntPath URI should correctly strigify';
 
-    isa_ok $uri = URI->new("$prefix://localhost/C:/tmp/foo.db"), $class;
+    isa_ok $uri = URI->new("$prefix://localhost/C:/tmp/foo.db"), 'URI::db',
+        "Host+WinPath URI with $class";
+    isa_ok $uri->uri, $class, "Host+WinPath URI $class URI";
     is $uri->engine, $engine, qq{Host+WinPath URI engine should be "label"};
     is $uri->dbname, 'C:/tmp/foo.db', 'Host+WinPath URI db name should be "C:/tmp/foo.db"';
     is $uri->host, 'localhost', 'Host+WinPath URI host should be "localhost"';
@@ -256,7 +277,9 @@ for my $spec (
     is "$uri", "$prefix://localhost/C:/tmp/foo.db",
         'Host+WinPath URI should correctly strigify';
 
-    isa_ok $uri = URI->new("$prefix:////foo.db"), $class;
+    isa_ok $uri = URI->new("$prefix:////foo.db"), 'URI::db',
+        "Hostless+FullPath URI with $class";
+    isa_ok $uri->uri, $class, "Hostless+FullPath URI $class URI";
     is $uri->engine, $engine, qq{Hostless+FullPath URI engine should be "label"};
     is $uri->dbname, '/foo.db', 'Hostless+FullPath URI db name should be "/foo.db"';
     is $uri->host, '', 'Hostless+FullPath URI host should be ""';
@@ -272,7 +295,8 @@ for my $spec (
     is "$uri", "$prefix:////foo.db",
         'Hostless+FullPath URI should correctly strigify';
 
-    isa_ok $uri = URI->new("$prefix://localhost"), $class;
+    isa_ok $uri = URI->new("$prefix://localhost"), 'URI::db', "Localhost URI with $class";
+    isa_ok $uri->uri, $class, "Localhost URI $class URI";
     is $uri->engine, $engine, qq{Localhost URI engine should be "label"};
     is $uri->dbname, undef, 'Localhost URI db name should be undef';
     is $uri->host, 'localhost', 'Localhost URI host should be "localhost"';
@@ -288,7 +312,9 @@ for my $spec (
     is "$uri", "$prefix://localhost",
         'Localhost URI should correctly strigify';
 
-    isa_ok $uri = URI->new("$prefix://example.com:5433"), $class;
+    isa_ok $uri = URI->new("$prefix://example.com:5433"), 'URI::db',
+        "Host+Port DB URI with $class";
+    isa_ok $uri->uri, $class, "Host+Port URI $class URI";
     is $uri->engine, $engine, qq{Host+Port URI engine should be "label"};
     is $uri->dbname, undef, 'Host+Port URI db name should be undef';
     is $uri->host, 'example.com', 'Host+Port URI host should be "example.com"';
@@ -304,7 +330,9 @@ for my $spec (
     is "$uri", "$prefix://example.com:5433",
         'Host+Port URI should correctly strigify';
 
-    isa_ok $uri = URI->new("$prefix://example.com/mydb"), $class;
+    isa_ok $uri = URI->new("$prefix://example.com/mydb"), 'URI::db',
+        "DB URI with $class";
+    isa_ok $uri->uri, $class, "DB URI $class URI";
     is $uri->engine, $engine, qq{DB URI engine should be "label"};
     is $uri->dbname, 'mydb', 'DB URI db name should be "mydb"';
     is $uri->host, 'example.com', 'DB URI host should be "example.com"';
@@ -319,7 +347,9 @@ for my $spec (
     is "$uri", "$prefix://example.com/mydb",
         'DB URI should correctly strigify';
 
-    isa_ok $uri = URI->new("$prefix://example.com/"), $class;
+    isa_ok $uri = URI->new("$prefix://example.com/"), 'URI::db',
+        "DBLess URI with $class";
+    isa_ok $uri->uri, $class, "DBLess URI $class URI";
     is $uri->engine, $engine, qq{DBless URI engine should be "label"};
     is $uri->dbname, '', 'DBless URI db name should be ""';
     is $uri->host, 'example.com', 'DBless URI host should be "example.com"';
@@ -334,7 +364,9 @@ for my $spec (
     is "$uri", "$prefix://example.com/",
         'DBless URI should correctly strigify';
 
-    isa_ok $uri = URI->new("$prefix://user\@localhost//fullpathdb"), $class;
+    isa_ok $uri = URI->new("$prefix://user\@localhost//fullpathdb"), 'URI::db',
+        "User URI with $class";
+    isa_ok $uri->uri, $class, "User URI $class URI";
     is $uri->engine, $engine, qq{User URI engine should be "label"};
     is $uri->dbname, '/fullpathdb', 'User URI db name should be "/fullpathdb"';
     is $uri->host, 'localhost', 'User URI host should be "localhost"';
@@ -349,7 +381,9 @@ for my $spec (
     is "$uri", "$prefix://user\@localhost//fullpathdb",
         'User URI should correctly strigify';
 
-    isa_ok $uri = URI->new("$prefix://user\@//fullpathdb"), $class;
+    isa_ok $uri = URI->new("$prefix://user\@//fullpathdb"), 'URI::db',
+        "User w/o host URI with $class";
+    isa_ok $uri->uri, $class, "User w/o host URI $class URI";
     is $uri->engine, $engine, qq{User w/o host URI engine should be "label"};
     is $uri->dbname, '/fullpathdb', 'User w/o host URI db name should be "/fullpathdb"';
     is $uri->host, '', 'User w/o host URI host should be ""';
@@ -364,7 +398,9 @@ for my $spec (
     is "$uri", "$prefix://user\@//fullpathdb",
         'User w/o host URI should correctly strigify';
 
-    isa_ok $uri = URI->new("$prefix://user:secret\@localhost"), $class;
+    isa_ok $uri = URI->new("$prefix://user:secret\@localhost"), 'URI::db',
+        "Password URI with $class";
+    isa_ok $uri->uri, $class, "Password URI $class URI";
     is $uri->engine, $engine, qq{Password URI engine should be "label"};
     is $uri->dbname, undef, 'Password URI db name should be undef';
     is $uri->host, 'localhost', 'Password URI host should be "localhost"';
@@ -381,7 +417,8 @@ for my $spec (
         'Password URI should correctly strigify';
 
     isa_ok $uri = URI->new("$prefix://other\@localhost/otherdb?foo=bar&foo=baz&baz=yow"),
-        $class;
+        'URI::db', "Query URI with $engine";
+    isa_ok $uri->uri, $class, "Query URI $class URI";
     is $uri->engine, $engine, qq{Query URI engine should be "label"};
     is $uri->dbname, 'otherdb', 'Query URI db name should be "otherdb"';
     is $uri->host, 'localhost', 'Query URI host should be "localhost"';
