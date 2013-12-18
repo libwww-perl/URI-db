@@ -417,7 +417,7 @@ for my $spec (
         'Password URI should correctly strigify';
 
     isa_ok $uri = URI->new("$prefix://other\@localhost/otherdb?foo=bar&foo=baz&baz=yow"),
-        'URI::db', "Query URI with $engine";
+        'URI::db', "Query URI with $class";
     isa_ok $uri->uri, $class, "Query URI $class URI";
     is $uri->engine, $engine, qq{Query URI engine should be "label"};
     is $uri->dbname, 'otherdb', 'Query URI db name should be "otherdb"';
