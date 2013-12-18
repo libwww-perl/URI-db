@@ -130,6 +130,7 @@ for my $spec (
         my $string = "$engine://hi:there\@foo.com:1234/blah.db";
         isa_ok my $uri = URI->new($string), $class;
         isa_ok $uri, 'URI::_db';
+        isa_ok $uri->uri, $class;
         is $uri->scheme, $engine, qq{Non-DB scheme should be "$engine"};
         is $uri->engine, $engine, qq{Non-DB URI engine should be "$label"};
         is $uri->dbname, 'blah.db', 'Simple URI db name should be "blah.db"';

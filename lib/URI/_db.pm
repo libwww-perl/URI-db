@@ -6,6 +6,7 @@ use base 'URI::_login';
 our $VERSION = '0.10';
 
 sub engine { shift->scheme }
+sub uri    { shift }
 
 sub has_recognized_engine {
     ref $_[0] ne __PACKAGE__;
