@@ -11,6 +11,11 @@ This library also includes an interface to convert database URIs to
 [DBI](https://metacpan.org/module/DBI) DSNs. For additional information on the
 format, see `README.md`.
 
+**Warning:** This is an alpha release. I will do my best to preserve
+functionality going forward, especially as [Sqitch](http://sqitch.org/) uses
+this module. However, as the database URI specification moves forward, changes
+*may* require backwards-incompatible changes. Caveat Hackor.
+
 Installation
 ------------
 
@@ -21,19 +26,13 @@ To install this module, type the following:
     ./Build test
     ./Build install
 
-Or, if you don't have Module::Build installed, type the following:
-
-    perl Makefile.PL
-    make
-    make test
-    make install
-
 Dependencies
 ------------
 
 URI::db requires the following modules:
 
 * URI
+* URI::Nested
 
 Copyright and Licence
 ---------------------

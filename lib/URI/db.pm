@@ -40,6 +40,11 @@ L<PostgreSQL URIs|http://www.postgresql.org/docs/9.3/static/libpq-connect.html#L
 though they're a bit more formal. The specification for their format is
 documented in L<F<README.md>|https:/github.com/theory/db-uri/>.
 
+B:<Warning:> This is an alpha release. I will do my best to preserve
+functionality going forward, especially as L<Sqitch|App::Sqitch> uses this
+module. However, as the database URI specification moves forward, changes
+I<may> require backwards-incompatible changes. Caveat Hackor.
+
 =head3 Format
 
 A database URI is made up of these parts:

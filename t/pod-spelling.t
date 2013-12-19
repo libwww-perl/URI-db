@@ -16,3 +16,5 @@ IP
 subprotocol
 namespace
 DSN
+Hackor
+
