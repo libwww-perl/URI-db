@@ -13,8 +13,8 @@ for database URIs (illustration adapted from
        |    |     \________________________________/      |          |          |     |
        |    |                      |                      |        value      value   |
        |  engine                   |                      |     \_________________/   |
-    scheme  |                  authority          db name or path          |          |
-     name   |     \___________________________________________/          query     fragment
+    scheme  |                  authority         db name or path         |            |
+     name   |     \___________________________________________/        query       fragment
        |    |                           |
        |    |                   hierarchical part
        |    |
@@ -117,10 +117,14 @@ Is formally the URI `pg://localhost/mydb` embedded in an opaque `db:` URI. It
 adheres to this formal definition because the scheme part of a URI is not
 allowed to contain a sub-scheme (or subprotocol, in the
 [JDBC parlance](http://docs.oracle.com/cd/B14117_01/java.101/b10979/urls.htm#BEIJFHHB)).
-It is therefore a legal URI embedded in a second legal URI
+It is therefore a legal URI embedded in a second legal URI.
 
 Informally, it's simpler to think of a database URI as a single URI starting
 with the combination of the scheme and the engine, e.g., `db:pg`.
+
+Some may recognize URIs as database URIs in the absence of the `db:` scheme,
+provided their schemes correspond to widely-recognized database engines, such
+as `postgresql`, `mysql`, `sqlite`, `mssql`, and `oracle`.
 
 ### Inspiration ###
 
