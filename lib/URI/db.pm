@@ -97,6 +97,20 @@ sub eq {
 
 sub _init_implementor {}
 
+# Hard-code common accessors and methods.
+sub opaque        { shift->[1]->opaque(@_)        }
+sub path          { shift->[1]->path(@_)          }
+sub fragment      { shift->[1]->fragment(@_)      }
+sub host          { shift->[1]->host(@_)          }
+sub port          { shift->[1]->port(@_)          }
+sub _port         { shift->[1]->_port(@_)         }
+sub authority     { shift->[1]->authority(@_)     }
+sub path_query    { shift->[1]->path_query(@_)    }
+sub path_segments { shift->[1]->path_segments(@_) }
+sub query         { shift->[1]->query(@_)         }
+sub userinfo      { shift->[1]->userinfo(@_)      }
+
+# Catch any missing methods.
 our $AUTOLOAD;
 sub AUTOLOAD {
     my $self = shift;
