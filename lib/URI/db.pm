@@ -17,6 +17,23 @@ our $VERSION = '0.10';
 use overload '""' => 'as_string', fallback => 1;
     BEGIN { use Carp; $SIG{__DIE__} = \&Carp::confess; }
 
+sub new {
+    my ($class, $str, $base) = @_;
+    my $scheme;
+    if ($base) {
+        # Remove db: and grab the scheme to use for the engine.
+        $base =~ s/^db://;
+        ($scheme) = $base =~ /^($URI::scheme_re):/;
+    }
+    my $uri = URI->new($str, $base);
+    return $uri if $uri->isa(__PACKAGE__);
+
+    # Convert to a DB URI and addign the engine, if needed.
+    bless $uri => 'URI::_db' unless $uri->isa('URI::_db');
+    $uri->engine($scheme) if $scheme && !$uri->engine;
+    bless [ 'db', $uri ] => $class;
+}
+
 sub new_abs {
     my ($class, $uri, $base) = @_;
     $uri = URI->new($uri);
@@ -211,6 +228,17 @@ The following differences exist compared to the C<URI> class interface:
 
 Returns the default port for the engine. This is a class method value defined
 by each recognized URI engine.
+
+=head2 Constructors
+
+=head3 C<new>
+
+  my $uri = URI::db->new($string);
+  my $uri = URI::db->new($string, $base);
+
+Always returns a URI::db object. C<$base> may be another URI object or string.
+Unlike in L<URI>'s C<new()>, the scheme will always be applied to the URI if
+it does not already have one.
 
 =head2 Accessors
 

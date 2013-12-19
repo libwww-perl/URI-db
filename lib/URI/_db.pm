@@ -6,6 +6,7 @@ use base 'URI::_login';
 our $VERSION = '0.10';
 
 sub uri    { shift }
+sub _no_scheme_ok { 0 }
 
 sub engine {
     my $self = shift;
