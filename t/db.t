@@ -192,6 +192,11 @@ is overload::StrVal( $uri->abs('file:/hi') ),
    overload::StrVal($uri),
     'abs should return URI object itself';
 
+# Test rel.
+is overload::StrVal( $uri->rel('file:/hi') ),
+   overload::StrVal($uri),
+    'rel should return URI object itself';
+
 # Test clone.
 is $uri->clone, $uri, 'Clone should return dupe URI';
 isnt overload::StrVal( $uri->clone ), overload::StrVal($uri),

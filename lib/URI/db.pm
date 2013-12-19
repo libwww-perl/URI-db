@@ -15,7 +15,6 @@ use base 'URI::WithBase';
 use URI::_db;
 our $VERSION = '0.10';
 use overload '""' => 'as_string', fallback => 1;
-    BEGIN { use Carp; $SIG{__DIE__} = \&Carp::confess; }
 
 sub new {
     my ($class, $str, $base) = @_;
@@ -87,6 +86,7 @@ sub clone {
 }
 
 sub abs { shift }
+sub rel { shift }
 
 sub _init_implementor {}
 
@@ -358,8 +358,16 @@ returned more than once, so avoid assigning to a hash.
 
   my $abs = $uri->abs( $base_uri );
 
-Simply returns the URI::db object itself. C<db:> URIs do not respect
-C<$URI::ABS_ALLOW_RELATIVE_SCHEME>, but non-C<db:> URIs do.
+For C<db:> URIs, simply returns the URI::db object itself. For Non-C<db:>
+URis, the behavior is the same as for L<URI> including respect for
+C<$URI::ABS_ALLOW_RELATIVE_SCHEME>.
+
+=head3 C<rel>
+
+  my $rel = $uri->rel( $base_uri );
+
+For C<db:> URIs, simply returns the URI::db object itself. For Non-C<db:>
+URis, the behavior is the same as for L<URI>.
 
 =head1 Support
 
