@@ -42,7 +42,7 @@ Notes on this syntax:
 
 * The *path* part specifies the database name or path. It must be separated
   from the authority, if the authority is present, by a single slash, `/`. If
-  the database name is a full path, it must start with an additional slash.
+  the database name is a full path, it may start with an additional slash.
 
 * The optional *query* part, separated by a question mark, `?`, contains
   `key=value` pairs separated by a semicolon, `;`, or ampersand, `&`. These
@@ -73,8 +73,8 @@ When a URI includes an authority part, it must be preceded by a double slash:
 * `db:pg://postgres:secr3t@example.net`
 
 Formally, the authority part requires a host name, but some implementations,
-inspired by the [File scheme](http://en.wikipedia.org/wiki/File_URI_scheme),
-might allow the host to imply localhost.
+inspired by the [file scheme](http://en.wikipedia.org/wiki/File_URI_scheme),
+might allow an empty host to imply localhost.
 
 * `db:mysql:/root@`
 * `db:postgres://postgres:secr3t@`
@@ -106,6 +106,12 @@ Any URI format may optionally have a query part containing key/value pairs:
 * `db:sqlite:foo.db?foreign_keys=ON;journal_mode=WAL`
 * `db:pg://localhost:5433/postgres?client_encoding=utf8;connect_timeout=10`
 
+URIs may also have a fragment that names a specific database object. Since
+database URIs will generally be used for connecting, this part may be ignored.
+
+* `db:sqlite:my.db#users`
+* `db:pg://localhost/postgres#pg_catalog.pg_class`.
+
 ### URI Compliance ###
 
 Formally, a database URI as defined here is an opaque URI starting with `db:`
@@ -124,7 +130,9 @@ with the combination of the scheme and the engine, e.g., `db:pg`.
 
 Some may recognize URIs as database URIs in the absence of the `db:` scheme,
 provided their schemes correspond to widely-recognized database engines, such
-as `postgresql`, `mysql`, `sqlite`, `mssql`, and `oracle`.
+as `postgresql`, `mysql`, `sqlite`, `mssql`, and `oracle`. These are not
+formally recognized as standard schemes, though they may be recognized as
+standard engines by the `db:` scheme specification.
 
 ### Inspiration ###
 
