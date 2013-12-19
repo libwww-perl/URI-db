@@ -3,7 +3,6 @@
 use strict;
 use Test::More;
 use utf8;
-use lib '/Users/david/dev/cpan/uri';
 use URI;
 use URI::QueryParam;
 
@@ -17,21 +16,21 @@ is $uri->engine('foo'), undef, 'Assign engine';
 is $uri->engine, 'foo', 'Engine should now be "foo"';
 is $uri->as_string, 'db:foo:', 'Engine should be included in stringified URI';
 isa_ok $uri, 'URI::db', 'Updated engine URI';
-isa_ok $uri->uri, 'URI::_db';
+isa_ok $uri->nested_uri, 'URI::_db';
 
 # Try changing to a known engine.
 is $uri->engine('pg'), 'foo', 'Assign engine';
 is $uri->engine, 'pg', 'Engine should now be "pg"';
 is $uri->as_string, 'db:pg:', 'Engine should be included in stringified URI';
 isa_ok $uri, 'URI::db', 'Pg engine URI';
-isa_ok $uri->uri, 'URI::pg';
+isa_ok $uri->nested_uri, 'URI::pg';
 
 # Try setting to an undefined engine.
 is $uri->engine(undef), 'pg', 'Assign undef engine';
 is $uri->engine, 'pg', 'DB URI should not have had its engine undefined';
 is $uri->scheme, 'db', 'DB URI with undef engine should have scheme "db"';
 isa_ok $uri, 'URI::db', 'Undef engine URI';
-isa_ok $uri->uri, 'URI::_db';
+isa_ok $uri->nested_uri, 'URI::_db';
 
 # Try changing the scheme.
 is $uri->scheme('Db'), 'db', 'Change scheme to "Db"';
@@ -79,7 +78,7 @@ is $uri->dbname('foo'), "", 'Assign a database name';
 is $uri->dbname, 'foo', 'DB name should be "foo"';
 is $uri->path, 'foo', 'Path should be "foo"';
 isa_ok $uri, 'URI::db', 'Unknown engine URI';
-isa_ok $uri->uri, 'URI::_db';
+isa_ok $uri->nested_uri, 'URI::_db';
 
 # Pass a path.
 is $uri->dbname('/tmp/foo'), 'foo', 'Assign a database name path';
@@ -103,7 +102,7 @@ $uri->dbname('foo');
 pass 'Assign a database name';
 is $uri->dbname, 'foo', 'DB name should be "foo"';
 is $uri->path, '/foo', 'Path should be "/foo"';
-isa_ok $uri->uri, 'URI::_db';
+isa_ok $uri->nested_uri, 'URI::_db';
 
 # Pass a path.
 $uri->dbname('/tmp/foo');
@@ -119,54 +118,54 @@ is $uri->path, '/C:/temp/foo', 'Path should be "/C:/temp/foo"';
 
 # Try constructor.
 isa_ok $uri = URI::db->new('pg:'), 'URI::db', 'pg URI';
-isa_ok $uri->uri, 'URI::pg', 'pg URI URI';
+isa_ok $uri->nested_uri, 'URI::pg', 'pg URI URI';
 is $uri->as_string, 'db:pg:', 'pg URI should be correct';
 
 # Should convert non-db URI to a db URI.
 isa_ok $uri = URI::db->new('foo:'), 'URI::db', 'foo URI';
-isa_ok $uri->uri, 'URI::_db', 'foo URI URI';
+isa_ok $uri->nested_uri, 'URI::_db', 'foo URI URI';
 is $uri->as_string, 'db:foo:', 'foo URI should be correct';
 
 # Should pay attention to base URI.
 isa_ok $uri = URI::db->new('foo', 'pg:'), 'URI::db', 'db URI with pg base';
-isa_ok $uri->uri, 'URI::pg', 'db:pg URI';
+isa_ok $uri->nested_uri, 'URI::pg', 'db:pg URI';
 is $uri->as_string, 'db:pg:foo', 'db URI with pg: base should be correct';
 
 # Should pay attention to db: base URI.
 isa_ok $uri = URI::db->new('foo', 'db:'), 'URI::db', 'db URI with db base';
-isa_ok $uri->uri, 'URI::_db', 'db base URI';
+isa_ok $uri->nested_uri, 'URI::_db', 'db base URI';
 is $uri->as_string, 'db:foo', 'db URI with db: base should be correct';
 
 # Should pay attention to db:pg base URI.
 isa_ok $uri = URI::db->new('foo', 'db:pg'), 'URI::db', 'db URI with db:pg base';
-isa_ok $uri->uri, 'URI::pg', 'db:pg base URI';
+isa_ok $uri->nested_uri, 'URI::pg', 'db:pg base URI';
 is $uri->as_string, 'db:pg:foo', 'db URI with db:pg base should be correct';
 
 # Try with a db:pg base.
 my $base = URI->new('db:pg');
 isa_ok $uri = URI::db->new('foo', $base), 'URI::db', 'db URI with obj base';
-isa_ok $uri->uri, 'URI::pg', 'obj base URI';
+isa_ok $uri->nested_uri, 'URI::pg', 'obj base URI';
 is $uri->as_string, 'db:pg:foo', 'db URI with obj base should be correct';
 isa_ok $base, 'URI::db', 'base URI';
 
 # Try with a db: base.
 $base = URI->new('db:');
 isa_ok $uri = URI::db->new('foo', $base), 'URI::db', 'db URI with db obj base';
-isa_ok $uri->uri, 'URI::_db', 'db obj base URI';
+isa_ok $uri->nested_uri, 'URI::_db', 'db obj base URI';
 is $uri->as_string, 'db:foo', 'db URI with db obj base should be correct';
 isa_ok $base, 'URI::db', 'base URI';
 
 # Try db:unknown.
 $base = URI->new('db:unknown:');
 isa_ok $uri = URI::db->new('foo', $base), 'URI::db', 'db URI with obj base';
-isa_ok $uri->uri, 'URI::_db', 'obj base URI';
+isa_ok $uri->nested_uri, 'URI::_db', 'obj base URI';
 is $uri->as_string, 'db:unknown:foo', 'db URI with obj base should be correct';
 isa_ok $base, 'URI::db', 'base URI';
 
 # Try with some other base.
 $base = URI->new('bar:');
 isa_ok $uri = URI::db->new('foo', $base), 'URI::db', 'db URI with obj base';
-isa_ok $uri->uri, 'URI::_db', 'obj base URI';
+isa_ok $uri->nested_uri, 'URI::_db', 'obj base URI';
 is $uri->as_string, 'db:bar:foo', 'db URI with obj base should be correct';
 isa_ok $base, 'URI', 'bar base URI';
 
@@ -208,6 +207,6 @@ ok $uri->eq($uri), 'URI should equal itself';
 ok $uri->eq($uri->as_string), 'URI should equal itself stringified';
 ok $uri->eq(URI->new( $uri->as_string )), 'URI should equal equiv URI';
 ok $uri->eq($uri->clone), 'URI should equal itself cloned';
-ok $uri->eq('pg:'), 'URI should not equal non-DB URI';
+ok !$uri->eq('pg:'), 'URI should not equal non-DB URI';
 
 done_testing;

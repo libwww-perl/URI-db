@@ -11,120 +11,12 @@ package URI::db;
 
 use strict;
 use 5.8.1;
-use base 'URI::WithBase';
+use base 'URI::Nested';
 use URI::_db;
 our $VERSION = '0.10';
-use overload '""' => 'as_string', fallback => 1;
 
-sub new {
-    my ($class, $str, $base) = @_;
-    my $scheme;
-    if ($base) {
-        # Remove db: and grab the scheme to use for the engine.
-        $base =~ s/^db://;
-        ($scheme) = $base =~ /^($URI::scheme_re):/;
-    }
-    my $uri = URI->new($str, $base);
-    return $uri if $uri->isa(__PACKAGE__);
-
-    # Convert to a DB URI and addign the engine, if needed.
-    bless $uri => 'URI::_db' unless $uri->isa('URI::_db');
-    $uri->engine($scheme) if $scheme && !$uri->engine;
-    bless [ 'db', $uri ] => $class;
-}
-
-sub new_abs {
-    my ($class, $uri, $base) = @_;
-    $uri = URI->new($uri);
-    # No change if already have a scheme.
-    return $uri if $uri->scheme;
-    $base = URI->new($base);
-    # Return non-DB absolute.
-    return $uri->abs($base) unless $base->isa(__PACKAGE__);
-    # Return DB absolute.
-    $uri = $uri->abs( $base->[1] ) if $base->[1];
-    $base->[1] = $uri;
-    return $base;
-}
-
-sub _init {
-    my ($class, $str, $scheme) = @_;
-
-    if ($str =~ s/^(db)://i) {
-        $scheme = $1;
-    }
-    return $class->_db_init($scheme, $str);
-}
-
-sub _db_init {
-    my ($class, $scheme, $str) = @_;
-    my $uri = URI->new($str);
-    bless $uri => 'URI::_db' unless $uri->isa('URI::_db');
-    bless [ $scheme, $uri ] => $class;
-}
-
-sub uri { shift->[1] }
-
-sub scheme {
-    my $self = shift;
-    return lc $self->[0] unless @_;
-    my $new = shift;
-    my $old = $self->[0];
-    # Cannot change $self from array ref to scalar ref, so reject other schemes.
-    Carp::croak('Cannot change ', ref $self, ' scheme' ) if lc $new ne 'db';
-    $self->[0] = $new;
-    return $old;
-}
-
-sub as_string {
-    return join ':', @{ +shift };
-}
-
-sub clone {
-    my $self = shift;
-    bless [$self->[0], $self->[1]->clone], ref $self;
-}
-
-sub abs { shift }
-sub rel { shift }
-
-sub eq {
-    my ($self, $other) = @_;
-    $other = URI->new($other) unless ref $other;
-    $other = $other->[1] if $other->isa(__PACKAGE__);
-    $self->[1]->eq($other);
-}
-
-sub _init_implementor {}
-
-# Hard-code common accessors and methods.
-sub opaque        { shift->[1]->opaque(@_)        }
-sub path          { shift->[1]->path(@_)          }
-sub fragment      { shift->[1]->fragment(@_)      }
-sub host          { shift->[1]->host(@_)          }
-sub port          { shift->[1]->port(@_)          }
-sub _port         { shift->[1]->_port(@_)         }
-sub authority     { shift->[1]->authority(@_)     }
-sub path_query    { shift->[1]->path_query(@_)    }
-sub path_segments { shift->[1]->path_segments(@_) }
-sub query         { shift->[1]->query(@_)         }
-sub userinfo      { shift->[1]->userinfo(@_)      }
-
-# Catch any missing methods.
-our $AUTOLOAD;
-sub AUTOLOAD {
-    my $self = shift;
-    my $method = substr($AUTOLOAD, rindex($AUTOLOAD, '::')+2);
-    return if $method eq 'DESTROY';
-    $self->[1]->$method(@_);
-}
-
-sub can {                                  # override UNIVERSAL::can
-    my $self = shift;
-    $self->SUPER::can(@_) || (
-        ref($self) ? $self->[1]->can(@_) : undef
-    );
-}
+sub prefix       { 'db' }
+sub nested_class { 'URI::_db' }
 
 1;
 __END__
