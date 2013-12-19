@@ -24,6 +24,7 @@
 \.bak$
 \#$
 \b\.#
+\.travis\.yml
 
 # Avoid build files.
 ^URI-db
