@@ -88,6 +88,13 @@ sub clone {
 sub abs { shift }
 sub rel { shift }
 
+sub eq {
+    my ($self, $other) = @_;
+    $other = URI->new($other) unless ref $other;
+    $other = $other->[1] if $other->isa(__PACKAGE__);
+    $self->[1]->eq($other);
+}
+
 sub _init_implementor {}
 
 our $AUTOLOAD;
@@ -102,7 +109,7 @@ sub can {                                  # override UNIVERSAL::can
     my $self = shift;
     $self->SUPER::can(@_) || (
         ref($self) ? $self->[1]->can(@_) : undef
-    )
+    );
 }
 
 1;
@@ -359,7 +366,7 @@ returned more than once, so avoid assigning to a hash.
   my $abs = $uri->abs( $base_uri );
 
 For C<db:> URIs, simply returns the URI::db object itself. For Non-C<db:>
-URis, the behavior is the same as for L<URI> including respect for
+URIs, the behavior is the same as for L<URI> including respect for
 C<$URI::ABS_ALLOW_RELATIVE_SCHEME>.
 
 =head3 C<rel>
@@ -367,7 +374,7 @@ C<$URI::ABS_ALLOW_RELATIVE_SCHEME>.
   my $rel = $uri->rel( $base_uri );
 
 For C<db:> URIs, simply returns the URI::db object itself. For Non-C<db:>
-URis, the behavior is the same as for L<URI>.
+URIs, the behavior is the same as for L<URI>.
 
 =head1 Support
 

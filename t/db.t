@@ -202,4 +202,12 @@ is $uri->clone, $uri, 'Clone should return dupe URI';
 isnt overload::StrVal( $uri->clone ), overload::StrVal($uri),
     'Clone should not return self';
 
+# Test eq.
+can_ok $uri, 'eq';
+ok $uri->eq($uri), 'URI should equal itself';
+ok $uri->eq($uri->as_string), 'URI should equal itself stringified';
+ok $uri->eq(URI->new( $uri->as_string )), 'URI should equal equiv URI';
+ok $uri->eq($uri->clone), 'URI should equal itself cloned';
+ok $uri->eq('pg:'), 'URI should not equal non-DB URI';
+
 done_testing;
