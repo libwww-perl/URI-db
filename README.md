@@ -6,22 +6,22 @@ simple Perl implementation. This figure summarizes the definition syntax and
 for database URIs (illustration adapted from
 [RFC 3986](http://tools.ietf.org/html/rfc3986) --- STD 66, chapter 3):
 
-      db:engine://username:password@example.com:8042/over/there/widget.db?type=animal&name=narwhal
-      \/ \____/   \_______________/ \_________/ \__/ \__________________/ \__/ \___/  \__/ \_____/
-       |    |             |              |       |            |             |    |     |      |
-       |    |         userinfo        hostname  port          |            key   |    key     |
-       |    |     \________________________________/          |                  |            |
-       |    |                      |                          |                value        value
-       |  engine                   |                          |           \______________________/
-    scheme  |                  authority           database name or path             |
-     name   |     \_____________________________________________________/          query
+      db:engine://username:password@example.com:8042/widgets.db?tz=utc&charset=utf8#users
+      \/ \____/   \_______________/ \_________/ \__/ \________/ \/ \__/ \____/ \__/\____/
+       |    |             |              |       |        |     |    |     |    |     |
+       |    |         userinfo        hostname  port      |    key   |    key   |     |
+       |    |     \________________________________/      |          |          |     |
+       |    |                      |                      |        value      value   |
+       |  engine                   |                      |     \_________________/   |
+    scheme  |                  authority          db name or path          |          |
+     name   |     \___________________________________________/          query     fragment
        |    |                           |
        |    |                   hierarchical part
        |    |
-       |    |  database name or path     query
-       |  __|_   ________|________    _____|____
-      /\ /    \ /                 \  /          \
-      db:engine:my_big_fat_database?subject=Topic
+       |    |      db name or path       query    fragment
+       |  __|_   ________|________    _____|____  ____|____
+      /\ /    \ /                 \  /          \/         \
+      db:engine:my_big_fat_database?encoding=big5#log.animals
 
 Notes on this syntax:
 
@@ -48,6 +48,9 @@ Notes on this syntax:
   `key=value` pairs separated by a semicolon, `;`, or ampersand, `&`. These
   parameters may be used to configure a database connection with parameters not
   directly supported by the rest of the URI format.
+
+* The optional *fragment* part, separted by a hash mark, `#`, contains
+  additional context information, such as a table or view name.
 
 Here are some database URIs without an authority part, which is typical for
 non-server engines such as [SQLite](http://sqlite.org/), where the path part
