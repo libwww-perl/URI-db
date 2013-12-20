@@ -40,7 +40,7 @@ L<PostgreSQL URIs|http://www.postgresql.org/docs/9.3/static/libpq-connect.html#L
 though they're a bit more formal. The specification for their format is
 documented in L<F<README.md>|https:/github.com/theory/db-uri/>.
 
-B:<Warning:> This is an alpha release. I will do my best to preserve
+B<Warning:> This is an alpha release. I will do my best to preserve
 functionality going forward, especially as L<Sqitch|App::Sqitch> uses this
 module. However, as the database URI specification moves forward, changes
 I<may> require backwards-incompatible changes. Caveat Hackor.
@@ -100,39 +100,39 @@ Some examples:
 
 =over
 
-=item C<db:sqlite>
+=item * C<db:sqlite>
 
-=item C<db:sqlite:dbname>
+=item * C<db:sqlite:dbname>
 
-=item C<db:sqlite:/path/to/some.db>
+=item * C<db:sqlite:/path/to/some.db>
 
-=item C<sqlite:../relative.db>
+=item * C<sqlite:../relative.db>
 
-=item C<db:firebird://localhost/%2Fpath/to/some.db>
+=item * C<db:firebird://localhost/%2Fpath/to/some.db>
 
-=item C<db:firebird://localhost//path/to/some.db>
+=item * C<db:firebird://localhost//path/to/some.db>
 
-=item C<firebird://localhost/relative.db>
+=item * C<firebird://localhost/relative.db>
 
-=item C<db:pg://>
+=item * C<db:pg://>
 
-=item C<db:pg://localhost>
+=item * C<db:pg://localhost>
 
-=item C<db:pg://localhost:5433>
+=item * C<db:pg://localhost:5433>
 
-=item C<db:pg://localhost/mydb>
+=item * C<db:pg://localhost/mydb>
 
-=item C<db:pg://user@localhost>
+=item * C<db:pg://user@localhost>
 
-=item C<db:pg://user:secret@/mydb>
+=item * C<db:pg://user:secret@/mydb>
 
-=item C<pg:///mydb>
+=item * C<pg:///mydb>
 
-=item C<pg://other@localhost/otherdb?connect_timeout=10&application_name=myapp>
+=item * C<pg://other@localhost/otherdb?connect_timeout=10&application_name=myapp>
 
-=item C<db://localhost/mydb>
+=item * C<db://localhost/mydb>
 
-=item C<db:unknown://example.com/mydb>
+=item * C<db:unknown://example.com/mydb>
 
 =back
 
