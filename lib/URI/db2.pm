@@ -1,6 +1,6 @@
 package URI::db2;
 use base 'URI::_db';
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 
 sub default_port { 50000 }
 sub dbi_driver   { 'DB2' }

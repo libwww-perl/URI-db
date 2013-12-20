@@ -1,6 +1,6 @@
 package URI::sqlserver;
 use base 'URI::_db';
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 
 sub default_port { 1433 }
 sub dbi_driver   { 'ODBC' }
