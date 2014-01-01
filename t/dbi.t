@@ -175,6 +175,12 @@ for my $spec (
         qry => [],
     },
     {
+        uri => 'db:oracle:foo',
+        dsn => 'dbi:Oracle:foo',
+        dbi => [ [host => undef], [port => undef], [sid => 'foo'] ],
+        qry => [],
+    },
+    {
         uri => 'db:sqlserver://localhost:33/foo',
         dsn => 'dbi:ODBC:Driver={SQL Server};Server=localhost,33;Database=foo',
         dbi => [ [ Driver => '{SQL Server}'], [Server => 'localhost,33'], [Database => 'foo'] ],
