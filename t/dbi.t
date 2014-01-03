@@ -182,14 +182,14 @@ for my $spec (
     },
     {
         uri => 'db:sqlserver://localhost:33/foo',
-        dsn => 'dbi:ODBC:Driver={SQL Server};Server=localhost,33;Database=foo',
-        dbi => [ [ Driver => '{SQL Server}'], [Server => 'localhost,33'], [Database => 'foo'] ],
+        dsn => 'dbi:Sybase:host=localhost;port=33;dbname=foo',
+        dbi => [ [host => 'localhost'], [port => 33], [dbname => 'foo'] ],
         qry => [],
     },
     {
         uri => 'db:mssql://localhost:33/foo',
-        dsn => 'dbi:ODBC:Driver={SQL Server};Server=localhost,33;Database=foo',
-        dbi => [ [ Driver => '{SQL Server}'], [Server => 'localhost,33'], [Database => 'foo'] ],
+        dsn => 'dbi:Sybase:host=localhost;port=33;dbname=foo',
+        dbi => [ [host => 'localhost'], [port => 33], [dbname => 'foo'] ],
         qry => [],
     },
     {

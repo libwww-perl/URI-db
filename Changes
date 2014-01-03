@@ -3,6 +3,8 @@ Revision history for Perl extension URI::db.
 0.11
       - Fixed URI::oracle to properly generate a DBI DSN with no host name or
         port.
+      - The `dbi_dsn()` method in URI::sqlserver (and its subclasses) now
+        generates a DSN using DBD::Sybase, rather than DBD::ODBC.
 
 0.10  2013-12-20T00:16:30Z
       - Initial version.
