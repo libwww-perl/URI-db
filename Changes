@@ -1,5 +1,7 @@
 Revision history for Perl extension URI::db.
 
+0.12
+
 0.11  2014-01-03T20:01:01Z
       - Fixed URI::oracle to properly generate a DBI DSN with no host name or
         port.

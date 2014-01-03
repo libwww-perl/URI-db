@@ -1,6 +1,6 @@
 package URI::sqlserver;
 use base 'URI::_db';
-our $VERSION = '0.11';
+our $VERSION = '0.12';
 
 sub default_port { 1433 }
 # http://www.perlmonks.org/index.pl?node_id=669089
