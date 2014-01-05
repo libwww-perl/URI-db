@@ -10,7 +10,7 @@ package URI::db;
 # db:engine://[user[:password]@][netloc][:port][/dbname][?param1=value1&...]
 
 use strict;
-use 5.8.1;
+use 5.008001;
 use base 'URI::Nested';
 use URI::_db;
 our $VERSION = '0.12';

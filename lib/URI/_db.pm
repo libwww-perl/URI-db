@@ -1,7 +1,7 @@
 package URI::_db;
 
 use strict;
-use 5.8.1;
+use 5.008001;
 use base 'URI::_login';
 our $VERSION = '0.12';
 
