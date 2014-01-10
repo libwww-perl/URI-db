@@ -1,5 +1,7 @@
 Revision history for Perl extension URI::db.
 
+0.13
+
 0.12  2014-01-10T17:23:35Z
       - Eliminated "v-string in use/require non-portable" warning on older
         Perls.

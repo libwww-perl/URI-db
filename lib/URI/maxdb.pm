@@ -1,6 +1,6 @@
 package URI::maxdb;
 use base 'URI::_db';
-our $VERSION = '0.12';
+our $VERSION = '0.13';
 
 sub default_port { 7673 }
 sub dbi_driver   { 'MaxDB' }

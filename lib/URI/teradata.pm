@@ -1,6 +1,6 @@
 package URI::teradata;
 use base 'URI::_db';
-our $VERSION = '0.12';
+our $VERSION = '0.13';
 
 sub default_port { 1025 }
 sub dbi_driver   { 'Teradata' }
