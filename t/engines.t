@@ -13,6 +13,8 @@ for my $spec (
     [ postgres   => 5432  ],
     [ pgsql      => 5432  ],
     [ pg         => 5432  ],
+    [ pgxc       => 5432  ],
+    [ postgresxc => 5432  ],
     [ mysql      => 3306  ],
     [ mariadb    => 3306  ],
     [ maria      => 3306  ],

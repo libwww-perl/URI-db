@@ -1,6 +1,8 @@
 Revision history for Perl extension URI::db.
 
 0.13
+      - Added URI::postgresxc and URI::pgxc, which simply inherit from
+        URI::pg.
 
 0.12  2014-01-10T17:23:35Z
       - Eliminated "v-string in use/require non-portable" warning on older
