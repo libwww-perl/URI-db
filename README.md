@@ -153,3 +153,8 @@ Author
 ------
 
 [David E. Wheeler](http://theory.so/)
+
+Contributers
+------------
+
+[Brian T. Wightman](https://github.com/MidLifeXis)
