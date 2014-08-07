@@ -1,5 +1,8 @@
 Revision history for Perl extension URI::db.
 
+pending
+      - Add connector for DBD::LDAP
+
 0.13
       - Added URI::postgresxc and URI::pgxc, which simply inherit from
         URI::pg.
