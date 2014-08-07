@@ -145,6 +145,24 @@ for my $spec (
         qry => [],
     },
     {
+        uri => 'db:ldapdb://localhost:33/foo',
+        dsn => 'dbi:LDAP:foo',
+        dbi => [ [ dbname => 'foo' ] ],
+        qry => [],
+    },
+    {
+        uri => 'db:ldapdb://localhost/foo',
+        dsn => 'dbi:LDAP:foo',
+        dbi => [ [ dbname => 'foo' ] ],
+        qry => [],
+    },
+    {
+        uri => 'db:ldapdb://./foo',
+        dsn => 'dbi:LDAP:foo',
+        dbi => [ [ dbname => 'foo' ] ],
+        qry => [],
+    },
+    {
         uri => 'db:maxdb://localhost:33/foo',
         dsn => 'dbi:MaxDB:localhost:33/foo',
         dbi => [],
