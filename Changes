@@ -1,12 +1,10 @@
 Revision history for Perl extension URI::db.
 
-0.14
-      - Added URI::ldapdb, which represents LDAP databases. Patch from Brian
-        T. Wightman.
-
-0.13
+0.13  2014-08-09T22:48:53Z
       - Added URI::postgresxc and URI::pgxc, which simply inherit from
         URI::pg.
+      - Added URI::ldapdb, which represents LDAP databases. Patch from Brian
+        T. Wightman.
 
 0.12  2014-01-10T17:23:35Z
       - Eliminated "v-string in use/require non-portable" warning on older
