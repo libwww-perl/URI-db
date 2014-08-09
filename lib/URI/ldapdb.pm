@@ -1,6 +1,6 @@
 package URI::ldapdb;
 use base 'URI::_db';
-our $VERSION = '0.13';
+our $VERSION = '0.14';
 
 sub dbi_driver   { 'LDAP' }
 
@@ -24,13 +24,11 @@ URI::ldapdb
 
 =head1 DESCRIPTION
 
-Linkage between URI::db and DBD::LDAP.  I would have used
-L<URI::ldap>, but that was already taken for a module with slightly
-different intentions.
+Linkage between URI::db and DBD::LDAP. I would have used L<URI::ldap>, but
+that was already taken for a module with slightly different intentions.
 
 =head1 CONTRIBUTED BY
 
 Brian T. Wightman <mlx@cpan.org>
 
 =cut
- 

@@ -13,7 +13,7 @@ use strict;
 use 5.008001;
 use base 'URI::Nested';
 use URI::_db;
-our $VERSION = '0.13';
+our $VERSION = '0.14';
 
 sub prefix       { 'db' }
 sub nested_class { 'URI::_db' }
