@@ -41,8 +41,8 @@ sub query_params {
 sub _dbi_param_map {
     my $self = shift;
     return (
-        [ host   => scalar $self->host    ],
-        [ port   => scalar $self->_port   ],
+        [ host   => scalar $self->host   ],
+        [ port   => scalar $self->_port  ],
         [ dbname => scalar $self->dbname ],
     );
 }

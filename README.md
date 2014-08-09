@@ -157,4 +157,4 @@ Author
 Contributers
 ------------
 
-[Brian T. Wightman](https://github.com/MidLifeXis)
+* [Brian T. Wightman](https://github.com/MidLifeXis)
