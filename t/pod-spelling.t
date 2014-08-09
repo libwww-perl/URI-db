@@ -17,4 +17,5 @@ subprotocol
 namespace
 DSN
 Hackor
-
+PostgreSQL
+Sqitch
