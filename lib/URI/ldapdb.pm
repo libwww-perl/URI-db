@@ -20,7 +20,7 @@ sub dbi_dsn {
 
 =head1 NAME
 
-URI::ldapdb
+URI::ldapdb - LDAP database URI
 
 =head1 DESCRIPTION
 
