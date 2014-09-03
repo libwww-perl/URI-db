@@ -1,5 +1,7 @@
 Revision history for Perl extension URI::db.
 
+0.15
+
 0.14  2014-09-03T00:28:37Z
       - The `dbi_dsn` method of URI::vertica now returns an ODBC DSN instead
         of DBD::Pg, since the latter apparently does not work with Verica.
