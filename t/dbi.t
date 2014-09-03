@@ -260,27 +260,33 @@ for my $spec (
     },
     {
         uri => 'db:vertica:',
-        dsn => 'dbi:Pg:',
-        dbi => [ [host => undef], [port => undef], [dbname => undef] ],
+        dsn => 'dbi:ODBC:',
+        dbi => [ [DSN => undef] ],
+        qry => [],
+    },
+    {
+        uri => 'db:vertica:dbadmin',
+        dsn => 'dbi:ODBC:DSN=dbadmin',
+        dbi => [ [DSN => 'dbadmin'] ],
         qry => [],
     },
     {
         uri => 'db:vertica://localhost',
-        dsn => 'dbi:Pg:host=localhost',
-        dbi => [ [host => 'localhost'], [port => undef], [dbname => undef] ],
+        dsn => 'dbi:ODBC:Server=localhost',
+        dbi => [ [Server => 'localhost'], [Port => undef], [Database => undef] ],
         qry => [],
     },
     {
         uri => 'db:vertica://localhost:33',
-        dsn => 'dbi:Pg:host=localhost;port=33',
-        dbi => [ [host => 'localhost'], [port => 33], [dbname => undef] ],
+        dsn => 'dbi:ODBC:Server=localhost;Port=33',
+        dbi => [ [Server => 'localhost'], [Port => 33], [Database => undef] ],
         qry => [],
     },
     {
-        uri => 'db:vertica://foo:123/try?foo=1&foo=2&lol=yes',
-        dsn => 'dbi:Pg:host=foo;port=123;dbname=try;foo=1;foo=2;lol=yes',
-        dbi => [ [host => 'foo'], [port => 123], [dbname => 'try'] ],
-        qry => [ foo => 1, foo => 2, lol => 'yes' ],
+        uri => 'db:vertica://foo:123/try?foo=1&foo=2&lol=yes&Driver=HPVertica',
+        dsn => 'dbi:ODBC:Server=foo;Port=123;Database=try;foo=1;foo=2;lol=yes;Driver=HPVertica',
+        dbi => [ [Server => 'foo'], [Port => 123], [Database => 'try'] ],
+        qry => [ foo => 1, foo => 2, lol => 'yes', Driver => 'HPVertica' ],
     },
 ) {
     my $uri = $spec->{uri};

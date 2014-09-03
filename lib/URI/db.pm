@@ -259,10 +259,21 @@ if one is known. Returns C<undef> if no driver is known.
 
   DBI->connect( $uri->dbi_dsn, $uri->user, $uri->pass );
 
-Returns a L<DBI> DSN appropriate for use in a call to C<< DBI->connect >>. If
-no driver is known for the URI, the C<dbi:$driver:> part of the DSN will be
-omitted, in which case you can use the C<$DBI_DRIVER> environment variable to
-identify an appropriate driver.
+Returns a L<DBI> DSN appropriate for use in a call to C<< DBI->connect >>. The
+attributes will usually be pulled from the URI host name, port, and database
+name, as well as the query parameters. If no driver is known for the URI, the
+C<dbi:$driver:> part of the DSN will be omitted, in which case you can use the
+C<$DBI_DRIVER> environment variable to identify an appropriate driver.
+Otherwise, each database URI does its best to create a valid DBI DSN. Some
+examples:
+
+  | URI                                  | DSN                                              |
+  |--------------------------------------+--------------------------------------------------|
+  | db:pg:try                            | dbi:Pg:dbname=try                                |
+  | db:mysql://localhost:33/foo          | dbi:mysql:host=localhost;port=33;database=foo    |
+  | db:db2://localhost:33/foo            | dbi:DB2:HOSTNAME=localhost;PORT=33;DATABASE=foo  |
+  | db:vertica:dbadmin                   | dbi:ODBC:DSN=dbadmin                             |
+  | db:vertica:foo.com/hi?Driver=Vertica | dbi:ODBC:Host=foo.com;Database=hi;Driver=Vertica |
 
 =head3 C<dbi_params>
 
