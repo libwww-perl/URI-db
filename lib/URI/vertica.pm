@@ -16,9 +16,9 @@ sub _dbi_param_map {
     # Fetch the driver from the query params.
     require URI::QueryParam;
     return (
-        [ Server   => $host ],
-        [ Port     => $port ],
-        [ Database => scalar $self->dbname ],
+        [ Server   => $host                        ],
+        [ Port     => $port || $self->default_port ],
+        [ Database => scalar $self->dbname         ],
     );
 }
 

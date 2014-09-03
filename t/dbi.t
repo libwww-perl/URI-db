@@ -272,8 +272,8 @@ for my $spec (
     },
     {
         uri => 'db:vertica://localhost',
-        dsn => 'dbi:ODBC:Server=localhost',
-        dbi => [ [Server => 'localhost'], [Port => undef], [Database => undef] ],
+        dsn => 'dbi:ODBC:Server=localhost;Port=5433',
+        dbi => [ [Server => 'localhost'], [Port => 5433], [Database => undef] ],
         qry => [],
     },
     {
