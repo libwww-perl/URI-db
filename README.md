@@ -1,6 +1,9 @@
 Database URI
 ============
 
+[![CPAN version](https://badge.fury.io/pl/URI-db.svg)](http://badge.fury.io/pl/URI-db)
+[![Build Status](https://travis-ci.org/theory/sqitch.svg?branch=master)](https://travis-ci.org/theory/uri-db)
+
 This project proposes a standard for database connection URIs and provides a
 simple Perl implementation. This figure summarizes the definition syntax and
 for database URIs (illustration adapted from
