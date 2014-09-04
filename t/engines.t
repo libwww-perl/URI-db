@@ -7,55 +7,58 @@ use URI;
 use URI::QueryParam;
 
 for my $spec (
-    [ db         => undef ],
-    [ unknown    => undef ],
-    [ postgresql => 5432  ],
-    [ postgres   => 5432  ],
-    [ pgsql      => 5432  ],
-    [ pg         => 5432  ],
-    [ pgxc       => 5432  ],
-    [ postgresxc => 5432  ],
-    [ mysql      => 3306  ],
-    [ mariadb    => 3306  ],
-    [ maria      => 3306  ],
-    [ sqlite     => undef ],
-    [ sqlite3    => undef ],
-    [ oracle     => 1521  ],
-    [ cubrid     => 33000 ], # ?
-    [ firebird   => 3050  ],
-    [ sqlserver  => 1433  ],
-    [ mssql      => 1433  ],
-    [ db2        => 50000 ], # ?
-    [ ingres     => 1524  ],
-    [ sybase     => 2638  ],
-    [ informix   => 1526  ], # ?
-    [ teradata   => 1025  ],
-    [ interbase  => 3050  ],
-    [ unify      => 27117 ], # ?
-    [ mongodb    => 27017 ],
-    [ mongo      => 27017 ],
-    [ monetdb    => 50000 ], # ?
-    [ monet      => 50000 ], # ?
-    [ maxdb      => 7673  ], # ?
-    [ max        => 7673  ], # ?
-    [ impala     => 21000 ],
-    [ couchdb    => 5984  ],
-    [ couch      => 5984  ],
-    [ hive       => 10000 ],
-    [ cassandra  => 9160  ],
-    [ derby      => 1527  ],
-    [ vertica    => 5433  ],
-    [ ldapdb     => undef ],
+    [ db         => undef,  undef      ],
+    [ unknown    => undef,  undef      ],
+    [ postgresql => 5432,  'pg'        ],
+    [ postgres   => 5432,  'pg'        ],
+    [ pgsql      => 5432,  'pg'        ],
+    [ pg         => 5432,  'pg'        ],
+    [ pgxc       => 5432,  'pg'        ],
+    [ postgresxc => 5432,  'pg'        ],
+    [ mysql      => 3306,  'mysql'     ],
+    [ mariadb    => 3306,  'mysql'     ],
+    [ maria      => 3306,  'mysql'     ],
+    [ sqlite     => undef, 'sqlite'    ],
+    [ sqlite3    => undef, 'sqlite'    ],
+    [ oracle     => 1521,  'oracle'    ],
+    [ cubrid     => 33000, 'cubrid'    ], # ?
+    [ firebird   => 3050,  'firebird'  ],
+    [ sqlserver  => 1433,  'sqlserver' ],
+    [ mssql      => 1433,  'sqlserver' ],
+    [ db2        => 50000, 'db2'       ], # ?
+    [ ingres     => 1524,  'ingres'    ],
+    [ sybase     => 2638,  'sybase'    ],
+    [ informix   => 1526,  'informix'  ], # ?
+    [ teradata   => 1025,  'teradata'  ],
+    [ interbase  => 3050,  'interbase' ],
+    [ unify      => 27117, 'unify'     ], # ?
+    [ mongodb    => 27017, 'mongodb'   ],
+    [ mongo      => 27017, 'mongodb'   ],
+    [ monetdb    => 50000, 'monetdb'   ], # ?
+    [ monet      => 50000, 'monetdb'   ], # ?
+    [ maxdb      => 7673,  'maxdb'     ], # ?
+    [ max        => 7673,  'maxdb'     ], # ?
+    [ impala     => 21000, 'impala'    ],
+    [ couchdb    => 5984,  'couchdb'   ],
+    [ couch      => 5984,  'couchdb'   ],
+    [ hive       => 10000, 'hive'      ],
+    [ cassandra  => 9160,  'cassandra' ],
+    [ derby      => 1527,  'derby'     ],
+    [ vertica    => 5433,  'vertica'   ],
+    [ ldapdb     => undef, 'ldapdb'    ],
 ) {
-    my ($engine, $port) = @{ $spec };
+    my ($engine, $port, $canon) = @{ $spec };
     my $prefix = "db:$engine";
     my $class  = "URI::$engine";
     my $label  = $engine;
+    my $clabel = $canon;
     if ($engine eq 'db' || $engine eq 'unknown') {
         $prefix = 'db';
         $class  = 'URI::_db';
         $engine = undef;
         $label  = '';
+        $canon = undef;
+        $clabel  = '';
     } else {
         # Should work well as a direct URI.
         my $string = "$engine://hi:there\@foo.com:1234/blah.db";
@@ -75,6 +78,9 @@ for my $spec (
         is $uri->as_string, $string, 'Non-DB URI string should be correct';
         is "$uri", $string, 'Non-DB URI should correctly strigify';
         ok $uri->has_recognized_engine, "$engine should be recognized engine";
+        is $uri->canonical_engine, $canon, qq{Non-DB URI canonical engine should be "$clabel"};
+        $uri->port(undef) if $clabel eq 'sqlite' || $clabel eq 'ldapdb';
+        is $uri->canonical->engine, $canon, qq{Non-DB URI canonical URI engine should be "$clabel"};
     }
 
     isa_ok my $uri = URI->new("$prefix:"), 'URI::db', "DB URI with $class";
@@ -84,6 +90,7 @@ for my $spec (
     }
     is $uri->scheme, 'db', 'Scheme should be "db"';
     is $uri->engine, $engine, qq{Simple URI engine should be "$label"};
+    is $uri->canonical_engine, $canon, qq{Simple URI canonical engine should be "$clabel"};
     is $uri->dbname, undef, 'Simple URI db name should be undef';
     is $uri->host, undef, 'Simple URI host should be undef';
     is $uri->port, $port, 'Simple URI port should be undef';
@@ -105,6 +112,7 @@ for my $spec (
     isa_ok $uri->uri, $class, "Path URI $class URI";
     is $uri->scheme, 'db', 'Scheme should be "db"';
     is $uri->engine, $engine, qq{Path URI engine should be "$label"};
+    is $uri->canonical_engine, $canon, qq{Path URI canonical engine should be "$clabel"};
     is $uri->dbname, 'foo.db', 'Path URI db name should be "foo.db"';
     is $uri->host, undef, 'Path URI host should be undef';
     is $uri->port, $port, 'Path URI port should be undef';
@@ -122,6 +130,7 @@ for my $spec (
     isa_ok $uri, 'URI::db' unless $prefix eq 'db';
     is $uri->scheme, 'db', 'Scheme should be "db"';
     is $uri->engine, $engine, qq{Absolute Path URI engine should be "$label"};
+    is $uri->canonical_engine, $canon, qq{Absolute path URI canonical engine should be "$clabel"};
     is $uri->dbname, '/path/to/foo.db',
         'Absolute Path URI db name should be "/path/to/foo.db"';
     is $uri->host, undef, 'Absolute Path URI host should be undef';
@@ -143,6 +152,7 @@ for my $spec (
     isa_ok $uri, 'URI::db' unless $prefix eq 'db';
     is $uri->scheme, 'db', 'Scheme should be "db"';
     is $uri->engine, $engine, qq{No host, full path URI engine should be "$label"};
+    is $uri->canonical_engine, $canon, qq{No host, full path URI canonical engine should be "$clabel"};
     is $uri->dbname, '/path/to/foo.db',
         'No host, full path URI db name should be "/path/to/foo.db"';
     is $uri->host, '', 'No host, full path URI host should be empty';
@@ -161,6 +171,7 @@ for my $spec (
     isa_ok $uri = URI->new("$prefix://"), 'URI::db', "Hostless URI with $class";
     isa_ok $uri->uri, $class, "Hostless URI $class URI";
     is $uri->engine, $engine, qq{Hostless URI engine should be "label"};
+    is $uri->canonical_engine, $canon, qq{Hostless URI canonical engine should be "$clabel"};
     is $uri->dbname, undef, 'Hostless URI db name should be undef';
     is $uri->host, '', 'Hostless URI host should be ""';
     is $uri->port, $port, 'Hostless URI port should be undef';
@@ -177,6 +188,7 @@ for my $spec (
         "Host+FullPath URI with $class";
     isa_ok $uri->uri, $class, "Host+FullPath URI $class URI";
     is $uri->engine, $engine, qq{Host+FullPath URI engine should be "label"};
+    is $uri->canonical_engine, $canon, qq{Host+FullPath URI canonical engine should be "$clabel"};
     is $uri->dbname, '/foo.db', 'Host+FullPath URI db name should be "/foo.db"';
     is $uri->host, 'localhost', 'Host+FullPath URI host should be "localhost"';
     is $uri->port, $port, 'Host+FullPath URI port should be undef';
@@ -195,6 +207,7 @@ for my $spec (
         "Host+PcntPath URI with $class";
     isa_ok $uri->uri, $class, "Host+PcntPath URI $class URI";
     is $uri->engine, $engine, qq{Host+PcntPath URI engine should be "label"};
+    is $uri->canonical_engine, $canon, qq{Host+PcntPath URI canonical engine should be "$clabel"};
     is $uri->dbname, '/tmp/test.gdb', 'Host+PcntPath URI db name should be "/tmp/test.gdb"';
     is $uri->host, 'localhost', 'Host+PcntPath URI host should be "localhost"';
     is $uri->port, $port, 'Host+PcntPath URI port should be undef';
@@ -213,6 +226,7 @@ for my $spec (
         "Host+WinPath URI with $class";
     isa_ok $uri->uri, $class, "Host+WinPath URI $class URI";
     is $uri->engine, $engine, qq{Host+WinPath URI engine should be "label"};
+    is $uri->canonical_engine, $canon, qq{Host+WinPath URI canonical engine should be "$clabel"};
     is $uri->dbname, 'C:/tmp/foo.db', 'Host+WinPath URI db name should be "C:/tmp/foo.db"';
     is $uri->host, 'localhost', 'Host+WinPath URI host should be "localhost"';
     is $uri->port, $port, 'Host+WinPath URI port should be undef';
@@ -231,6 +245,7 @@ for my $spec (
         "Hostless+FullPath URI with $class";
     isa_ok $uri->uri, $class, "Hostless+FullPath URI $class URI";
     is $uri->engine, $engine, qq{Hostless+FullPath URI engine should be "label"};
+    is $uri->canonical_engine, $canon, qq{Hostless+FullPath URI canonical engine should be "$clabel"};
     is $uri->dbname, '/foo.db', 'Hostless+FullPath URI db name should be "/foo.db"';
     is $uri->host, '', 'Hostless+FullPath URI host should be ""';
     is $uri->port, $port, 'Hostless+FullPath URI port should be undef';
@@ -248,6 +263,7 @@ for my $spec (
     isa_ok $uri = URI->new("$prefix://localhost"), 'URI::db', "Localhost URI with $class";
     isa_ok $uri->uri, $class, "Localhost URI $class URI";
     is $uri->engine, $engine, qq{Localhost URI engine should be "label"};
+    is $uri->canonical_engine, $canon, qq{Localhost URI canonical engine should be "$clabel"};
     is $uri->dbname, undef, 'Localhost URI db name should be undef';
     is $uri->host, 'localhost', 'Localhost URI host should be "localhost"';
     is $uri->port, $port, 'Localhost URI port should be undef';
@@ -266,6 +282,7 @@ for my $spec (
         "Host+Port DB URI with $class";
     isa_ok $uri->uri, $class, "Host+Port URI $class URI";
     is $uri->engine, $engine, qq{Host+Port URI engine should be "label"};
+    is $uri->canonical_engine, $canon, qq{Host+Port URI canonical engine should be "$clabel"};
     is $uri->dbname, undef, 'Host+Port URI db name should be undef';
     is $uri->host, 'example.com', 'Host+Port URI host should be "example.com"';
     is $uri->port, 5433, 'Host+Port URI port should be 5433';
@@ -284,6 +301,7 @@ for my $spec (
         "DB URI with $class";
     isa_ok $uri->uri, $class, "DB URI $class URI";
     is $uri->engine, $engine, qq{DB URI engine should be "label"};
+    is $uri->canonical_engine, $canon, qq{DB URI canonical engine should be "$clabel"};
     is $uri->dbname, 'mydb', 'DB URI db name should be "mydb"';
     is $uri->host, 'example.com', 'DB URI host should be "example.com"';
     is $uri->port, $port, 'DB URI port should be undef';
@@ -301,6 +319,7 @@ for my $spec (
         "DBLess URI with $class";
     isa_ok $uri->uri, $class, "DBLess URI $class URI";
     is $uri->engine, $engine, qq{DBless URI engine should be "label"};
+    is $uri->canonical_engine, $canon, qq{DBless URI canonical engine should be "$clabel"};
     is $uri->dbname, '', 'DBless URI db name should be ""';
     is $uri->host, 'example.com', 'DBless URI host should be "example.com"';
     is $uri->port, $port, 'DBless URI port should be undef';
@@ -318,6 +337,7 @@ for my $spec (
         "User URI with $class";
     isa_ok $uri->uri, $class, "User URI $class URI";
     is $uri->engine, $engine, qq{User URI engine should be "label"};
+    is $uri->canonical_engine, $canon, qq{User URI canonical engine should be "$clabel"};
     is $uri->dbname, '/fullpathdb', 'User URI db name should be "/fullpathdb"';
     is $uri->host, 'localhost', 'User URI host should be "localhost"';
     is $uri->port, $port, 'User URI port should be undef';
@@ -335,6 +355,7 @@ for my $spec (
         "User w/o host URI with $class";
     isa_ok $uri->uri, $class, "User w/o host URI $class URI";
     is $uri->engine, $engine, qq{User w/o host URI engine should be "label"};
+    is $uri->canonical_engine, $canon, qq{User w/o host URI canonical engine should be "$clabel"};
     is $uri->dbname, '/fullpathdb', 'User w/o host URI db name should be "/fullpathdb"';
     is $uri->host, '', 'User w/o host URI host should be ""';
     is $uri->port, $port, 'User w/o host URI port should be undef';
@@ -352,6 +373,7 @@ for my $spec (
         "Password URI with $class";
     isa_ok $uri->uri, $class, "Password URI $class URI";
     is $uri->engine, $engine, qq{Password URI engine should be "label"};
+    is $uri->canonical_engine, $canon, qq{Password URI canonical engine should be "$clabel"};
     is $uri->dbname, undef, 'Password URI db name should be undef';
     is $uri->host, 'localhost', 'Password URI host should be "localhost"';
     is $uri->port, $port, 'Password URI port should be undef';
@@ -370,6 +392,7 @@ for my $spec (
         'URI::db', "Query URI with $class";
     isa_ok $uri->uri, $class, "Query URI $class URI";
     is $uri->engine, $engine, qq{Query URI engine should be "label"};
+    is $uri->canonical_engine, $canon, qq{Query URI canonical engine should be "$clabel"};
     is $uri->dbname, 'otherdb', 'Query URI db name should be "otherdb"';
     is $uri->host, 'localhost', 'Query URI host should be "localhost"';
     is $uri->port, $port, 'Query URI port should be undef';
@@ -388,6 +411,7 @@ for my $spec (
     isa_ok $uri->uri, $class, "Fragment URI $class URI";
     is $uri->scheme, 'db', 'Scheme should be "db"';
     is $uri->engine, $engine, qq{Fragment URI engine should be "$label"};
+    is $uri->canonical_engine, $canon, qq{Frgement URI canonical engine should be "$clabel"};
     is $uri->dbname, 'foo.db', 'Fragment URI db name should be "foo.db"';
     is $uri->host, undef, 'Fragment URI host should be undef';
     is $uri->port, $port, 'Fragment URI port should be undef';

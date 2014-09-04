@@ -182,6 +182,16 @@ C<default_port()> and a driver-specific C<dbi_dsn()>.
 If called with an argument, it updates the engine, possibly changing the class
 of the URI, and returns the old engine value.
 
+=head3 C<canonical_engine>
+
+  my $canonical_engine = $uri->canonical_engine;
+
+Returns the canonical engine. A number of engine names are aliases for other
+engines. This method will return the non-aliased engine name. For example, the
+C<postgres> engine will return the canonical engine C<pg>, the C<sqlite3>
+returns the canonical engine C<sqlite>, and C<maria> returns the canonical
+engine C<mysql>.
+
 =head3 C<dbname>
 
   my $dbname = $uri->dbname;
@@ -297,6 +307,14 @@ C<$URI::ABS_ALLOW_RELATIVE_SCHEME>.
 
 For C<db:> URIs, simply returns the URI::db object itself. For Non-C<db:>
 URIs, the behavior is the same as for L<URI>.
+
+=head3 C<canonical>
+
+  my $canonical_uri = $uri->canonical;
+
+Returns a normalized version of the URI. This behavior is the same for other
+URIs, except that the engine will be replaced with the value of
+C<canonical_engine> if it is not already the canonical engine.
 
 =head1 Support
 

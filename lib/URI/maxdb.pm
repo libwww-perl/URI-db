@@ -4,6 +4,7 @@ our $VERSION = '0.15';
 
 sub default_port { 7673 }
 sub dbi_driver   { 'MaxDB' }
+sub canonical_engine { 'maxdb' }
 
 sub _dbi_param_map { }
 

@@ -4,6 +4,7 @@ our $VERSION = '0.15';
 
 sub default_port { 3306 }
 sub dbi_driver   { 'mysql' }
+sub canonical_engine { 'mysql' }
 
 sub _dbi_param_map {
     my $self = shift;
