@@ -1,6 +1,6 @@
 package URI::oracle;
 use base 'URI::_db';
-our $VERSION = '0.15';
+our $VERSION = '0.16';
 
 sub default_port { 1521 }
 sub dbi_driver   { 'Oracle' }

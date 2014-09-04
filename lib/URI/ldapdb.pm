@@ -1,6 +1,6 @@
 package URI::ldapdb;
 use base 'URI::_db';
-our $VERSION = '0.15';
+our $VERSION = '0.16';
 
 sub dbi_driver   { 'LDAP' }
 

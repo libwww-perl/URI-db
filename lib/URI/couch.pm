@@ -1,5 +1,5 @@
 package URI::couch;
 use base 'URI::couchdb';
-our $VERSION = '0.15';
+our $VERSION = '0.16';
 
 1;

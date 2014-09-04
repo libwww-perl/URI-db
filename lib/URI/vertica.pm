@@ -1,6 +1,6 @@
 package URI::vertica;
 use base 'URI::_db';
-our $VERSION = '0.15';
+our $VERSION = '0.16';
 
 sub default_port { 5433 }
 sub dbi_driver   { 'ODBC' }
