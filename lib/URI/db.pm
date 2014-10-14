@@ -283,7 +283,7 @@ examples:
   | db:mysql://localhost:33/foo          | dbi:mysql:host=localhost;port=33;database=foo    |
   | db:db2://localhost:33/foo            | dbi:DB2:HOSTNAME=localhost;PORT=33;DATABASE=foo  |
   | db:vertica:dbadmin                   | dbi:ODBC:DSN=dbadmin                             |
-  | db:vertica:foo.com/hi?Driver=Vertica | dbi:ODBC:Host=foo.com;Database=hi;Driver=Vertica |
+  | db:mssql://foo.com/pubs?Driver=MSSQL | dbi:ODBC:Host=foo.com;Database=pubs;Driver=MSSQL |
 
 =head3 C<dbi_params>
 

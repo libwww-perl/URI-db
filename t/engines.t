@@ -23,8 +23,8 @@ for my $spec (
     [ oracle     => 1521,  'oracle'    ],
     [ cubrid     => 33000, 'cubrid'    ], # ?
     [ firebird   => 3050,  'firebird'  ],
-    [ sqlserver  => 1433,  'sqlserver' ],
-    [ mssql      => 1433,  'sqlserver' ],
+    [ mssql      => 1433,  'mssql'     ],
+    [ sqlserver  => 1433,  'mssql'     ],
     [ db2        => 50000, 'db2'       ], # ?
     [ ingres     => 1524,  'ingres'    ],
     [ sybase     => 2638,  'sybase'    ],

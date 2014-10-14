@@ -1,6 +1,12 @@
 Revision history for Perl extension URI::db.
 
 0.16
+      - Added new abstract class, URI::_odbc, for URIs that use ODBC in
+        `dbi_dsn`.
+      - The `dbi_dsn` method of URI::mssql now returns an ODBC DSN instead of
+        DBD::Sybase, since the latter would require Sybase to build.
+      - URI::sqlserver now inherits from URI::mssql rather than the other way
+        around.
 
 0.15  2014-09-04T00:29:46Z
       - Added the `canonical_engine` accessor, which returns the canonical
