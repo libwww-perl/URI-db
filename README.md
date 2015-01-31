@@ -151,6 +151,7 @@ The format here is inspired by a lot of prior art.
     * [Stackato database URLs](http://docs.stackato.com/3.0/user/services/data-services.html#database-url)
     * [Django database URLs](https://github.com/kennethreitz/dj-database-url)
     * [Rails database URLs](https://github.com/glenngillen/rails-database-url)
+    * [Ruby Pg URL](https://bitbucket.org/eradman/ruby-pg-url)
 
 Author
 ------
