@@ -92,8 +92,8 @@ for my $spec (
     },
     {
         uri => 'db:sqlite:///path/foo.db',
-        dsn => 'dbi:SQLite:dbname=/path/foo.db',
-        dbi => [ [dbname => '/path/foo.db'] ],
+        dsn => 'dbi:SQLite:dbname=path/foo.db',
+        dbi => [ [dbname => 'path/foo.db'] ],
         qry => [],
     },
     {

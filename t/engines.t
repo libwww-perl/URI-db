@@ -153,8 +153,8 @@ for my $spec (
     is $uri->scheme, 'db', 'Scheme should be "db"';
     is $uri->engine, $engine, qq{No host, full path URI engine should be "$label"};
     is $uri->canonical_engine, $canon, qq{No host, full path URI canonical engine should be "$clabel"};
-    is $uri->dbname, '/path/to/foo.db',
-        'No host, full path URI db name should be "/path/to/foo.db"';
+    is $uri->dbname, 'path/to/foo.db',
+        'No host, full path URI db name should be "path/to/foo.db"';
     is $uri->host, '', 'No host, full path URI host should be empty';
     is $uri->port, $port, 'No host, full path URI port should be undef';
     is $uri->user, undef, 'No host, full path URI user should be undef';

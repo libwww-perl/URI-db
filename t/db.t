@@ -106,9 +106,15 @@ isa_ok $uri->nested_uri, 'URI::_db';
 
 # Pass a path.
 $uri->dbname('/tmp/foo');
-pass 'Assign a database name path';
+pass 'Assign a database name full path';
 is $uri->dbname, '/tmp/foo', 'DB name should be "/tmp/foo"';
 is $uri->path, '//tmp/foo', 'Path should be "//tmp/foo"';
+
+# Try a relative path.
+$uri->dbname('foo.db');
+pass 'Assign a database name relative path';
+is $uri->dbname, 'foo.db', 'DB name should be "foo.db"';
+is $uri->path, '/foo.db', 'Path should be "/foo.db"';
 
 # Try a Windows path.
 $uri->dbname('C:/temp/foo');
@@ -208,5 +214,16 @@ ok $uri->eq($uri->as_string), 'URI should equal itself stringified';
 ok $uri->eq(URI->new( $uri->as_string )), 'URI should equal equiv URI';
 ok $uri->eq($uri->clone), 'URI should equal itself cloned';
 ok !$uri->eq('pg:'), 'URI should not equal non-DB URI';
+
+# Test dbname in hostless URI.
+for my $opaque ('', '//', '//foo@/') {
+    ok my $uri = URI->new("db:sqlite:$opaque"),
+        qq{Create URI with opaque "$opaque"};
+    ok !$uri->dbname, 'dbname should be empty';
+    $uri->dbname('foo.db');
+    is $uri->dbname, 'foo.db', 'dbname should be "foo.db"';
+    my $prefix = $opaque eq '' ? '' : '/';
+    is $uri->path, "${prefix}foo.db", 'path should be "${prefix}foo.db"';
+}
 
 done_testing;

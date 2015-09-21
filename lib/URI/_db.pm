@@ -33,7 +33,7 @@ sub has_recognized_engine {
 
 sub dbname {
     my $self = shift;
-    my $is_full = $self->opaque =~ m{^//(?://|(?!/))};
+    my $is_full = $self->opaque =~ m{^//(?://|/?(?!/))};
     return $self->path($is_full && defined $_[0] ? "/$_[0]" : shift) if @_;
     my @segs = $self->path_segments or return;
     shift @segs if $is_full;

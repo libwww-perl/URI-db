@@ -7,6 +7,11 @@ Revision history for Perl extension URI::db.
         DBD::Sybase, since the latter would require Sybase to build.
       - URI::sqlserver now inherits from URI::mssql rather than the other way
         around.
+      - Fixed a bug where a URI with three slashes but no authority part after
+        the first two would incorrectly think the databse name should be an
+        absolute path. That is, in "db:sqlite:///foo.db", the `dbname` value
+        is "foo.db", not "/foo.db". Thanks to Dan Book for the report
+        (issue #8).
 
 0.15  2014-09-04T00:29:46Z
       - Added the `canonical_engine` accessor, which returns the canonical
