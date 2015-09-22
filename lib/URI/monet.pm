@@ -1,5 +1,5 @@
 package URI::monet;
 use base 'URI::monetdb';
-our $VERSION = '0.16';
+our $VERSION = '0.17';
 
 1;
