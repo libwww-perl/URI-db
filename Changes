@@ -1,6 +1,6 @@
 Revision history for Perl extension URI::db.
 
-0.16
+0.16  2015-09-22T00:17:07Z
       - Added new abstract class, URI::_odbc, for URIs that use ODBC in
         `dbi_dsn`.
       - The `dbi_dsn` method of URI::mssql now returns an ODBC DSN instead of
