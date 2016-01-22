@@ -10,11 +10,15 @@ sub dbi_dsn {
     my $driver = shift or return $self->SUPER::dbi_dsn;
     return $self->SUPER::dbi_dsn if $driver eq 'ODBC';
 
-    my $class = $driver eq 'ADO' ? 'URI::_ado'
-        ? $driver eq 'Sybase' ? 'URI::sybase'
-        : die "Unknown driver: $driver\n";
-    eval "require $class" or die;
-    return $class->new($self->canonical)->dbi_dsn;
+    my $class = $driver eq 'ADO'    ? 'URI::_ado'
+              : $driver eq 'Sybase' ? 'URI::sybase'
+              : die "Unknown driver: $driver\n";
+
+    eval "require $class;";
+    die "Unloadable driver: $driver\n" if $@;
+
+    bless($self, $class); # TODO: fix me!! once blessed into a thing it can not be changed back
+    return $self->dbi_dsn;
 }
 
 1;

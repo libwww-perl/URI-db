@@ -7,8 +7,9 @@ Module::Build->new(
     license            => 'perl',
     configure_requires => { 'Module::Build' => '0.30', },
     build_requires     => {
-        'Module::Build' => '0.30',
-        'Test::More'    => '0.88',
+        'Module::Build'   => '0.30',
+        'Test::More'      => '0.88',
+        'Test::Exception' => 0,
     },
     requires => {
         'perl'         => 5.008001,
