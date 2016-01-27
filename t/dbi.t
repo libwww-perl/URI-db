@@ -289,7 +289,41 @@ for my $spec (
         qry => [],
         alt => 'ODBC',
     },
-    ## TODO: mssql w/ Sybase
+    {
+        uri => 'db:mssql:',
+        dsn => 'dbi:Sybase:',
+        dbi => [],
+        qry => [],
+        alt => "Sybase",
+    },
+    {
+        uri => 'db:mssql://localhost',
+        dsn => 'dbi:Sybase:host=localhost',
+        dbi => [ [host => 'localhost'], [dbname => undef] ],
+        qry => [],
+        alt => "Sybase",
+    },
+    {
+        uri => 'db:mssql://localhost:33',
+        dsn => 'dbi:Sybase:host=localhost;port=33',
+        dbi => [ [host => 'localhost'], [port => 33], [dbname => undef] ],
+        qry => [],
+        alt => "Sybase",
+    },
+    {
+        uri => 'db:mssql://foo:123/try?foo=1&foo=2&lol=yes&Driver=HPMssql',
+        dsn => 'dbi:Sybase:host=foo;port=123;dbname=try;foo=1;foo=2;lol=yes;Driver=HPMssql',
+        dbi => [ [host => 'foo'], [port => 123], [dbname => 'try'] ],
+        qry => [ foo => 1, foo => 2, lol => 'yes', Driver => 'HPMssql' ],
+        alt => "Sybase",
+    },
+    {
+        uri => 'db:mssql://localhost:33/foo',
+        dsn => 'dbi:Sybase:host=localhost;port=33;dbname=foo',
+        dbi => [ [host => 'localhost'], [port => 33], [dbname => 'foo'] ],
+        qry => [],
+        alt => "Sybase",
+    },
     {
         uri => 'db:mssql:',
         dsn => 'dbi:ADO:',
