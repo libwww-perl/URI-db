@@ -5,8 +5,8 @@ our $VERSION = '0.17';
 sub default_port { 2638 }
 sub dbi_driver   { 'Sybase' }
 
-sub dbi_dsn {
-    my $self = shift;
+sub dbi_dsn { # change me? change ::mssql, ::_ado, and ::_odbc
+    my $self = shift; # use Devel::Kit::TAP;d("sybase dbi_dsn()");
     my $driver = shift or return $self->SUPER::dbi_dsn;
     return $self->SUPER::dbi_dsn if $driver eq 'Sybase';
 
