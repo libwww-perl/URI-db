@@ -263,8 +263,8 @@ for my $spec (
     },
     {
         uri => 'db:mssql://localhost',
-        dsn => 'dbi:ODBC:Server=localhost;Port=1433',
-        dbi => [ [Server => 'localhost'], [Port => 1433], [Database => undef] ],
+        dsn => 'dbi:ODBC:Server=localhost',
+        dbi => [ [Server => 'localhost'], [Port => undef], [Database => undef] ],
         qry => [],
         alt => 'ODBC',
     },
@@ -292,14 +292,14 @@ for my $spec (
     {
         uri => 'db:mssql:',
         dsn => 'dbi:Sybase:',
-        dbi => [],
+        dbi => [ [host => undef], [port => undef], [dbname => undef] ],
         qry => [],
         alt => "Sybase",
     },
     {
         uri => 'db:mssql://localhost',
         dsn => 'dbi:Sybase:host=localhost',
-        dbi => [ [host => 'localhost'], [dbname => undef] ],
+        dbi => [ [host => 'localhost'], [port => undef], [dbname => undef] ],
         qry => [],
         alt => "Sybase",
     },
@@ -340,8 +340,8 @@ for my $spec (
     },
     {
         uri => 'db:mssql://localhost',
-        dsn => 'dbi:ADO:Server=localhost;Port=1433',
-        dbi => [ [Server => 'localhost'], [Port => 1433], [Database => undef] ],
+        dsn => 'dbi:ADO:Server=localhost',
+        dbi => [ [Server => 'localhost'], [Port => undef], [Database => undef] ],
         qry => [],
         alt => "ADO",
     },
