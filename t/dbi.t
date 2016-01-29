@@ -478,20 +478,13 @@ for my $spec (
     my $uri = $spec->{uri};
     my $end = exists $spec->{alt} ? (ref($spec->{alt}) ? " - " . ($spec->{alt}->())[0] : " - $spec->{alt}") : "";
     ok my $u = URI->new($uri), "URI $uri$end";
-    is_deeply [ $u->query_params ], $spec->{qry}, "... $uri query params$end";
-    is_deeply [ $u->_dbi_param_map ], $spec->{dbi}, "... $uri DBI param map$end";
-    is_deeply [ $u->dbi_params ], [
-        (
-            map { @{ $_ } }
-            grep { defined $_->[1] && length $_->[1] } @{ $spec->{dbi} }
-        ),
-        @{ $spec->{qry} },
-    ], "... $uri DBI params$end";
 
+    my $failure_expected = 0;
     if ($spec->{alt}) {
         if (ref($spec->{alt}) eq 'CODE') {
             my ($alt, $err) = $spec->{alt}->();
             throws_ok { $u->dbi_dsn($alt) } $err, "... $uri ALT DSN $alt fails as expected";
+            $failure_expected = 1;
         }
         else {
             is $u->dbi_dsn($spec->{alt}), $spec->{dsn}, "... $uri ALT DSN $spec->{alt} ok";
@@ -499,6 +492,18 @@ for my $spec (
     }
     else {
         is $u->dbi_dsn, $spec->{dsn}, "... $uri DSN$end";
+    }
+
+    if (!$failure_expected) {
+        is_deeply [ $u->query_params ], $spec->{qry}, "... $uri query params$end";
+        is_deeply [ $u->_dbi_param_map ], $spec->{dbi}, "... $uri DBI param map$end";
+        is_deeply [ $u->dbi_params ], [
+            (
+                map { @{ $_ } }
+                grep { defined $_->[1] && length $_->[1] } @{ $spec->{dbi} }
+            ),
+            @{ $spec->{qry} },
+        ], "... $uri DBI params$end";
     }
 }
 
