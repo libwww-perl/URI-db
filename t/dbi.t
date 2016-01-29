@@ -2,6 +2,7 @@
 
 use strict;
 use Test::More;
+use Test::Exception;
 use utf8;
 use URI;
 
@@ -247,6 +248,161 @@ for my $spec (
         qry => [],
     },
     {
+        uri => 'db:mssql:',
+        dsn => 'dbi:ODBC:',
+        dbi => [ [DSN => undef] ],
+        qry => [],
+        alt => 'ODBC',
+    },
+    {
+        uri => 'db:mssql:dbadmin',
+        dsn => 'dbi:ODBC:DSN=dbadmin',
+        dbi => [ [DSN => 'dbadmin'] ],
+        qry => [],
+        alt => 'ODBC',
+    },
+    {
+        uri => 'db:mssql://localhost',
+        dsn => 'dbi:ODBC:Server=localhost',
+        dbi => [ [Server => 'localhost'], [Port => undef], [Database => undef] ],
+        qry => [],
+        alt => 'ODBC',
+    },
+    {
+        uri => 'db:mssql://localhost:33',
+        dsn => 'dbi:ODBC:Server=localhost;Port=33',
+        dbi => [ [Server => 'localhost'], [Port => 33], [Database => undef] ],
+        qry => [],
+        alt => 'ODBC',
+    },
+    {
+        uri => 'db:mssql://foo:123/try?foo=1&foo=2&lol=yes&Driver=HPMssql',
+        dsn => 'dbi:ODBC:Server=foo;Port=123;Database=try;foo=1;foo=2;lol=yes;Driver=HPMssql',
+        dbi => [ [Server => 'foo'], [Port => 123], [Database => 'try'] ],
+        qry => [ foo => 1, foo => 2, lol => 'yes', Driver => 'HPMssql' ],
+        alt => 'ODBC',
+    },
+    {
+        uri => 'db:mssql://localhost:33/foo',
+        dsn => 'dbi:ODBC:Server=localhost;Port=33;Database=foo',
+        dbi => [ [Server => 'localhost'], [Port => 33], [Database => 'foo'] ],
+        qry => [],
+        alt => 'ODBC',
+    },
+    {
+        uri => 'db:mssql:',
+        dsn => 'dbi:Sybase:',
+        dbi => [ [host => undef], [port => undef], [dbname => undef] ],
+        qry => [],
+        alt => "Sybase",
+    },
+    {
+        uri => 'db:mssql://localhost',
+        dsn => 'dbi:Sybase:host=localhost',
+        dbi => [ [host => 'localhost'], [port => undef], [dbname => undef] ],
+        qry => [],
+        alt => "Sybase",
+    },
+    {
+        uri => 'db:mssql://localhost:33',
+        dsn => 'dbi:Sybase:host=localhost;port=33',
+        dbi => [ [host => 'localhost'], [port => 33], [dbname => undef] ],
+        qry => [],
+        alt => "Sybase",
+    },
+    {
+        uri => 'db:mssql://foo:123/try?foo=1&foo=2&lol=yes&Driver=HPMssql',
+        dsn => 'dbi:Sybase:host=foo;port=123;dbname=try;foo=1;foo=2;lol=yes;Driver=HPMssql',
+        dbi => [ [host => 'foo'], [port => 123], [dbname => 'try'] ],
+        qry => [ foo => 1, foo => 2, lol => 'yes', Driver => 'HPMssql' ],
+        alt => "Sybase",
+    },
+    {
+        uri => 'db:mssql://localhost:33/foo',
+        dsn => 'dbi:Sybase:host=localhost;port=33;dbname=foo',
+        dbi => [ [host => 'localhost'], [port => 33], [dbname => 'foo'] ],
+        qry => [],
+        alt => "Sybase",
+    },
+    {
+        uri => 'db:mssql:',
+        dsn => 'dbi:ADO:',
+        dbi => [ [DSN => undef] ],
+        qry => [],
+        alt => "ADO",
+    },
+    {
+        uri => 'db:mssql:dbadmin',
+        dsn => 'dbi:ADO:DSN=dbadmin',
+        dbi => [ [DSN => 'dbadmin'] ],
+        qry => [],
+        alt => "ADO",
+    },
+    {
+        uri => 'db:mssql://localhost',
+        dsn => 'dbi:ADO:Server=localhost',
+        dbi => [ [Server => 'localhost'], [Port => undef], [Database => undef] ],
+        qry => [],
+        alt => "ADO",
+    },
+    {
+        uri => 'db:mssql://localhost:33',
+        dsn => 'dbi:ADO:Server=localhost;Port=33',
+        dbi => [ [Server => 'localhost'], [Port => 33], [Database => undef] ],
+        qry => [],
+        alt => "ADO",
+    },
+    {
+        uri => 'db:mssql://foo:123/try?foo=1&foo=2&lol=yes&Driver=HPMssql',
+        dsn => 'dbi:ADO:Server=foo;Port=123;Database=try;foo=1;foo=2;lol=yes;Driver=HPMssql',
+        dbi => [ [Server => 'foo'], [Port => 123], [Database => 'try'] ],
+        qry => [ foo => 1, foo => 2, lol => 'yes', Driver => 'HPMssql' ],
+        alt => "ADO",
+    },
+    {
+        uri => 'db:mssql://localhost:33/foo',
+        dsn => 'dbi:ADO:Server=localhost;Port=33;Database=foo',
+        dbi => [ [Server => 'localhost'], [Port => 33], [Database => 'foo'] ],
+        qry => [],
+        alt => "ADO",
+    },
+    {
+        uri => 'db:mssql:',
+        dbi => [ [DSN => undef] ],
+        qry => [],
+        alt => sub { return ("Derp", qr/Unknown driver: Derp\n/) },
+    },
+    {
+        uri => 'db:mssql:dbadmin',
+        dbi => [ [DSN => 'dbadmin'] ],
+        qry => [],
+        alt => sub { return ("Derp", qr/Unknown driver: Derp\n/) },
+    },
+    {
+        uri => 'db:mssql://localhost',
+        dbi => [ [Server => 'localhost'], [Port => 1433], [Database => undef] ],
+        qry => [],
+        alt => sub { return ("Derp", qr/Unknown driver: Derp\n/) },
+    },
+    {
+        uri => 'db:mssql://localhost:33',
+        dbi => [ [Server => 'localhost'], [Port => 33], [Database => undef] ],
+        qry => [],
+        alt => sub { return ("Derp", qr/Unknown driver: Derp\n/) },
+    },
+    {
+        uri => 'db:mssql://foo:123/try?foo=1&foo=2&lol=yes&Driver=HPMssql',
+        dbi => [ [Server => 'foo'], [Port => 123], [Database => 'try'] ],
+        qry => [ foo => 1, foo => 2, lol => 'yes', Driver => 'HPMssql' ],
+        alt => sub { return ("Derp", qr/Unknown driver: Derp\n/) },
+    },
+    {
+        uri => 'db:mssql://localhost:33/foo',
+        dbi => [ [Server => 'localhost'], [Port => 33], [Database => 'foo'] ],
+        qry => [],
+        alt => sub { return ("Derp", qr/Unknown driver: Derp\n/) },
+    },
+    {
         uri => 'db:sqlserver://localhost:33/foo',
         dsn => 'dbi:ODBC:Server=localhost;Port=33;Database=foo',
         dbi => [ [Server => 'localhost'], [Port => 33], [Database => 'foo'] ],
@@ -320,17 +476,35 @@ for my $spec (
     },
 ) {
     my $uri = $spec->{uri};
-    ok my $u = URI->new($uri), "URI $uri";
-    is_deeply [ $u->query_params ], $spec->{qry}, "... $uri query params";
-    is_deeply [ $u->_dbi_param_map ], $spec->{dbi}, "... $uri DBI param map";
-    is_deeply [ $u->dbi_params ], [
-        (
-            map { @{ $_ } }
-            grep { defined $_->[1] && length $_->[1] } @{ $spec->{dbi} }
-        ),
-        @{ $spec->{qry} },
-    ], "... $uri DBI params";
-    is $u->dbi_dsn, $spec->{dsn}, "... $uri DSN";
+    my $end = exists $spec->{alt} ? (ref($spec->{alt}) ? " - " . ($spec->{alt}->())[0] : " - $spec->{alt}") : "";
+    ok my $u = URI->new($uri), "URI $uri$end";
+
+    my $failure_expected = 0;
+    if ($spec->{alt}) {
+        if (ref($spec->{alt}) eq 'CODE') {
+            my ($alt, $err) = $spec->{alt}->();
+            throws_ok { $u->dbi_dsn($alt) } $err, "... $uri ALT DSN $alt fails as expected";
+            $failure_expected = 1;
+        }
+        else {
+            is $u->dbi_dsn($spec->{alt}), $spec->{dsn}, "... $uri ALT DSN $spec->{alt} ok";
+        }
+    }
+    else {
+        is $u->dbi_dsn, $spec->{dsn}, "... $uri DSN$end";
+    }
+
+    if (!$failure_expected) {
+        is_deeply [ $u->query_params ], $spec->{qry}, "... $uri query params$end";
+        is_deeply [ $u->_dbi_param_map ], $spec->{dbi}, "... $uri DBI param map$end";
+        is_deeply [ $u->dbi_params ], [
+            (
+                map { @{ $_ } }
+                grep { defined $_->[1] && length $_->[1] } @{ $spec->{dbi} }
+            ),
+            @{ $spec->{qry} },
+        ], "... $uri DBI params$end";
+    }
 }
 
 done_testing;
