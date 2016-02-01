@@ -16,7 +16,10 @@ sub dbi_dsn {
         :       die "Unknown driver: $driver\n";
 
     eval "require $class" or die;
-    return $class->new($self)->dbi_dsn;
+
+    # Make a copy blessed into the alternate class to get its DSN.
+    my $alt = bless \"$self" => $class;
+    return $alt->dbi_dsn;
 }
 
 1;
