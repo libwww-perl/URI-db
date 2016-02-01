@@ -23,3 +23,31 @@ sub dbi_dsn {
 }
 
 1;
+
+=head1 Name
+
+URI::mssql - Microsoft SQL Server database URI
+
+=head1 Description
+
+L<URI::db> format for Microsoft SQL Server.
+
+=head1 Interface
+
+The following differences exist compared to the C<URI::db> interface:
+
+=head2 Instance Methods
+
+=head3 C<dbi_dsn>
+
+  my $dsn = $uri->dbi_dsn;
+ $dsn = $uri->dbi_dsn($driver);
+
+Extends the implementation of C<dbi_dsn> to support a driver argument. By
+default, C<dbi_dsn> returns a DSN appropriate for use with L<DBD::ODBC>. Pass
+"ADO" or "Sybase" to instead get a DSN appropriate to L<DBD::ADO> or
+L<DBD::Sybase>, respectively.
+
+
+
+=cut
