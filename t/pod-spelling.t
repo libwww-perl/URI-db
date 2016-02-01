@@ -19,3 +19,5 @@ DSN
 Hackor
 PostgreSQL
 Sqitch
+ODBC
+Sybase

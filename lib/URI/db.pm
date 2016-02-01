@@ -273,9 +273,11 @@ Returns a L<DBI> DSN appropriate for use in a call to C<< DBI->connect >>. The
 attributes will usually be pulled from the URI host name, port, and database
 name, as well as the query parameters. If no driver is known for the URI, the
 C<dbi:$driver:> part of the DSN will be omitted, in which case you can use the
-C<$DBI_DRIVER> environment variable to identify an appropriate driver.
-Otherwise, each database URI does its best to create a valid DBI DSN. Some
-examples:
+C<$DBI_DRIVER> environment variable to identify an appropriate driver. If the
+URI supports multiple drivers, pass the name of the one you want to
+C<dbi_dsn()>. Currently only URI::myssql supports alternate drivers, ADO,
+ODBC, or Sybase. Otherwise, each database URI does its best to create a valid
+DBI DSN. Some examples:
 
   | URI                                  | DSN                                              |
   |--------------------------------------+--------------------------------------------------|
@@ -283,7 +285,7 @@ examples:
   | db:mysql://localhost:33/foo          | dbi:mysql:host=localhost;port=33;database=foo    |
   | db:db2://localhost:33/foo            | dbi:DB2:HOSTNAME=localhost;PORT=33;DATABASE=foo  |
   | db:vertica:dbadmin                   | dbi:ODBC:DSN=dbadmin                             |
-  | db:mssql://foo.com/pubs?Driver=MSSQL | dbi:ODBC:Host=foo.com;Database=pubs;Driver=MSSQL |
+  | db:mssql://foo.com/pubs?Driver=MSSQL | dbi:ADO:Host=foo.com;Database=pubs;Driver=MSSQL |
 
 =head3 C<dbi_params>
 
