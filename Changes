@@ -1,9 +1,9 @@
 Revision history for Perl extension URI::db.
 
 0.17
-      - The `dbi_dsn` method of URI::mssql by default now returns an ADO DSN
-        instead of DBD::ODBC. Pass in "odbc" or "sybase" to get a DSN for
-        either of those drivers, instead.
+      - The `dbi_dsn` method of URI::mssql now supports a single argument to
+        specify the DBI driver for which to return a DSN. Pass in "ado" or
+        "sybase" to get a DSN for either of those drivers, instead.
 
 0.16  2015-09-22T00:17:07Z
       - Added new abstract class, URI::_odbc, for URIs that use ODBC in

@@ -1,5 +1,5 @@
 package URI::mssql;
-use base 'URI::_ado';
+use base 'URI::_odbc';
 our $VERSION = '0.17';
 
 sub default_port { 1433 }
@@ -9,9 +9,9 @@ sub dbi_dsn {
     my $self   = shift;
     my $driver = shift or return $self->SUPER::dbi_dsn;
     my $lcd    = lc $driver;
-    return $self->SUPER::dbi_dsn if $driver eq 'ado';
+    return $self->SUPER::dbi_dsn if $lcd eq 'odbc';
 
-    my $class = $lcd eq 'odbc'   ? 'URI::_odbc'
+    my $class = $lcd eq 'ado'    ? 'URI::_ado'
         :       $lcd eq 'sybase' ? 'URI::sybase'
         :       die "Unknown driver: $driver\n";
 
