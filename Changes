@@ -1,6 +1,6 @@
 Revision history for Perl extension URI::db.
 
-0.17
+0.17  2016-02-03T18:35:33Z
       - Added URI::_ado, which subclasses URI::_odbc to provide a `dbi_dsn()`
         that returns a DSN using DBD::ADO. NOTE: This class is experimental,
         since I was unable to figure out the best default values for the
