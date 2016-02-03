@@ -215,42 +215,69 @@ for my $spec (
         dsn => 'dbi:ODBC:',
         dbi => [ [DSN => undef] ],
         qry => [],
+        alt => { odbc => 'dbi:ODBC:', sybase => 'dbi:Sybase:' },
     },
     {
         uri => 'db:mssql:dbadmin',
         dsn => 'dbi:ODBC:DSN=dbadmin',
         dbi => [ [DSN => 'dbadmin'] ],
         qry => [],
+        alt => {
+            ado    => 'dbi:ADO:DSN=dbadmin',
+            sybase => 'dbi:Sybase:dbname=dbadmin',
+        },
     },
     {
         uri => 'db:mssql://localhost',
         dsn => 'dbi:ODBC:Server=localhost;Port=1433',
         dbi => [ [Server => 'localhost'], [Port => 1433], [Database => undef] ],
         qry => [],
+        alt => {
+            ADO    => 'dbi:ADO:Server=localhost',
+            ODBC   => 'dbi:ODBC:Server=localhost;Port=1433',
+            SYBASE => 'dbi:Sybase:host=localhost',
+        },
     },
     {
         uri => 'db:mssql://localhost:33',
         dsn => 'dbi:ODBC:Server=localhost;Port=33',
         dbi => [ [Server => 'localhost'], [Port => 33], [Database => undef] ],
         qry => [],
+        alt => {
+            ado    => 'dbi:ADO:Server=localhost;Port=33',
+            sybase => 'dbi:Sybase:host=localhost;port=33',
+        },
     },
     {
         uri => 'db:mssql://foo:123/try?foo=1&foo=2&lol=yes&Driver=HPMssql',
         dsn => 'dbi:ODBC:Server=foo;Port=123;Database=try;foo=1;foo=2;lol=yes;Driver=HPMssql',
         dbi => [ [Server => 'foo'], [Port => 123], [Database => 'try'] ],
         qry => [ foo => 1, foo => 2, lol => 'yes', Driver => 'HPMssql' ],
+        alt => {
+            ado    => 'dbi:ADO:Server=foo;Port=123;Database=try;foo=1;foo=2;lol=yes;Driver=HPMssql',
+            sybase => 'dbi:Sybase:host=foo;port=123;dbname=try;foo=1;foo=2;lol=yes;Driver=HPMssql',
+        },
     },
     {
         uri => 'db:mssql://localhost:33/foo',
         dsn => 'dbi:ODBC:Server=localhost;Port=33;Database=foo',
         dbi => [ [Server => 'localhost'], [Port => 33], [Database => 'foo'] ],
         qry => [],
+        alt => {
+            ado    => 'dbi:ADO:Server=localhost;Port=33;Database=foo',
+            sybase => 'dbi:Sybase:host=localhost;port=33;dbname=foo',
+        },
     },
     {
         uri => 'db:sqlserver://localhost:33/foo',
         dsn => 'dbi:ODBC:Server=localhost;Port=33;Database=foo',
         dbi => [ [Server => 'localhost'], [Port => 33], [Database => 'foo'] ],
         qry => [],
+        alt => {
+            Ado    => 'dbi:ADO:Server=localhost;Port=33;Database=foo',
+            Odbc   => 'dbi:ODBC:Server=localhost;Port=33;Database=foo',
+            Sybase => 'dbi:Sybase:host=localhost;port=33;dbname=foo',
+        },
     },
     {
         uri => 'db:sybase://localhost:33/foo',
@@ -331,6 +358,11 @@ for my $spec (
         @{ $spec->{qry} },
     ], "... $uri DBI params";
     is $u->dbi_dsn, $spec->{dsn}, "... $uri DSN";
+    if (my $alt = $spec->{alt}) {
+        while (my ($driver, $dsn) = each %{ $alt }) {
+            is $u->dbi_dsn($driver), $dsn, "$uri $driver DSN";
+        }
+    }
 }
 
 done_testing;
