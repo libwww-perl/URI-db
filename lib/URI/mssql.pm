@@ -45,9 +45,8 @@ The following differences exist compared to the C<URI::db> interface:
 
 Extends the implementation of C<dbi_dsn> to support a driver argument. By
 default, C<dbi_dsn> returns a DSN appropriate for use with L<DBD::ODBC>. Pass
-"ADO" or "Sybase" to instead get a DSN appropriate to L<DBD::ADO> or
-L<DBD::Sybase>, respectively.
-
-
+"sybase" or "ado" to instead get a DSN appropriate to L<DBD::Sybase> or
+L<DBD::ADO>, respectively. Note that DBD::ADO value is experimental and
+subject to change. Feedback wanted.
 
 =cut
