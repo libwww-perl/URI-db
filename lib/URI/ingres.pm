@@ -1,6 +1,6 @@
 package URI::ingres;
 use base 'URI::_db';
-our $VERSION = '0.17';
+our $VERSION = '0.18';
 
 sub default_port { 1524 }
 sub dbi_driver   { 'Ingres' }

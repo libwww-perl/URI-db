@@ -1,4 +1,4 @@
 package URI::pgsql;
 use base 'URI::pg';
-our $VERSION = '0.17';
+our $VERSION = '0.18';
 

@@ -1,6 +1,6 @@
 package URI::monetdb;
 use base 'URI::_db';
-our $VERSION = '0.17';
+our $VERSION = '0.18';
 
 sub default_port { 50000 }
 sub dbi_driver   { 'monetdb' }

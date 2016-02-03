@@ -1,6 +1,6 @@
 package URI::sqlite;
 use base 'URI::_db';
-our $VERSION = '0.17';
+our $VERSION = '0.18';
 
 sub dbi_driver { 'SQLite' }
 sub canonical_engine { 'sqlite' }
