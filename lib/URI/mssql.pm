@@ -47,6 +47,6 @@ Extends the implementation of C<dbi_dsn> to support a driver argument. By
 default, C<dbi_dsn> returns a DSN appropriate for use with L<DBD::ODBC>. Pass
 "sybase" or "ado" to instead get a DSN appropriate to L<DBD::Sybase> or
 L<DBD::ADO>, respectively. Note that DBD::ADO value is experimental and
-subject to change. Feedback wanted.
+subject to change. L<Feedback wanted|https://github.com/theory/uri-db/issues/11>.
 
 =cut

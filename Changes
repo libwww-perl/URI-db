@@ -5,7 +5,7 @@ Revision history for Perl extension URI::db.
         that returns a DSN using DBD::ADO. NOTE: This class is experimental,
         since I was unable to figure out the best default values for the
         connection string -- there are so many options! Feedback and
-        recommendations wanted.
+        recommendations wanted (Issue #11).
       - The `dbi_dsn` method of URI::mssql now supports a single argument to
         specify the DBI driver for which to return a DSN. Pass in "sybase" or
         "ado" (experimental) to get a DSN for either of those drivers,
