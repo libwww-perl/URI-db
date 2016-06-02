@@ -321,11 +321,11 @@ C<canonical_engine> if it is not already the canonical engine.
 =head1 Support
 
 This module is stored in an open
-L<GitHub repository|http://github.com/theory/uri-db/>. Feel free to fork and
+L<GitHub repository|https://github.com/theory/uri-db/>. Feel free to fork and
 contribute!
 
 Please file bug reports via
-L<GitHub Issues|http://github.com/theory/uri-db/issues/> or by sending mail to
+L<GitHub Issues|https://github.com/theory/uri-db/issues/> or by sending mail to
 L<bug-URI-db@rt.cpan.org|mailto:bug-URI-db@rt.cpan.org>.
 
 =head1 Author
