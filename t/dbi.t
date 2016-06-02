@@ -73,6 +73,12 @@ for my $spec (
         qry => [ foo => 1, foo => 2, lol => 'yes' ],
     },
     {
+        uri => 'db:redshift://foo:123/try?foo=1&foo=2&lol=yes',
+        dsn => 'dbi:Pg:host=foo;port=123;dbname=try;foo=1;foo=2;lol=yes',
+        dbi => [ [host => 'foo'], [port => 123], [dbname => 'try'] ],
+        qry => [ foo => 1, foo => 2, lol => 'yes' ],
+    },
+    {
         uri => 'db:sqlite:',
         dsn => 'dbi:SQLite:',
         dbi => [ [dbname => undef] ],

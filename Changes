@@ -1,6 +1,8 @@
 Revision history for Perl extension URI::db.
 
 0.18
+      - Added URI::redshift to support db:redshift: URIs, thanks to a pull
+        request from Steve Caldwell (PR #12).
 
 0.17  2016-02-03T18:35:33Z
       - Added URI::_ado, which subclasses URI::_odbc to provide a `dbi_dsn()`
