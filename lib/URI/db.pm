@@ -257,7 +257,7 @@ if one is known. Returns C<undef> if no driver is known.
 
 =head3 C<dbi_dsn>
 
-  DBI->connect( $uri->dbi_dsn, $uri->user, $uri->pass );
+  DBI->connect( $uri->dbi_dsn, $uri->user, $uri->password );
 
 Returns a L<DBI> DSN appropriate for use in a call to C<< DBI->connect >>. If
 no driver is known for the URI, the C<dbi:$driver:> part of the DSN will be
