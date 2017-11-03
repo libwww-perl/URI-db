@@ -12,8 +12,6 @@ sub _dbi_param_map {
     # Just return the DSN if no host or port.
     return [ DSN => scalar $self->dbname ] unless $host || $port;
 
-    # Fetch the driver from the query params.
-    require URI::QueryParam;
     return (
         [ Server   => $host                        ],
         [ Port     => $port || $self->default_port ],
