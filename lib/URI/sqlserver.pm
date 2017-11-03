@@ -1,5 +1,5 @@
 package URI::sqlserver;
 use base 'URI::mssql';
-our $VERSION = '0.18';
+our $VERSION = '0.19';
 
 1;

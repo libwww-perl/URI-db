@@ -1,6 +1,6 @@
 package URI::mysql;
 use base 'URI::_db';
-our $VERSION = '0.18';
+our $VERSION = '0.19';
 
 sub default_port { 3306 }
 sub dbi_driver   { 'mysql' }

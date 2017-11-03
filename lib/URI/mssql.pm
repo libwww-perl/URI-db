@@ -1,6 +1,6 @@
 package URI::mssql;
 use base 'URI::_odbc';
-our $VERSION = '0.18';
+our $VERSION = '0.19';
 
 sub default_port { 1433 }
 sub canonical_engine { 'mssql' }
