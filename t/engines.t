@@ -47,6 +47,7 @@ for my $spec (
     [ derby      => 1527,  'derby'     ],
     [ vertica    => 5433,  'vertica'   ],
     [ ldapdb     => undef, 'ldapdb'    ],
+    [ exasol     => 8563,  'exasol'    ],
 ) {
     my ($engine, $port, $canon) = @{ $spec };
     my $prefix = "db:$engine";
