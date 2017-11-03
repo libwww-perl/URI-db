@@ -351,6 +351,43 @@ for my $spec (
         dbi => [ [Server => 'foo'], [Port => 123], [Database => 'try'] ],
         qry => [ foo => 1, foo => 2, lol => 'yes', Driver => 'HPVertica' ],
     },
+    {
+        uri => 'db:exasol:',
+        dsn => 'dbi:ODBC:',
+        dbi => [ [DSN => undef] ],
+        qry => [],
+        alt => { odbc => 'dbi:ODBC:', EXASOL => 'dbi:ODBC:' },
+    },
+    {
+        uri => 'db:exasol:',
+        dsn => 'dbi:ODBC:',
+        dbi => [ [DSN => undef] ],
+        qry => [],
+    },
+    {
+        uri => 'db:exasol:dbadmin',
+        dsn => 'dbi:ODBC:DSN=dbadmin',
+        dbi => [ [DSN => 'dbadmin'] ],
+        qry => [],
+    },
+    {
+        uri => 'db:exasol://localhost',
+        dsn => 'dbi:ODBC:EXAHOST=localhost;EXAPORT=8563',
+        dbi => [ [EXAHOST => 'localhost'], [EXAPORT => 8563] ],
+        qry => [],
+    },
+    {
+        uri => 'db:exasol://localhost:33',
+        dsn => 'dbi:ODBC:EXAHOST=localhost;EXAPORT=33',
+        dbi => [ [EXAHOST => 'localhost'], [EXAPORT => 33] ],
+        qry => [],
+    },
+    {
+        uri => 'db:exasol://foo:123/try?foo=1&foo=2&lol=yes&Driver=HPExasol',
+        dsn => 'dbi:ODBC:EXAHOST=foo;EXAPORT=123;foo=1;foo=2;lol=yes;Driver=HPExasol',
+        dbi => [ [EXAHOST => 'foo'], [EXAPORT => 123] ],
+        qry => [ foo => 1, foo => 2, lol => 'yes', Driver => 'HPExasol' ],
+    },
 ) {
     my $uri = $spec->{uri};
     ok my $u = URI->new($uri), "URI $uri";
