@@ -1,6 +1,7 @@
 Revision history for Perl extension URI::db.
 
 0.19
+      - Added URI::snowflake.
 
 0.18  2017-11-03T15:01:43Z
       - Added URI::redshift to support db:redshift: URIs, thanks to a pull
