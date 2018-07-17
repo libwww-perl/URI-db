@@ -388,6 +388,36 @@ for my $spec (
         dbi => [ [EXAHOST => 'foo'], [EXAPORT => 123] ],
         qry => [ foo => 1, foo => 2, lol => 'yes', Driver => 'HPExasol' ],
     },
+    {
+        uri => 'db:snowflake:',
+        dsn => 'dbi:ODBC:',
+        dbi => [ [DSN => undef] ],
+        qry => [],
+    },
+    {
+        uri => 'db:snowflake:dbadmin',
+        dsn => 'dbi:ODBC:DSN=dbadmin',
+        dbi => [ [DSN => 'dbadmin'] ],
+        qry => [],
+    },
+    {
+        uri => 'db:snowflake://yow',
+        dsn => 'dbi:ODBC:Server=yow;Port=443',
+        dbi => [ [Server => 'yow'], [Port => 443], [Database => undef] ],
+        qry => [],
+    },
+    {
+        uri => 'db:snowflake://yow:33',
+        dsn => 'dbi:ODBC:Server=yow;Port=33',
+        dbi => [ [Server => 'yow'], [Port => 33], [Database => undef] ],
+        qry => [],
+    },
+    {
+        uri => 'db:snowflake://foo:123/try?foo=1&foo=2&lol=yes&Driver=Snowflaker',
+        dsn => 'dbi:ODBC:Server=foo;Port=123;Database=try;foo=1;foo=2;lol=yes;Driver=Snowflaker',
+        dbi => [ [Server => 'foo'], [Port => 123], [Database => 'try'] ],
+        qry => [ foo => 1, foo => 2, lol => 'yes', Driver => 'Snowflaker' ],
+    },
 ) {
     my $uri = $spec->{uri};
     ok my $u = URI->new($uri), "URI $uri";
