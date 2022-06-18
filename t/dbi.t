@@ -418,6 +418,36 @@ for my $spec (
         dbi => [ [Server => 'foo'], [Port => 123], [Database => 'try'] ],
         qry => [ foo => 1, foo => 2, lol => 'yes', Driver => 'Snowflaker' ],
     },
+    {
+        uri => 'db:cockroach:',
+        dsn => 'dbi:Pg:port=26257',
+        dbi => [ [host => undef], [port => 26257], [dbname => undef] ],
+        qry => [],
+    },
+    {
+        uri => 'db:cockroach://xxx:5432',
+        dsn => 'dbi:Pg:host=xxx;port=5432',
+        dbi => [ [host => 'xxx'], [port => 5432], [dbname => undef] ],
+        qry => [],
+    },
+    {
+        uri => 'db:cockroach://foo:123/try?foo=1&foo=2&lol=yes',
+        dsn => 'dbi:Pg:host=foo;port=123;dbname=try;foo=1;foo=2;lol=yes',
+        dbi => [ [host => 'foo'], [port => 123], [dbname => 'try'] ],
+        qry => [ foo => 1, foo => 2, lol => 'yes' ],
+    },
+    {
+        uri => 'db:cockroachdb:',
+        dsn => 'dbi:Pg:port=26257',
+        dbi => [ [host => undef], [port => 26257], [dbname => undef] ],
+        qry => [],
+    },
+    {
+        uri => 'db:cockroachdb://foo:123/try?foo=1&foo=2&lol=yes',
+        dsn => 'dbi:Pg:host=foo;port=123;dbname=try;foo=1;foo=2;lol=yes',
+        dbi => [ [host => 'foo'], [port => 123], [dbname => 'try'] ],
+        qry => [ foo => 1, foo => 2, lol => 'yes' ],
+    },
 ) {
     my $uri = $spec->{uri};
     ok my $u = URI->new($uri), "URI $uri";
