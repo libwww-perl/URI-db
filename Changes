@@ -1,6 +1,7 @@
 Revision history for Perl extension URI::db.
 
 0.20
+      - Added URI::cockroach.
 
 0.19  2018-07-19T15:15:04Z
       - Added URI::snowflake.
