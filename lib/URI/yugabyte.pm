@@ -1,10 +1,10 @@
-package URI::cockroach;
+package URI::yugabyte;
 use base 'URI::_db';
 our $VERSION = '0.20';
 
-sub default_port { 26257 }
+sub default_port { 5433 }
 sub dbi_driver   { 'Pg' }
-sub canonical_engine { 'cockroach' }
+sub canonical_engine { 'pg' }
 
 sub _dbi_param_map {
     my $self = shift;
@@ -14,3 +14,5 @@ sub _dbi_param_map {
         [ dbname => scalar $self->dbname ],
     );
 }
+
+1;
