@@ -51,6 +51,8 @@ for my $spec (
     [ snowflake   => 443,   'snowflake' ],
     [ cockroach   => 26257, 'cockroach' ],
     [ cockroachdb => 26257, 'cockroach' ],
+    [ yugabyte    => 5433,  'pg'        ],
+    [ yugabytedb  => 5433,  'pg'        ],
 ) {
     my ($engine, $port, $canon) = @{ $spec };
     my $prefix = "db:$engine";

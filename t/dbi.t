@@ -448,6 +448,36 @@ for my $spec (
         dbi => [ [host => 'foo'], [port => 123], [dbname => 'try'] ],
         qry => [ foo => 1, foo => 2, lol => 'yes' ],
     },
+    {
+        uri => 'db:yugabyte:',
+        dsn => 'dbi:Pg:port=5433',
+        dbi => [ [host => undef], [port => 5433], [dbname => undef] ],
+        qry => [],
+    },
+    {
+        uri => 'db:yugabyte://xxx:5432',
+        dsn => 'dbi:Pg:host=xxx;port=5432',
+        dbi => [ [host => 'xxx'], [port => 5432], [dbname => undef] ],
+        qry => [],
+    },
+    {
+        uri => 'db:yugabyte://foo:123/try?foo=1&foo=2&lol=yes',
+        dsn => 'dbi:Pg:host=foo;port=123;dbname=try;foo=1;foo=2;lol=yes',
+        dbi => [ [host => 'foo'], [port => 123], [dbname => 'try'] ],
+        qry => [ foo => 1, foo => 2, lol => 'yes' ],
+    },
+    {
+        uri => 'db:yugabytedb:',
+        dsn => 'dbi:Pg:port=5433',
+        dbi => [ [host => undef], [port => 5433], [dbname => undef] ],
+        qry => [],
+    },
+    {
+        uri => 'db:yugabytedb://foo:123/try?foo=1&foo=2&lol=yes',
+        dsn => 'dbi:Pg:host=foo;port=123;dbname=try;foo=1;foo=2;lol=yes',
+        dbi => [ [host => 'foo'], [port => 123], [dbname => 'try'] ],
+        qry => [ foo => 1, foo => 2, lol => 'yes' ],
+    },
 ) {
     my $uri = $spec->{uri};
     ok my $u = URI->new($uri), "URI $uri";
