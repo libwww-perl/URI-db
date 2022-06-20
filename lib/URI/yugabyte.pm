@@ -1,6 +1,6 @@
 package URI::yugabyte;
 use base 'URI::_db';
-our $VERSION = '0.20';
+our $VERSION = '0.21';
 
 sub default_port { 5433 }
 sub dbi_driver   { 'Pg' }
