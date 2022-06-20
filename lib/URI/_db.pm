@@ -3,7 +3,7 @@ package URI::_db;
 use strict;
 use 5.008001;
 use base 'URI::_login';
-our $VERSION = '0.20';
+our $VERSION = '0.21';
 
 sub uri    { shift }
 sub _no_scheme_ok { 0 }
