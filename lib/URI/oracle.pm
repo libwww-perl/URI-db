@@ -10,15 +10,8 @@ sub _dbi_param_map {
     return (
         [ host => scalar $self->host   ],
         [ port => scalar $self->_port  ],
-        [ sid  => scalar $self->dbname ],
+        [ service_name => scalar $self->dbname ],
     );
-}
-
-sub dbi_dsn {
-    my $self = shift;
-    my $params = $self->_dsn_params;
-    $params =~ s/sid=// unless $self->host || $self->_port;
-    return join ':' => 'dbi', $self->dbi_driver, $params
 }
 
 1;

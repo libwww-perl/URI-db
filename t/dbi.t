@@ -206,14 +206,32 @@ for my $spec (
     },
     {
         uri => 'db:oracle://localhost:33/foo',
-        dsn => 'dbi:Oracle:host=localhost;port=33;sid=foo',
-        dbi => [ [host => 'localhost'], [port => 33], [sid => 'foo'] ],
+        dsn => 'dbi:Oracle:host=localhost;port=33;service_name=foo',
+        dbi => [ [host => 'localhost'], [port => 33], [service_name => 'foo'] ],
+        qry => [],
+    },
+    {
+        uri => 'db:oracle://localhost/foo',
+        dsn => 'dbi:Oracle:host=localhost;service_name=foo',
+        dbi => [ [host => 'localhost'], [port => undef], [service_name => 'foo'] ],
+        qry => [],
+    },
+    {
+        uri => 'db:oracle://:42/foo',
+        dsn => 'dbi:Oracle:port=42;service_name=foo',
+        dbi => [ [host => ''], [port => 42], [service_name => 'foo'] ],
         qry => [],
     },
     {
         uri => 'db:oracle:foo',
-        dsn => 'dbi:Oracle:foo',
-        dbi => [ [host => undef], [port => undef], [sid => 'foo'] ],
+        dsn => 'dbi:Oracle:service_name=foo',
+        dbi => [ [host => undef], [port => undef], [service_name => 'foo'] ],
+        qry => [],
+    },
+    {
+        uri => 'db:oracle:///foo',
+        dsn => 'dbi:Oracle:service_name=foo',
+        dbi => [ [host => ''], [port => undef], [service_name => 'foo'] ],
         qry => [],
     },
     {
