@@ -1,5 +1,7 @@
 Revision history for Perl extension URI::db.
 
+0.22
+
 0.21 2023-05-09T22:18:52Z
      - Changed Oracle database DBI parameter name from `sid` to
        `service_name`. Thanks to @vectro for the report (#22).
