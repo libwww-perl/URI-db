@@ -1,6 +1,17 @@
 Revision history for Perl extension URI::db.
 
 0.22
+     - Changed Oracle database DBI parameter generation as follows:
+       - If there is not a hostname or port, just use the raw SID or service
+         name as the database name: `dbi:Oracle:$name`. This is way 1 in the
+         DBD::Oracle documentation
+       - If there is a hostname or port, use the EZCONNECT syntax. This is
+         way 3 in the DBD::Oracle documentation.
+       Use of a port without a host name may not be valid, but it seems most
+       prudent to build an EZCONNECT that includes the port in this context
+       and to let Oracle or DBD::Oracle reject it if appropriate. Thanks
+       again to @vectro for the and diligence, testing, and patience with
+       this issue  (#22).
 
 0.21 2023-05-09T22:18:52Z
      - Changed Oracle database DBI parameter name from `sid` to
