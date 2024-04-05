@@ -1,6 +1,6 @@
 package URI::exasol;
 use base 'URI::_odbc';
-our $VERSION = '0.22';
+our $VERSION = '0.23';
 
 sub default_port { 8563 }
 

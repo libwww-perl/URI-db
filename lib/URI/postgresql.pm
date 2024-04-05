@@ -1,5 +1,5 @@
 package URI::postgresql;
 use base 'URI::pg';
-our $VERSION = '0.22';
+our $VERSION = '0.23';
 
 1;
