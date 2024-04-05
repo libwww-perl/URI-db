@@ -1,6 +1,6 @@
 Revision history for Perl extension URI::db.
 
-0.22
+0.22 2024-04-05T01:38:17Z
      - Changed Oracle database DBI parameter generation as follows:
        - If there is not a hostname or port, just use the raw SID or service
          name as the database name: `dbi:Oracle:$name`. This is way 1 in the
