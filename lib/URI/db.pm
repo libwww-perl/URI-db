@@ -282,7 +282,7 @@ DBI DSN. Some examples:
   | URI                                  | DSN                                              |
   |--------------------------------------+--------------------------------------------------|
   | db:pg:try                            | dbi:Pg:dbname=try                                |
-  | db:mysql://localhost:33/foo          | dbi:mysql:host=localhost;port=33;database=foo    |
+  | db:mysql://localhost:33/foo          | dbi:MariaDB:host=localhost;port=33;database=foo    |
   | db:db2://localhost:33/foo            | dbi:DB2:HOSTNAME=localhost;PORT=33;DATABASE=foo  |
   | db:vertica:dbadmin                   | dbi:ODBC:DSN=dbadmin                             |
   | db:mssql://foo.com/pubs?Driver=MSSQL | dbi:ODBC:Host=foo.com;Database=pubs;Driver=MSSQL |
