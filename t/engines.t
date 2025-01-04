@@ -53,6 +53,7 @@ for my $spec (
     [ cockroachdb => 26257, 'cockroach' ],
     [ yugabyte    => 5433,  'pg'        ],
     [ yugabytedb  => 5433,  'pg'        ],
+    [ clickhouse => 8123,  'clickhouse' ],
 ) {
     my ($engine, $port, $canon) = @{ $spec };
     my $prefix = "db:$engine";
