@@ -1,5 +1,7 @@
 Revision history for Perl extension URI::db.
 
+0.24
+
 0.23 2025-01-09T02:48:06Z
      - Added URI::clickhouse. Thanks to Ilia Rassadin for the PR (#18).
      - Changed the MySQL (and MariaDB) URI `dbi_dsn()` method to use

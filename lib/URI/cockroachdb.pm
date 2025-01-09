@@ -1,3 +1,3 @@
 package URI::cockroachdb;
 use base 'URI::cockroach';
-our $VERSION = '0.23';
+our $VERSION = '0.24';

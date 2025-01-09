@@ -1,6 +1,6 @@
 package URI::cubrid;
 use base 'URI::_db';
-our $VERSION = '0.23';
+our $VERSION = '0.24';
 
 sub default_port { 33000 }
 sub dbi_driver   { 'cubrid' }
