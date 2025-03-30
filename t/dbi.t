@@ -194,7 +194,7 @@ for my $spec (
     },
     {
         uri => 'db:mysql://localhost:33/foo',
-        dsn => 'dbi:MariaDB:host=localhost;port=33;database=foo',
+        dsn => 'dbi:mysql:host=localhost;port=33;database=foo',
         dbi => [ [host => 'localhost'], [port => 33], [database => 'foo'] ],
         qry => [],
     },

@@ -1,6 +1,9 @@
 Revision history for Perl extension URI::db.
 
 0.24
+     - Changed the URI::mysql `dbi_dsn()` back to use the DBD::mysql driver.
+       URI::mariadb, however, still uses DBD::MariaDB. Thanks to Alastair
+       Douglas for the completely reasonable gripe (#29).
 
 0.23 2025-01-09T02:48:06Z
      - Added URI::clickhouse. Thanks to Ilia Rassadin for the PR (#18).
